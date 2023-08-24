@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:app/common/lang.dart';
+import "package:flutter/material.dart";
+import "package:app/common/lang.dart";
 
-showAlertDialog(BuildContext context, {String memo = ''}) {
+showAlertDialog(BuildContext context, {String memo = ""}) {
   return showDialog(
     context: context,
     barrierDismissible: true,
@@ -49,7 +49,7 @@ showAlertWidget(BuildContext context, Widget child) {
   );
 }
 
-ScaffoldFeatureController showSnackBar(BuildContext context, {String content = ''}) {
+ScaffoldFeatureController showSnackBar(BuildContext context, {String content = ""}) {
   return ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       backgroundColor: Colors.black,
@@ -57,7 +57,7 @@ ScaffoldFeatureController showSnackBar(BuildContext context, {String content = '
         style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),
         content,
       ),
-      // action: SnackBarAction(label: 'Action', onPressed: () {}),
+      // action: SnackBarAction(label: "Action", onPressed: () {}),
     ),
   );
 }

@@ -1,11 +1,11 @@
-import 'dart:convert';
-import 'dart:io';
-import 'package:file_selector/file_selector.dart';
-import 'package:mime/mime.dart';
+import "dart:convert";
+import "dart:io";
+import "package:file_selector/file_selector.dart";
+import "package:mime/mime.dart";
 
 // ignore_for_file: unnecessary_this
 class FileHelper {
-  final String tokenFileName = 'token';
+  final String tokenFileName = "token";
 
   bool createFile(String filePath) {
     try {
@@ -155,7 +155,7 @@ class FileHelper {
   void openDir({
     required String dirPath,
     required List<String> type,
-    String fileName = '*',
+    String fileName = "*",
   }) async {
     XTypeGroup xType = XTypeGroup(label: fileName, extensions: type);
     await openFile(
@@ -169,7 +169,7 @@ class FileHelper {
   Future<String?> checkFile({
     required String dirPath,
     required List<String> type,
-    String fileName = '*',
+    String fileName = "*",
   }) async {
     XTypeGroup xType = XTypeGroup(label: fileName, extensions: type);
     XFile? tempPath = await openFile(
@@ -185,7 +185,7 @@ class FileHelper {
   }
 
   // 写入json文件
-  bool jsonWrite({String key = "", dynamic value = "", String savePath = 'config.json'}) {
+  bool jsonWrite({String key = "", dynamic value = "", String savePath = "config.json"}) {
     if (key != "" && savePath != "") {
       try {
         File jsonFile = File(savePath);
@@ -209,7 +209,7 @@ class FileHelper {
   }
 
   // 读取json文件
-  String jsonRead({String key = "", String filePath = 'config.json'}) {
+  String jsonRead({String key = "", String filePath = "config.json"}) {
     File jsonFile = File(filePath);
     if (jsonFile.existsSync()) {
       String jsonStr = jsonFile.readAsStringSync();

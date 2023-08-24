@@ -1,10 +1,10 @@
-import 'dart:io';
-import 'dart:convert';
-import 'dart:typed_data';
-import 'package:crypto/crypto.dart' as crypto;
-import 'package:flutter/material.dart';
-import 'package:app/interface/common/show_alert_dialog.dart';
-import 'package:app/common/lang.dart';
+import "dart:io";
+import "dart:convert";
+import "dart:typed_data";
+import "package:crypto/crypto.dart" as crypto;
+import "package:flutter/material.dart";
+import "package:app/interface/common/show_alert_dialog.dart";
+import "package:app/common/lang.dart";
 
 class Tools {
   // 当前时间戳
@@ -14,7 +14,7 @@ class Tools {
 
   // 时间戳转时间
   String timestampToStr(int timestamp) {
-    if (timestamp == 0) return '';
+    if (timestamp == 0) return "";
     if (timestamp.toString().length == 10) {
       timestamp *= 1000;
     }
@@ -87,23 +87,23 @@ class Tools {
 
   // UDP 客户端
   Future<String> clentUDP(int port) async {
-    RawDatagramSocket rawDgramSocket = await RawDatagramSocket.bind('0.0.0.0', port);
-    // rawDgramSocket.send(utf8.encode('hello,world!'), InternetAddress('0.0.0.0'), port);
+    RawDatagramSocket rawDgramSocket = await RawDatagramSocket.bind("0.0.0.0", port);
+    // rawDgramSocket.send(utf8.encode("hello,world!"), InternetAddress("0.0.0.0"), port);
     await for (RawSocketEvent event in rawDgramSocket) {
       if (event == RawSocketEvent.read) {
         try {
           return utf8.decode(rawDgramSocket.receive()!.data);
         } catch (e) {
-          return '';
+          return "";
         }
       }
     }
-    return '';
+    return "";
   }
 
   Future<void> socketListen(BuildContext context, int port, int s) async {
     Duration timeoutDuration = Duration(milliseconds: s * 1000);
-    RawDatagramSocket rawDgramSocket = await RawDatagramSocket.bind('0.0.0.0', port);
+    RawDatagramSocket rawDgramSocket = await RawDatagramSocket.bind("0.0.0.0", port);
     rawDgramSocket.timeout(timeoutDuration, onTimeout: ((sink) {
       showSnackBar(context, content: Lang().requestTimedOut);
       rawDgramSocket.close();
@@ -125,7 +125,7 @@ class Tools {
   //   await for (RawSocketEvent event in rawDgramSocket) {
   //     if (event == RawSocketEvent.read) {
   //       // print(utf8.decode(rawDgramSocket.receive()!.data));
-  //       rawDgramSocket.send(utf8.encode('UDP Server:already received!'), InternetAddress.loopbackIPv4, 8082);
+  //       rawDgramSocket.send(utf8.encode("UDP Server:already received!"), InternetAddress.loopbackIPv4, 8082);
   //     }
   //   }
   // }
