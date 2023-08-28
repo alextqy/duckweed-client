@@ -34,7 +34,7 @@ class UserApi extends ResponseHelper {
     return ResultModel.fromJson(jsonDecode(decoder.convert(response.bodyBytes)));
   }
 
-  Future<ResultListModel> userList({
+  Future<ResultListModel> userList([
     page,
     pageSize,
     order,
@@ -42,7 +42,7 @@ class UserApi extends ResponseHelper {
     name,
     level,
     status,
-  }) async {
+  ]) async {
     Response response = await post(
       Uri.http(url, "/user/list"),
       body: {

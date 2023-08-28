@@ -60,9 +60,9 @@ class BaseNotifier extends ChangeNotifier {
   List<UserModel> userListModel = [];
 
   /// api ===================================================================
-  UserApi userApi = UserApi();
   AnnouncementApi announcementApi = AnnouncementApi();
-  LogApi logApi = LogApi();
   DirApi dirApi = DirApi();
   FileApi fileApi = FileApi();
+  UserApi userApi = UserApi();
+  LogApi logApi = LogApi();
 }
