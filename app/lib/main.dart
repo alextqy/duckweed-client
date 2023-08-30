@@ -16,7 +16,7 @@ class RootApp extends StatelessWidget {
         brightness: Brightness.dark,
         useMaterial3: true,
       ),
-      home: const HomePage(title: "Duck Weed"),
+      home: const HomePage(title: "Duckweed"),
       debugShowCheckedModeBanner: false,
     );
   }
@@ -33,14 +33,18 @@ class HomePage extends StatefulWidget {
 
 class HomePageState extends State<HomePage> {
   int? groupValue = 1;
+  bool opacityShow0 = false;
+  bool opacityShow1 = true;
+  bool opacityShow2 = false;
 
   @override
   Widget build(BuildContext context) {
-    Size screenSize = MediaQuery.of(context).size;
+    // Size screenSize = MediaQuery.of(context).size;
 
+    /*
     Drawer actionMenu(BuildContext context) {
       return Drawer(
-        width: screenSize.width * 0.5,
+        width: screenSize.width * 0.45,
         backgroundColor: Colors.black54,
         child: Column(
           children: [
@@ -61,15 +65,16 @@ class HomePageState extends State<HomePage> {
         ),
       );
     }
+    */
 
     return Scaffold(
-      endDrawer: actionMenu(context),
+      // endDrawer: actionMenu(context),
       appBar: AppBar(
-        toolbarHeight: 40,
+        toolbarHeight: 25,
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(
           widget.title,
-          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Colors.white70),
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Colors.white70),
         ),
       ),
       body: Container(
@@ -78,6 +83,10 @@ class HomePageState extends State<HomePage> {
         padding: const EdgeInsets.all(10),
         child: Column(
           children: [
+            const Expanded(child: SizedBox()),
+            networkWidget(),
+            signInWidget(),
+            signUpWidget(),
             const Expanded(child: SizedBox()),
             CupertinoSlidingSegmentedControl<int>(
               backgroundColor: Colors.white70,
@@ -92,6 +101,9 @@ class HomePageState extends State<HomePage> {
               onValueChanged: (value) {
                 setState(() {
                   groupValue = value;
+                  opacityShow0 = groupValue == 0 ? true : false;
+                  opacityShow1 = groupValue == 1 ? true : false;
+                  opacityShow2 = groupValue == 2 ? true : false;
                 });
               },
             ),
@@ -107,5 +119,62 @@ class HomePageState extends State<HomePage> {
 
   unselectedTabFont(String t) {
     return Text(t, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Colors.black));
+  }
+
+  Widget networkWidget() {
+    return AnimatedOpacity(
+      opacity: opacityShow0 ? 1.0 : 0.0,
+      duration: const Duration(milliseconds: 450),
+      child: Column(
+        children: [
+          Visibility(
+            visible: opacityShow0,
+            child: Container(
+              width: 200,
+              height: 200,
+              color: Colors.red,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget signInWidget() {
+    return AnimatedOpacity(
+      opacity: opacityShow1 ? 1.0 : 0.0,
+      duration: const Duration(milliseconds: 450),
+      child: Column(
+        children: [
+          Visibility(
+            visible: opacityShow1,
+            child: Container(
+              width: 200,
+              height: 200,
+              color: Colors.yellow,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget signUpWidget() {
+    return AnimatedOpacity(
+      opacity: opacityShow2 ? 1.0 : 0.0,
+      duration: const Duration(milliseconds: 450),
+      child: Column(
+        children: [
+          Visibility(
+            visible: opacityShow2,
+            child: Container(
+              width: 200,
+              height: 200,
+              color: Colors.blue,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
