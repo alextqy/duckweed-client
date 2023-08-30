@@ -31,7 +31,7 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => HomePageState();
 }
 
-class HomePageState extends State<HomePage> {
+class HomePageState extends State<HomePage> with TickerProviderStateMixin {
   int? groupValue = 1;
   bool opacityShow0 = false;
   bool opacityShow1 = true;
@@ -44,8 +44,21 @@ class HomePageState extends State<HomePage> {
   double fontSize = 15;
   double iconSize = 20;
 
+  late AnimationController animationController;
+  late Animation<double> animationW;
+
+  @override
+  void initState() {
+    super.initState();
+    animationController = AnimationController(duration: const Duration(milliseconds: 500), vsync: this);
+    animationW = Tween(begin: 0.0, end: 200.0).animate(animationController);
+    animationController.forward();
+  }
+
   @override
   Widget build(BuildContext context) {
+    Color bgColor = Theme.of(context).colorScheme.inversePrimary;
+
     // Size screenSize = MediaQuery.of(context).size;
 
     /*
@@ -78,7 +91,7 @@ class HomePageState extends State<HomePage> {
       // endDrawer: actionMenu(context),
       appBar: AppBar(
         toolbarHeight: 25,
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        backgroundColor: bgColor,
         title: Text(
           widget.title,
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: fontSize, color: Colors.white70),
@@ -111,6 +124,11 @@ class HomePageState extends State<HomePage> {
                   opacityShow0 = groupValue == 0 ? true : false;
                   opacityShow1 = groupValue == 1 ? true : false;
                   opacityShow2 = groupValue == 2 ? true : false;
+                  if (groupValue == 1) {
+                    animationController.forward();
+                  } else {
+                    animationController.reset();
+                  }
                 });
               },
             ),
@@ -162,7 +180,9 @@ class HomePageState extends State<HomePage> {
               padding: const EdgeInsets.all(0),
               child: Column(
                 children: [
-                  SizedBox(
+                  Container(
+                    margin: const EdgeInsets.all(5),
+                    padding: const EdgeInsets.all(0),
                     width: 300,
                     child: TextFormField(
                       controller: accountController,
@@ -182,7 +202,9 @@ class HomePageState extends State<HomePage> {
                       ),
                     ),
                   ),
-                  SizedBox(
+                  Container(
+                    margin: const EdgeInsets.all(5),
+                    padding: const EdgeInsets.all(0),
                     width: 300,
                     child: TextFormField(
                       controller: passwordController,
@@ -203,10 +225,34 @@ class HomePageState extends State<HomePage> {
                       ),
                     ),
                   ),
-                  // SizedBox(
-                  //   width: 300,
-                  //   chil
-                  // ),
+                  AnimatedBuilder(
+                    animation: animationW,
+                    builder: (context, child) {
+                      return Container(
+                        margin: const EdgeInsets.all(15),
+                        padding: const EdgeInsets.all(0),
+                        width: animationW.value,
+                        height: 35,
+                        decoration: BoxDecoration(
+                          borderRadius: const BorderRadius.all(Radius.circular(8)),
+                          color: Theme.of(context).colorScheme.inversePrimary,
+                        ),
+                        child: InkWell(
+                          // hoverColor: Theme.of(context).colorScheme.inversePrimary,
+                          child: Center(
+                            child: Text(
+                              "ok",
+                              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white70, fontSize: fontSize),
+                            ),
+                          ),
+                          onTap: () {
+                            print(accountController.text);
+                            print(passwordController.text);
+                          },
+                        ),
+                      );
+                    },
+                  ),
                 ],
               ),
             ),
