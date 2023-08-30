@@ -13,6 +13,9 @@ class Lang {
   String network = "";
   String forgotPassword = "";
   String signUp = "";
+  String account = "";
+  String password = "";
+  String typo = "";
 
   Lang() {
     this.type = FileHelper().jsonRead(key: "lang", filePath: "config.json");
@@ -25,6 +28,9 @@ class Lang {
       this.network = "网络";
       this.forgotPassword = "找回密码";
       this.signUp = "注册";
+      this.account = "账号";
+      this.password = "密码";
+      this.typo = "输入错误";
     } else {
       this.requestTimedOut = "Request timed out";
       this.signIn = "Sign in";
@@ -32,6 +38,9 @@ class Lang {
       this.network = "Network";
       this.forgotPassword = "Forgot Password";
       this.signUp = "Sign Up";
+      this.account = "Account";
+      this.password = "Password";
+      this.typo = "Typo";
     }
   }
 }

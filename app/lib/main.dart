@@ -36,6 +36,13 @@ class HomePageState extends State<HomePage> {
   bool opacityShow0 = false;
   bool opacityShow1 = true;
   bool opacityShow2 = false;
+  int showSpeed = 500;
+  TextEditingController accountController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  String account = "";
+  String password = "";
+  double fontSize = 15;
+  double iconSize = 20;
 
   @override
   Widget build(BuildContext context) {
@@ -74,13 +81,13 @@ class HomePageState extends State<HomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(
           widget.title,
-          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Colors.white70),
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: fontSize, color: Colors.white70),
         ),
       ),
       body: Container(
-        alignment: Alignment.center,
         margin: const EdgeInsets.all(0),
         padding: const EdgeInsets.all(10),
+        alignment: Alignment.center,
         child: Column(
           children: [
             const Expanded(child: SizedBox()),
@@ -91,7 +98,7 @@ class HomePageState extends State<HomePage> {
             CupertinoSlidingSegmentedControl<int>(
               backgroundColor: Colors.white70,
               thumbColor: Colors.deepPurpleAccent,
-              padding: const EdgeInsets.all(3),
+              padding: const EdgeInsets.all(0),
               groupValue: groupValue,
               children: {
                 0: groupValue == 0 ? selectedTabFont(Lang().network) : unselectedTabFont(Lang().network),
@@ -114,22 +121,24 @@ class HomePageState extends State<HomePage> {
   }
 
   selectedTabFont(String t) {
-    return Text(t, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Colors.white));
+    return Text(t, style: TextStyle(fontWeight: FontWeight.bold, fontSize: fontSize, color: Colors.white));
   }
 
   unselectedTabFont(String t) {
-    return Text(t, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Colors.black));
+    return Text(t, style: TextStyle(fontWeight: FontWeight.bold, fontSize: fontSize, color: Colors.black));
   }
 
   Widget networkWidget() {
     return AnimatedOpacity(
       opacity: opacityShow0 ? 1.0 : 0.0,
-      duration: const Duration(milliseconds: 450),
+      duration: Duration(milliseconds: showSpeed),
       child: Column(
         children: [
           Visibility(
             visible: opacityShow0,
             child: Container(
+              margin: const EdgeInsets.all(0),
+              padding: const EdgeInsets.all(0),
               width: 200,
               height: 200,
               color: Colors.red,
@@ -143,15 +152,63 @@ class HomePageState extends State<HomePage> {
   Widget signInWidget() {
     return AnimatedOpacity(
       opacity: opacityShow1 ? 1.0 : 0.0,
-      duration: const Duration(milliseconds: 450),
+      duration: Duration(milliseconds: showSpeed),
       child: Column(
         children: [
           Visibility(
             visible: opacityShow1,
             child: Container(
-              width: 200,
-              height: 200,
-              color: Colors.yellow,
+              margin: const EdgeInsets.all(0),
+              padding: const EdgeInsets.all(0),
+              child: Column(
+                children: [
+                  SizedBox(
+                    width: 300,
+                    child: TextFormField(
+                      controller: accountController,
+                      maxLines: 1,
+                      cursorHeight: 20,
+                      cursorWidth: 1,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(textBaseline: TextBaseline.alphabetic, fontSize: fontSize, color: Colors.white, fontWeight: FontWeight.bold),
+                      decoration: InputDecoration(
+                        suffixIcon: IconButton(
+                          icon: Icon(Icons.clear, size: iconSize, color: Colors.white),
+                          onPressed: () => accountController.clear(),
+                        ),
+                        icon: Icon(Icons.person_outline, size: iconSize, color: Colors.white),
+                        labelText: Lang().account,
+                        labelStyle: TextStyle(textBaseline: TextBaseline.alphabetic, fontSize: fontSize, color: Colors.white, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 300,
+                    child: TextFormField(
+                      controller: passwordController,
+                      maxLines: 1,
+                      obscureText: true,
+                      cursorHeight: 20,
+                      cursorWidth: 1,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(textBaseline: TextBaseline.alphabetic, fontSize: fontSize, color: Colors.white, fontWeight: FontWeight.bold),
+                      decoration: InputDecoration(
+                        suffixIcon: IconButton(
+                          icon: Icon(Icons.clear, size: iconSize, color: Colors.white),
+                          onPressed: () => passwordController.clear(),
+                        ),
+                        icon: Icon(Icons.lock_outlined, size: iconSize, color: Colors.white),
+                        labelText: Lang().password,
+                        labelStyle: TextStyle(textBaseline: TextBaseline.alphabetic, fontSize: fontSize, color: Colors.white, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                  // SizedBox(
+                  //   width: 300,
+                  //   chil
+                  // ),
+                ],
+              ),
             ),
           ),
         ],
@@ -162,12 +219,14 @@ class HomePageState extends State<HomePage> {
   Widget signUpWidget() {
     return AnimatedOpacity(
       opacity: opacityShow2 ? 1.0 : 0.0,
-      duration: const Duration(milliseconds: 450),
+      duration: Duration(milliseconds: showSpeed),
       child: Column(
         children: [
           Visibility(
             visible: opacityShow2,
             child: Container(
+              margin: const EdgeInsets.all(0),
+              padding: const EdgeInsets.all(0),
               width: 200,
               height: 200,
               color: Colors.blue,
