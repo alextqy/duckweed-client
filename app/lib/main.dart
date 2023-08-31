@@ -1,7 +1,10 @@
-import "package:app/common/file.dart";
 import "package:flutter/material.dart";
 import "package:flutter/cupertino.dart";
 import "package:app/common/lang.dart";
+import "package:app/common/file.dart";
+import "package:app/interface/common/show_alert_dialog.dart";
+import "package:app/notifier/base_notifier.dart";
+import "package:app/notifier/user_notifier.dart";
 
 void main() {
   runApp(const RootApp());
@@ -45,8 +48,19 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
   late AnimationController animationController;
   late Animation<double> animationW;
 
+  UserNotifier userNotifier = UserNotifier();
+
   TextStyle textStyle({Color color = Colors.white70, double fontSize = 15}) {
     return TextStyle(fontWeight: FontWeight.bold, color: color, fontSize: fontSize, textBaseline: TextBaseline.alphabetic);
+  }
+
+  basicListener() async {
+    showSnackBar(context, content: "loading", backgroundColor: Theme.of(context).colorScheme.inversePrimary);
+    if (userNotifier.operationStatus.value == OperationStatus.success) {
+      showSnackBar(context, content: "finish", backgroundColor: Theme.of(context).colorScheme.inversePrimary);
+    } else {
+      showSnackBar(context, content: userNotifier.operationMemo, backgroundColor: Theme.of(context).colorScheme.inversePrimary);
+    }
   }
 
   @override
@@ -55,6 +69,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
     animationController = AnimationController(duration: Duration(milliseconds: showSpeed), vsync: this);
     animationW = Tween(begin: 0.0, end: 200.0).animate(animationController);
     animationController.forward();
+    userNotifier.addListener(basicListener);
   }
 
   @override
@@ -263,8 +278,10 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                             ),
                           ),
                           onTap: () {
-                            print(accountController.text);
-                            print(passwordController.text);
+                            userNotifier.signIn(
+                              account: accountController.text,
+                              password: passwordController.text,
+                            );
                           },
                         ),
                       );

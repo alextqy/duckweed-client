@@ -49,13 +49,15 @@ showAlertWidget(BuildContext context, Widget child) {
   );
 }
 
-ScaffoldFeatureController showSnackBar(BuildContext context, {String content = ""}) {
+ScaffoldFeatureController showSnackBar(BuildContext context, {String content = "", Color backgroundColor = Colors.black, int duration = 2}) {
   return ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
-      backgroundColor: Colors.black,
+      duration: Duration(seconds: duration),
+      backgroundColor: backgroundColor,
+      padding: const EdgeInsets.all(10),
       content: Text(
-        style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),
         content,
+        style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 15),
       ),
       // action: SnackBarAction(label: "Action", onPressed: () {}),
     ),

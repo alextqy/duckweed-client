@@ -7,7 +7,8 @@ import "package:app/model/result_model.dart";
 
 class ResponseHelper {
   Utf8Decoder decoder = const Utf8Decoder();
-  String url = FileHelper().readFile("aerver_address");
+  String url = FileHelper().jsonRead(key: "aerver_address");
+  int timeout = 10;
 
   // String token = "";
   // header("sAccess-Control-Allow-Origin:*");
@@ -16,9 +17,9 @@ class ResponseHelper {
   // header("Content-type:text/json");
   Map<String, String> postHeaders = {
     "Accept": "application/json",
-    "Content-Type": "application/x-www-form-urlencoded",
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Headers": "x-requested-with, content-type",
+    // "Content-Type": "application/x-www-form-urlencoded",
+    // "Access-Control-Allow-Origin": "*",
+    // "Access-Control-Allow-Headers": "x-requested-with, content-type",
   };
   Encoding? postEncoding = Encoding.getByName("utf-8");
 
