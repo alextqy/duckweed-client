@@ -1,3 +1,4 @@
+import "package:app/common/file.dart";
 import "package:flutter/material.dart";
 import "package:flutter/cupertino.dart";
 import "package:app/common/lang.dart";
@@ -16,7 +17,7 @@ class RootApp extends StatelessWidget {
         brightness: Brightness.dark,
         useMaterial3: true,
       ),
-      home: const HomePage(title: "Duckweed"),
+      home: HomePage(title: FileHelper().jsonRead(key: "title")),
       debugShowCheckedModeBanner: false,
     );
   }
@@ -36,7 +37,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
   bool opacityShow0 = false;
   bool opacityShow1 = true;
   bool opacityShow2 = false;
-  int showSpeed = 500;
+  int showSpeed = 450;
   TextEditingController accountController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   String account = "";
@@ -50,7 +51,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    animationController = AnimationController(duration: const Duration(milliseconds: 500), vsync: this);
+    animationController = AnimationController(duration: Duration(milliseconds: showSpeed), vsync: this);
     animationW = Tween(begin: 0.0, end: 200.0).animate(animationController);
     animationController.forward();
   }
@@ -238,10 +239,9 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                           color: Theme.of(context).colorScheme.inversePrimary,
                         ),
                         child: InkWell(
-                          // hoverColor: Theme.of(context).colorScheme.inversePrimary,
                           child: Center(
                             child: Text(
-                              "ok",
+                              "GO",
                               style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white70, fontSize: fontSize),
                             ),
                           ),

@@ -18,8 +18,8 @@ class Lang {
   String typo = "";
 
   Lang() {
-    this.type = FileHelper().jsonRead(key: "lang", filePath: "config.json");
-    this.title = FileHelper().jsonRead(key: "title", filePath: "config.json");
+    this.type = FileHelper().jsonRead(key: "lang");
+    this.title = FileHelper().jsonRead(key: "title");
 
     if (this.type == "cn") {
       this.requestTimedOut = "请求超时";
