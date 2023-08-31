@@ -40,10 +40,9 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
   int showSpeed = 450;
   TextEditingController accountController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  String account = "";
-  String password = "";
   double fontSize = 15;
   double iconSize = 20;
+  late TextStyle textStyle;
 
   late AnimationController animationController;
   late Animation<double> animationW;
@@ -51,6 +50,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+    textStyle = TextStyle(fontWeight: FontWeight.bold, color: Colors.white70, fontSize: fontSize, textBaseline: TextBaseline.alphabetic);
     animationController = AnimationController(duration: Duration(milliseconds: showSpeed), vsync: this);
     animationW = Tween(begin: 0.0, end: 200.0).animate(animationController);
     animationController.forward();
@@ -95,7 +95,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
         backgroundColor: bgColor,
         title: Text(
           widget.title,
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: fontSize, color: Colors.white70),
+          style: textStyle,
         ),
       ),
       body: Container(
@@ -140,11 +140,11 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
   }
 
   selectedTabFont(String t) {
-    return Text(t, style: TextStyle(fontWeight: FontWeight.bold, fontSize: fontSize, color: Colors.white));
+    return Text(t, style: textStyle);
   }
 
   unselectedTabFont(String t) {
-    return Text(t, style: TextStyle(fontWeight: FontWeight.bold, fontSize: fontSize, color: Colors.black));
+    return Text(t, style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: fontSize, textBaseline: TextBaseline.alphabetic));
   }
 
   Widget networkWidget() {
@@ -191,7 +191,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                       cursorHeight: 20,
                       cursorWidth: 1,
                       textAlign: TextAlign.center,
-                      style: TextStyle(textBaseline: TextBaseline.alphabetic, fontSize: fontSize, color: Colors.white, fontWeight: FontWeight.bold),
+                      style: textStyle,
                       decoration: InputDecoration(
                         suffixIcon: IconButton(
                           icon: Icon(Icons.clear, size: iconSize, color: Colors.white),
@@ -199,7 +199,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                         ),
                         icon: Icon(Icons.person_outline, size: iconSize, color: Colors.white),
                         labelText: Lang().account,
-                        labelStyle: TextStyle(textBaseline: TextBaseline.alphabetic, fontSize: fontSize, color: Colors.white, fontWeight: FontWeight.bold),
+                        labelStyle: textStyle,
                       ),
                     ),
                   ),
@@ -214,7 +214,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                       cursorHeight: 20,
                       cursorWidth: 1,
                       textAlign: TextAlign.center,
-                      style: TextStyle(textBaseline: TextBaseline.alphabetic, fontSize: fontSize, color: Colors.white, fontWeight: FontWeight.bold),
+                      style: textStyle,
                       decoration: InputDecoration(
                         suffixIcon: IconButton(
                           icon: Icon(Icons.clear, size: iconSize, color: Colors.white),
@@ -222,15 +222,36 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                         ),
                         icon: Icon(Icons.lock_outlined, size: iconSize, color: Colors.white),
                         labelText: Lang().password,
-                        labelStyle: TextStyle(textBaseline: TextBaseline.alphabetic, fontSize: fontSize, color: Colors.white, fontWeight: FontWeight.bold),
+                        labelStyle: textStyle,
                       ),
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.all(5),
+                    padding: const EdgeInsets.all(0),
+                    width: 300,
+                    child: Row(
+                      children: [
+                        const Expanded(child: SizedBox()),
+                        TextButton(
+                          child: Text(
+                            Lang().forgotPassword,
+                            style: const TextStyle(
+                              color: Colors.white70,
+                              fontSize: 12,
+                              textBaseline: TextBaseline.alphabetic,
+                            ),
+                          ),
+                          onPressed: () {},
+                        ),
+                      ],
                     ),
                   ),
                   AnimatedBuilder(
                     animation: animationW,
                     builder: (context, child) {
                       return Container(
-                        margin: const EdgeInsets.all(15),
+                        margin: const EdgeInsets.all(5),
                         padding: const EdgeInsets.all(0),
                         width: animationW.value,
                         height: 35,
@@ -242,7 +263,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                           child: Center(
                             child: Text(
                               "GO",
-                              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white70, fontSize: fontSize),
+                              style: textStyle,
                             ),
                           ),
                           onTap: () {
