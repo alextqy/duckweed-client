@@ -112,7 +112,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
             const Expanded(child: SizedBox()),
             CupertinoSlidingSegmentedControl<int>(
               backgroundColor: Colors.white70,
-              thumbColor: Colors.deepPurpleAccent,
+              thumbColor: Colors.black38,
               padding: const EdgeInsets.all(0),
               groupValue: groupValue,
               children: {
