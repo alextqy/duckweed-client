@@ -121,21 +121,27 @@ class ForgotPasswordState extends State<ForgotPassword> {
                 ),
               ),
             ),
-            Container(
-              margin: const EdgeInsets.all(10),
-              padding: const EdgeInsets.all(0),
-              width: 200,
-              height: 35,
-              decoration: BoxDecoration(
-                borderRadius: const BorderRadius.all(Radius.circular(8)),
-                color: Theme.of(context).colorScheme.inversePrimary,
-              ),
-              child: InkWell(
-                child: Center(
-                  child: Text("OK", style: textStyle()),
+            Row(
+              children: [
+                const Expanded(child: SizedBox()),
+                Container(
+                  margin: const EdgeInsets.all(15),
+                  padding: const EdgeInsets.all(0),
+                  width: 150,
+                  height: 35,
+                  decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.all(Radius.circular(8)),
+                    color: Theme.of(context).colorScheme.inversePrimary,
+                  ),
+                  child: InkWell(
+                    child: Center(
+                      child: Text("OK", style: textStyle()),
+                    ),
+                    onTap: () {},
+                  ),
                 ),
-                onTap: () {},
-              ),
+                const Expanded(child: SizedBox()),
+              ],
             ),
             const Expanded(child: SizedBox()),
           ],
