@@ -291,7 +291,7 @@ class UserApi extends ResponseHelper {
   ]) async {
     try {
       Response response = await post(
-        Uri.http(url, "/send/email"),
+        Uri.http(url, "/reset/password"),
         body: {
           "newPassword": newPassword,
           "captcha": captcha,

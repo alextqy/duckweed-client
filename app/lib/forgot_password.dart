@@ -1,5 +1,8 @@
-import 'package:app/common/lang.dart';
 import 'package:flutter/material.dart';
+import 'package:app/common/lang.dart';
+import 'package:app/interface/common/show_alert_dialog.dart';
+import 'package:app/notifier/base_notifier.dart';
+import 'package:app/notifier/user_notifier.dart';
 
 class ForgotPassword extends StatefulWidget {
   const ForgotPassword({super.key});
@@ -20,9 +23,21 @@ class ForgotPasswordState extends State<ForgotPassword> {
   TextEditingController captchaController = TextEditingController();
   TextEditingController newPasswordController = TextEditingController();
 
+  UserNotifier userNotifier = UserNotifier();
+
+  basicListener() async {
+    showSnackBar(context, content: Lang().loading, backgroundColor: Theme.of(context).colorScheme.inversePrimary, duration: 1);
+    if (userNotifier.operationStatus.value == OperationStatus.success) {
+      showSnackBar(context, content: Lang().complete, backgroundColor: Theme.of(context).colorScheme.inversePrimary);
+    } else {
+      showSnackBar(context, content: userNotifier.operationMemo, backgroundColor: Theme.of(context).colorScheme.inversePrimary);
+    }
+  }
+
   @override
   void initState() {
     super.initState();
+    userNotifier.addListener(basicListener);
   }
 
   @override
@@ -60,7 +75,9 @@ class ForgotPasswordState extends State<ForgotPassword> {
                       suffixIcon: IconButton(
                         icon: Icon(Icons.send, size: iconSize, color: Colors.white70),
                         onPressed: () {
-                          print("email");
+                          if (emailController.text != "") {
+                            userNotifier.sendEmail(email: emailController.text);
+                          }
                         },
                       ),
                       icon: Icon(Icons.email, size: iconSize, color: Colors.white70),
@@ -121,27 +138,25 @@ class ForgotPasswordState extends State<ForgotPassword> {
                 ),
               ),
             ),
-            Row(
-              children: [
-                const Expanded(child: SizedBox()),
-                Container(
-                  margin: const EdgeInsets.all(15),
-                  padding: const EdgeInsets.all(0),
-                  width: 150,
-                  height: 35,
-                  decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.all(Radius.circular(8)),
-                    color: Theme.of(context).colorScheme.inversePrimary,
-                  ),
-                  child: InkWell(
-                    child: Center(
-                      child: Text("OK", style: textStyle()),
-                    ),
-                    onTap: () {},
-                  ),
+            Container(
+              margin: const EdgeInsets.all(15),
+              padding: const EdgeInsets.all(0),
+              width: 150,
+              height: 35,
+              decoration: BoxDecoration(
+                borderRadius: const BorderRadius.all(Radius.circular(8)),
+                color: Theme.of(context).colorScheme.inversePrimary,
+              ),
+              child: InkWell(
+                child: Center(
+                  child: Text("OK", style: textStyle()),
                 ),
-                const Expanded(child: SizedBox()),
-              ],
+                onTap: () {
+                  if (captchaController.text != "" && newPasswordController.text != "") {
+                    userNotifier.resetPassword(captcha: captchaController.text, newPassword: newPasswordController.text);
+                  }
+                },
+              ),
             ),
             const Expanded(child: SizedBox()),
           ],
