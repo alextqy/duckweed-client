@@ -1,3 +1,4 @@
+import "dart:async";
 import "dart:convert";
 import "package:http/http.dart";
 import "package:app/common/file.dart";
@@ -10,18 +11,24 @@ class DirApi extends ResponseHelper {
     parentID,
     dirName,
   ]) async {
-    Response response = await post(
-      Uri.http(url, "/dirs"),
-      body: {
-        "userToken": FileHelper().readFile("token"),
-        "order": order,
-        "parentID": parentID,
-        "dirName": dirName,
-      },
-      headers: postHeaders,
-      encoding: postEncoding,
-    );
-    return ResultModel.fromJson(jsonDecode(decoder.convert(response.bodyBytes)));
+    try {
+      Response response = await post(
+        Uri.http(url, "/dirs"),
+        body: {
+          "userToken": FileHelper().readFile("token"),
+          "order": order,
+          "parentID": parentID,
+          "dirName": dirName,
+        },
+        headers: postHeaders,
+        encoding: postEncoding,
+      ).timeout(Duration(seconds: timeout));
+      return ResultModel.fromJson(jsonDecode(decoder.convert(response.bodyBytes)));
+    } on TimeoutException catch (e) {
+      return ResultModel(code: 200, message: e.toString());
+    } catch (e) {
+      return ResultModel(code: 200, message: e.toString());
+    }
   }
 
   Future<ResultModel> dirAction([
@@ -29,17 +36,23 @@ class DirApi extends ResponseHelper {
     parentID,
     id,
   ]) async {
-    Response response = await post(
-      Uri.http(url, "/dir/action"),
-      body: {
-        "userToken": FileHelper().readFile("token"),
-        "dirName": dirName,
-        "parentID": parentID,
-        "id": id,
-      },
-      headers: postHeaders,
-      encoding: postEncoding,
-    );
-    return ResultModel.fromJson(jsonDecode(decoder.convert(response.bodyBytes)));
+    try {
+      Response response = await post(
+        Uri.http(url, "/dir/action"),
+        body: {
+          "userToken": FileHelper().readFile("token"),
+          "dirName": dirName,
+          "parentID": parentID,
+          "id": id,
+        },
+        headers: postHeaders,
+        encoding: postEncoding,
+      ).timeout(Duration(seconds: timeout));
+      return ResultModel.fromJson(jsonDecode(decoder.convert(response.bodyBytes)));
+    } on TimeoutException catch (e) {
+      return ResultModel(code: 200, message: e.toString());
+    } catch (e) {
+      return ResultModel(code: 200, message: e.toString());
+    }
   }
 }

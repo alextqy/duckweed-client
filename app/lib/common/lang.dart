@@ -16,6 +16,8 @@ class Lang {
   String account = "";
   String password = "";
   String typo = "";
+  String loading = "";
+  String complete = "";
 
   Lang() {
     this.type = FileHelper().jsonRead(key: "lang");
@@ -31,6 +33,8 @@ class Lang {
       this.account = "账号";
       this.password = "密码";
       this.typo = "输入错误";
+      this.loading = "加载中";
+      this.complete = "完成";
     } else {
       this.requestTimedOut = "Request timed out";
       this.signIn = "Sign in";
@@ -41,6 +45,8 @@ class Lang {
       this.account = "Account";
       this.password = "Password";
       this.typo = "Typo";
+      this.loading = "Loading";
+      this.complete = "Complete";
     }
   }
 }

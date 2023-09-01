@@ -15,17 +15,15 @@ class DirNotifier extends BaseNotifier {
     parentID,
     id,
   }) async {
-    operationStatus.value = OperationStatus.loading;
+    operationStatus.value = OperationStatus.failure;
     try {
       result = await dirApi.dirAction(dirName, parentID, id);
       if (result.state == true) {
         operationStatus.value = OperationStatus.success;
       } else {
-        operationStatus.value = OperationStatus.failure;
         operationMemo = result.message;
       }
     } catch (e) {
-      operationStatus.value = OperationStatus.failure;
       operationMemo = e.toString();
     } finally {
       notifyListeners();

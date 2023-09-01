@@ -1,3 +1,4 @@
+import "dart:async";
 import "dart:convert";
 import "package:http/http.dart";
 import "package:app/common/file.dart";
@@ -9,16 +10,22 @@ class LogApi extends ResponseHelper {
     date,
     account,
   ]) async {
-    Response response = await post(
-      Uri.http(url, "/view/log"),
-      body: {
-        "userToken": FileHelper().readFile("token"),
-        "date": date,
-        "account": account,
-      },
-      headers: postHeaders,
-      encoding: postEncoding,
-    );
-    return ResultModel.fromJson(jsonDecode(decoder.convert(response.bodyBytes)));
+    try {
+      Response response = await post(
+        Uri.http(url, "/view/log"),
+        body: {
+          "userToken": FileHelper().readFile("token"),
+          "date": date,
+          "account": account,
+        },
+        headers: postHeaders,
+        encoding: postEncoding,
+      ).timeout(Duration(seconds: timeout));
+      return ResultModel.fromJson(jsonDecode(decoder.convert(response.bodyBytes)));
+    } on TimeoutException catch (e) {
+      return ResultModel(code: 200, message: e.toString());
+    } catch (e) {
+      return ResultModel(code: 200, message: e.toString());
+    }
   }
 }

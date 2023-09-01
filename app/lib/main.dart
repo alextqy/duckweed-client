@@ -55,9 +55,9 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
   }
 
   basicListener() async {
-    showSnackBar(context, content: "loading", backgroundColor: Theme.of(context).colorScheme.inversePrimary);
+    showSnackBar(context, content: Lang().loading, backgroundColor: Theme.of(context).colorScheme.inversePrimary, duration: 1);
     if (userNotifier.operationStatus.value == OperationStatus.success) {
-      showSnackBar(context, content: "finish", backgroundColor: Theme.of(context).colorScheme.inversePrimary);
+      showSnackBar(context, content: Lang().complete, backgroundColor: Theme.of(context).colorScheme.inversePrimary);
     } else {
       showSnackBar(context, content: userNotifier.operationMemo, backgroundColor: Theme.of(context).colorScheme.inversePrimary);
     }
