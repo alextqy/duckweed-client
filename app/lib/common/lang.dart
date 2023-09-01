@@ -18,6 +18,9 @@ class Lang {
   String typo = "";
   String loading = "";
   String complete = "";
+  String email = "";
+  String captcha = "";
+  String newPassword = "";
 
   Lang() {
     this.type = FileHelper().jsonRead(key: "lang");
@@ -35,6 +38,9 @@ class Lang {
       this.typo = "输入错误";
       this.loading = "加载中";
       this.complete = "完成";
+      this.email = "邮件";
+      this.captcha = "验证码";
+      this.newPassword = "新密码";
     } else {
       this.requestTimedOut = "Request timed out";
       this.signIn = "Sign in";
@@ -47,6 +53,9 @@ class Lang {
       this.typo = "Typo";
       this.loading = "Loading";
       this.complete = "Complete";
+      this.email = "Email";
+      this.captcha = "Captcha";
+      this.newPassword = "New Password";
     }
   }
 }

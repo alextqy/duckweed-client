@@ -6,6 +6,8 @@ import "package:app/interface/common/show_alert_dialog.dart";
 import "package:app/notifier/base_notifier.dart";
 import "package:app/notifier/user_notifier.dart";
 
+import "package:app/forgot_password.dart";
+
 void main() {
   runApp(const RootApp());
 }
@@ -20,22 +22,22 @@ class RootApp extends StatelessWidget {
         brightness: Brightness.dark,
         useMaterial3: true,
       ),
-      home: HomePage(title: FileHelper().jsonRead(key: "title")),
+      home: IndexPage(title: FileHelper().jsonRead(key: "title")),
       debugShowCheckedModeBanner: false,
     );
   }
 }
 
-class HomePage extends StatefulWidget {
+class IndexPage extends StatefulWidget {
   final String title;
 
-  const HomePage({super.key, required this.title});
+  const IndexPage({super.key, required this.title});
 
   @override
-  State<HomePage> createState() => HomePageState();
+  State<IndexPage> createState() => IndexPageState();
 }
 
-class HomePageState extends State<HomePage> with TickerProviderStateMixin {
+class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
   int? groupValue = 1;
   int showSpeed = 450;
   double iconSize = 20;
@@ -110,10 +112,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
       appBar: AppBar(
         toolbarHeight: 25,
         backgroundColor: bgColor,
-        title: Text(
-          widget.title,
-          style: textStyle(),
-        ),
+        title: Text(widget.title, style: textStyle()),
       ),
       body: Container(
         margin: const EdgeInsets.all(0),
@@ -209,10 +208,10 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                       textAlign: TextAlign.center,
                       style: textStyle(),
                       decoration: InputDecoration(
-                        // suffixIcon: IconButton(
-                        //   icon: Icon(Icons.clear, size: iconSize, color: Colors.white70),
-                        //   onPressed: () => accountController.clear(),
-                        // ),
+                        suffixIcon: IconButton(
+                          icon: Icon(Icons.clear, size: iconSize, color: Colors.white70),
+                          onPressed: () => accountController.clear(),
+                        ),
                         icon: Icon(Icons.account_box, size: iconSize, color: Colors.white70),
                         labelText: Lang().account,
                         labelStyle: textStyle(),
@@ -233,7 +232,6 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                       style: textStyle(),
                       decoration: InputDecoration(
                         suffixIcon: IconButton(
-                          // icon: Icon(Icons.clear, size: iconSize, color: Colors.white70),
                           icon: Icon(Icons.remove_red_eye, size: iconSize, color: Colors.white70),
                           onPressed: () {
                             setState(() {
@@ -259,7 +257,11 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                             Lang().forgotPassword,
                             style: textStyle(color: Colors.white60, fontSize: 12),
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) {
+                              return const ForgotPassword();
+                            }));
+                          },
                         ),
                       ],
                     ),
@@ -278,16 +280,15 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                         ),
                         child: InkWell(
                           child: Center(
-                            child: Text(
-                              "GO",
-                              style: textStyle(),
-                            ),
+                            child: Text("GO", style: textStyle()),
                           ),
                           onTap: () {
-                            userNotifier.signIn(
-                              account: accountController.text,
-                              password: passwordController.text,
-                            );
+                            if (accountController.text != "" && passwordController.text != "") {
+                              userNotifier.signIn(
+                                account: accountController.text,
+                                password: passwordController.text,
+                              );
+                            }
                           },
                         ),
                       );

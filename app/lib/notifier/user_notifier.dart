@@ -1,6 +1,7 @@
-import "package:app/model/result_list_model.dart";
 import "package:app/model/result_model.dart";
+import "package:app/model/result_list_model.dart";
 import "package:app/notifier/base_notifier.dart";
+import "package:app/common/file.dart";
 
 class UserNotifier extends BaseNotifier {
   void signIn({
@@ -11,7 +12,9 @@ class UserNotifier extends BaseNotifier {
     try {
       result = await userApi.signIn(account, password);
       if (result.state == true) {
-        operationStatus.value = OperationStatus.success;
+        if (FileHelper().writeFile("token", result.data)) {
+          operationStatus.value = OperationStatus.success;
+        }
       } else {
         operationMemo = result.message;
       }
