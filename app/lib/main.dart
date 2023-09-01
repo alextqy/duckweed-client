@@ -42,6 +42,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
   bool opacityShow0 = false;
   bool opacityShow1 = true;
   bool opacityShow2 = false;
+  bool obscureText = true;
   TextEditingController accountController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
@@ -208,10 +209,10 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                       textAlign: TextAlign.center,
                       style: textStyle(),
                       decoration: InputDecoration(
-                        suffixIcon: IconButton(
-                          icon: Icon(Icons.clear, size: iconSize, color: Colors.white70),
-                          onPressed: () => accountController.clear(),
-                        ),
+                        // suffixIcon: IconButton(
+                        //   icon: Icon(Icons.clear, size: iconSize, color: Colors.white70),
+                        //   onPressed: () => accountController.clear(),
+                        // ),
                         icon: Icon(Icons.account_box, size: iconSize, color: Colors.white70),
                         labelText: Lang().account,
                         labelStyle: textStyle(),
@@ -225,15 +226,20 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     child: TextFormField(
                       controller: passwordController,
                       maxLines: 1,
-                      obscureText: true,
+                      obscureText: obscureText,
                       cursorHeight: 20,
                       cursorWidth: 1,
                       textAlign: TextAlign.center,
                       style: textStyle(),
                       decoration: InputDecoration(
                         suffixIcon: IconButton(
-                          icon: Icon(Icons.clear, size: iconSize, color: Colors.white70),
-                          onPressed: () => passwordController.clear(),
+                          // icon: Icon(Icons.clear, size: iconSize, color: Colors.white70),
+                          icon: Icon(Icons.remove_red_eye, size: iconSize, color: Colors.white70),
+                          onPressed: () {
+                            setState(() {
+                              obscureText = !obscureText;
+                            });
+                          },
                         ),
                         icon: Icon(Icons.lock_open, size: iconSize, color: Colors.white70),
                         labelText: Lang().password,
