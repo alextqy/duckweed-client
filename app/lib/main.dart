@@ -209,10 +209,10 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                       style: textStyle(),
                       decoration: InputDecoration(
                         suffixIcon: IconButton(
-                          icon: Icon(Icons.clear, size: iconSize, color: Colors.white),
+                          icon: Icon(Icons.clear, size: iconSize, color: Colors.white70),
                           onPressed: () => accountController.clear(),
                         ),
-                        icon: Icon(Icons.person_outline, size: iconSize, color: Colors.white),
+                        icon: Icon(Icons.account_box, size: iconSize, color: Colors.white70),
                         labelText: Lang().account,
                         labelStyle: textStyle(),
                       ),
@@ -232,10 +232,10 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                       style: textStyle(),
                       decoration: InputDecoration(
                         suffixIcon: IconButton(
-                          icon: Icon(Icons.clear, size: iconSize, color: Colors.white),
+                          icon: Icon(Icons.clear, size: iconSize, color: Colors.white70),
                           onPressed: () => passwordController.clear(),
                         ),
-                        icon: Icon(Icons.lock_outlined, size: iconSize, color: Colors.white),
+                        icon: Icon(Icons.lock_open, size: iconSize, color: Colors.white70),
                         labelText: Lang().password,
                         labelStyle: textStyle(),
                       ),
