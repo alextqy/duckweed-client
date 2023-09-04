@@ -124,15 +124,34 @@ class UserNotifier extends BaseNotifier {
     }
   }
 
+  void sendEmailSignUp({
+    email,
+  }) async {
+    operationStatus.value = OperationStatus.failure;
+    try {
+      result = await userApi.sendEmailSignUp(email);
+      if (result.state == true) {
+        operationStatus.value = OperationStatus.success;
+      } else {
+        operationMemo = result.message;
+      }
+    } catch (e) {
+      operationMemo = e.toString();
+    } finally {
+      notifyListeners();
+    }
+  }
+
   void signUp({
     account,
     name,
     password,
     email,
+    captcha,
   }) async {
     operationStatus.value = OperationStatus.failure;
     try {
-      result = await userApi.signUp(account, name, password, email);
+      result = await userApi.signUp(account, name, password, email, captcha);
       if (result.state == true) {
         operationStatus.value = OperationStatus.success;
       } else {

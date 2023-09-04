@@ -195,11 +195,32 @@ class UserApi extends ResponseHelper {
     }
   }
 
+  Future<ResultModel> sendEmailSignUp([
+    email,
+  ]) async {
+    try {
+      Response response = await post(
+        Uri.http(url, "/send/email/sign/up"),
+        body: {
+          "email": email,
+        },
+        headers: postHeaders,
+        encoding: postEncoding,
+      ).timeout(Duration(seconds: timeout));
+      return ResultModel.fromJson(jsonDecode(decoder.convert(response.bodyBytes)));
+    } on TimeoutException catch (e) {
+      return ResultModel(code: 200, message: e.toString());
+    } catch (e) {
+      return ResultModel(code: 200, message: e.toString());
+    }
+  }
+
   Future<ResultModel> signUp([
     account,
     name,
     password,
     email,
+    captcha,
   ]) async {
     try {
       Response response = await post(
@@ -210,6 +231,7 @@ class UserApi extends ResponseHelper {
           "name": name,
           "password": password,
           "email": email,
+          "captcha": captcha,
         },
         headers: postHeaders,
         encoding: postEncoding,

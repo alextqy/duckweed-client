@@ -45,11 +45,24 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
   bool opacityShow1 = true;
   bool opacityShow2 = false;
   bool obscureText = true;
+  bool sendMail = true;
   TextEditingController accountController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
-  late AnimationController animationController;
-  late Animation<double> animationW;
+  TextEditingController newAccountController = TextEditingController();
+  TextEditingController newNameController = TextEditingController();
+  TextEditingController newPasswordController = TextEditingController();
+  TextEditingController newEmailController = TextEditingController();
+  TextEditingController newCaptchaController = TextEditingController();
+
+  late AnimationController animationControlle0;
+  late AnimationController animationControlle1;
+  late AnimationController animationControlle2;
+  late AnimationController animationControlleEmail;
+  late Animation<double> animation0;
+  late Animation<double> animation1;
+  late Animation<double> animation2;
+  late Animation<double> animationEmail;
 
   UserNotifier userNotifier = UserNotifier();
 
@@ -69,9 +82,18 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    animationController = AnimationController(duration: Duration(milliseconds: showSpeed), vsync: this);
-    animationW = Tween(begin: 0.0, end: 200.0).animate(animationController);
-    animationController.forward();
+    animationControlle0 = AnimationController(duration: Duration(milliseconds: showSpeed), vsync: this);
+    animationControlle1 = AnimationController(duration: Duration(milliseconds: showSpeed), vsync: this);
+    animationControlle2 = AnimationController(duration: Duration(milliseconds: showSpeed), vsync: this);
+    animationControlleEmail = AnimationController(duration: Duration(milliseconds: showSpeed), vsync: this);
+    animation0 = Tween(begin: 200.0, end: 0.0).animate(animationControlle0);
+    animation1 = Tween(begin: 0.0, end: 200.0).animate(animationControlle1);
+    animation2 = Tween(begin: 150.0, end: 0.0).animate(animationControlle2);
+    animationEmail = Tween(begin: 20.0, end: 0.0).animate(animationControlleEmail);
+
+    animationControlle0.forward();
+    animationControlle1.forward();
+    animationControlle2.forward();
     userNotifier.addListener(basicListener);
   }
 
@@ -137,14 +159,32 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
               },
               onValueChanged: (value) {
                 setState(() {
+                  accountController.clear();
+                  passwordController.clear();
+
+                  newAccountController.clear();
+                  newNameController.clear();
+                  newPasswordController.clear();
+                  newEmailController.clear();
+                  newCaptchaController.clear();
+
                   groupValue = value;
                   opacityShow0 = groupValue == 0 ? true : false;
                   opacityShow1 = groupValue == 1 ? true : false;
                   opacityShow2 = groupValue == 2 ? true : false;
-                  if (groupValue == 1) {
-                    animationController.forward();
+
+                  if (groupValue == 0) {
+                    animationControlle0.forward();
                   } else {
-                    animationController.reset();
+                    animationControlle0.reset();
+                  }
+                  if (groupValue == 1) {
+                    animationControlle1.forward();
+                  } else {
+                    animationControlle1.reset();
+                  }
+                  if (groupValue == 2) {
+                    animationControlle2.reset();
                   }
                 });
               },
@@ -161,6 +201,24 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
 
   unselectedTabFont(String t) {
     return Text(t, style: textStyle(color: Colors.black));
+  }
+
+  // 发送邮件动效
+  void playAnimationEmail() async {
+    try {
+      if (newEmailController.text != "") {
+        sendMail = false;
+        await animationControlleEmail.forward().orCancel;
+        await animationControlleEmail.reverse().orCancel;
+        Future.delayed(const Duration(milliseconds: 2000)).then((value) async {
+          userNotifier.sendEmailSignUp(email: newEmailController.text);
+          if (userNotifier.operationStatus.value == OperationStatus.success) {}
+          sendMail = true;
+        });
+      }
+    } on TickerCanceled {
+      return;
+    }
   }
 
   Widget networkWidget() {
@@ -267,12 +325,12 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                     ),
                   ),
                   AnimatedBuilder(
-                    animation: animationW,
+                    animation: animation1,
                     builder: (context, child) {
                       return Container(
                         margin: const EdgeInsets.all(5),
                         padding: const EdgeInsets.all(0),
-                        width: animationW.value,
+                        width: animation1.value,
                         height: 35,
                         decoration: BoxDecoration(
                           borderRadius: const BorderRadius.all(Radius.circular(8)),
@@ -304,6 +362,7 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
   }
 
   Widget signUpWidget() {
+    String btnContent = "OK";
     return AnimatedOpacity(
       opacity: opacityShow2 ? 1.0 : 0.0,
       duration: Duration(milliseconds: showSpeed),
@@ -314,8 +373,165 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
             child: Container(
               margin: const EdgeInsets.all(0),
               padding: const EdgeInsets.all(0),
-              width: 200,
-              height: 200,
+              child: Column(
+                children: [
+                  AnimatedBuilder(
+                    animation: animationEmail,
+                    builder: (context, child) {
+                      return Container(
+                        margin: const EdgeInsets.all(5),
+                        padding: const EdgeInsets.all(0),
+                        width: 250,
+                        child: TextFormField(
+                          controller: newEmailController,
+                          maxLines: 1,
+                          cursorHeight: 20,
+                          cursorWidth: 1,
+                          textAlign: TextAlign.center,
+                          style: textStyle(),
+                          decoration: InputDecoration(
+                            suffixIcon: IconButton(
+                              icon: Icon(Icons.send, size: animationEmail.value, color: Colors.white70),
+                              onPressed: () {
+                                if (sendMail == true) {
+                                  playAnimationEmail();
+                                }
+                              },
+                            ),
+                            icon: Icon(Icons.mail, size: iconSize, color: Colors.white70),
+                            hintText: Lang().email,
+                            hintStyle: textStyle(),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                  Container(
+                    margin: const EdgeInsets.all(5),
+                    padding: const EdgeInsets.all(0),
+                    width: 250,
+                    child: TextFormField(
+                      controller: newCaptchaController,
+                      maxLines: 1,
+                      cursorHeight: 20,
+                      cursorWidth: 1,
+                      textAlign: TextAlign.center,
+                      style: textStyle(),
+                      decoration: InputDecoration(
+                        suffixIcon: IconButton(
+                          icon: Icon(Icons.clear, size: iconSize, color: Colors.white70),
+                          onPressed: () => newCaptchaController.clear(),
+                        ),
+                        icon: Icon(Icons.verified, size: iconSize, color: Colors.white70),
+                        hintText: Lang().captcha,
+                        hintStyle: textStyle(),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.all(5),
+                    padding: const EdgeInsets.all(0),
+                    width: 250,
+                    child: TextFormField(
+                      controller: newAccountController,
+                      maxLines: 1,
+                      cursorHeight: 20,
+                      cursorWidth: 1,
+                      textAlign: TextAlign.center,
+                      style: textStyle(),
+                      decoration: InputDecoration(
+                        suffixIcon: IconButton(
+                          icon: Icon(Icons.clear, size: iconSize, color: Colors.white70),
+                          onPressed: () => newAccountController.clear(),
+                        ),
+                        icon: Icon(Icons.account_box, size: iconSize, color: Colors.white70),
+                        hintText: Lang().account,
+                        hintStyle: textStyle(),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.all(5),
+                    padding: const EdgeInsets.all(0),
+                    width: 250,
+                    child: TextFormField(
+                      controller: newNameController,
+                      maxLines: 1,
+                      cursorHeight: 20,
+                      cursorWidth: 1,
+                      textAlign: TextAlign.center,
+                      style: textStyle(),
+                      decoration: InputDecoration(
+                        suffixIcon: IconButton(
+                          icon: Icon(Icons.clear, size: iconSize, color: Colors.white70),
+                          onPressed: () => newNameController.clear(),
+                        ),
+                        icon: Icon(Icons.person, size: iconSize, color: Colors.white70),
+                        hintText: Lang().nickName,
+                        hintStyle: textStyle(),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.all(5),
+                    padding: const EdgeInsets.all(0),
+                    width: 250,
+                    child: TextFormField(
+                      controller: newPasswordController,
+                      maxLines: 1,
+                      obscureText: true,
+                      cursorHeight: 20,
+                      cursorWidth: 1,
+                      textAlign: TextAlign.center,
+                      style: textStyle(),
+                      decoration: InputDecoration(
+                        suffixIcon: IconButton(
+                          icon: Icon(Icons.clear, size: iconSize, color: Colors.white70),
+                          onPressed: () => newPasswordController.clear(),
+                        ),
+                        icon: Icon(Icons.password, size: iconSize, color: Colors.white70),
+                        hintText: Lang().password,
+                        hintStyle: textStyle(),
+                      ),
+                    ),
+                  ),
+                  AnimatedBuilder(
+                    animation: animation2,
+                    builder: (context, child) {
+                      return Container(
+                        margin: const EdgeInsets.all(15),
+                        padding: const EdgeInsets.all(0),
+                        width: animation2.value,
+                        height: 35,
+                        decoration: BoxDecoration(
+                          borderRadius: const BorderRadius.all(Radius.circular(8)),
+                          color: Theme.of(context).colorScheme.inversePrimary,
+                        ),
+                        child: InkWell(
+                          child: Center(
+                            child: Text(btnContent, style: textStyle()),
+                          ),
+                          onTap: () {
+                            if (newEmailController.text != "" && newCaptchaController.text != "" && newAccountController.text != "" && newNameController.text != "" && newPasswordController.text != "") {
+                              userNotifier.signUp(account: newAccountController.text, name: newNameController.text, password: newPasswordController.text, email: newEmailController.text, captcha: newCaptchaController.text);
+                              if (userNotifier.result.state == true) {
+                                newAccountController.clear();
+                                newNameController.clear();
+                                newPasswordController.clear();
+                                newEmailController.clear();
+                                newCaptchaController.clear();
+
+                                btnContent = "";
+                                animationControlle2.forward();
+                              }
+                            }
+                          },
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
         ],
