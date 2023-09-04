@@ -1,10 +1,10 @@
-import "dart:async";
-import "dart:convert";
-import "package:http/http.dart";
-import "package:app/common/file.dart";
-import "package:app/api/base_api.dart";
-import "package:app/model/result_model.dart";
-import "package:app/model/result_list_model.dart";
+import 'dart:async';
+import 'dart:convert';
+import 'package:http/http.dart';
+import 'package:app/common/file.dart';
+import 'package:app/api/base_api.dart';
+import 'package:app/model/result_model.dart';
+import 'package:app/model/result_list_model.dart';
 
 class UserApi extends ResponseHelper {
   Future<ResultModel> signIn([
@@ -13,10 +13,10 @@ class UserApi extends ResponseHelper {
   ]) async {
     try {
       Response response = await post(
-        Uri.http(url, "/sign/in"),
+        Uri.http(url, '/sign/in'),
         body: {
-          "account": account,
-          "password": password,
+          'account': account,
+          'password': password,
         },
         headers: postHeaders,
         encoding: postEncoding,
@@ -32,9 +32,9 @@ class UserApi extends ResponseHelper {
   Future<ResultModel> signOut() async {
     try {
       Response response = await post(
-        Uri.http(url, "/sign/out"),
+        Uri.http(url, '/sign/out'),
         body: {
-          "userToken": FileHelper().readFile("token"),
+          'userToken': FileHelper().readFile('token'),
         },
         headers: postHeaders,
         encoding: postEncoding,
@@ -58,16 +58,16 @@ class UserApi extends ResponseHelper {
   ]) async {
     try {
       Response response = await post(
-        Uri.http(url, "/user/list"),
+        Uri.http(url, '/user/list'),
         body: {
-          "userToken": FileHelper().readFile("token"),
-          "page": page,
-          "pageSize": pageSize,
-          "order": order,
-          "account": account,
-          "name": name,
-          "level": level,
-          "status": status,
+          'userToken': FileHelper().readFile('token'),
+          'page': page,
+          'pageSize': pageSize,
+          'order': order,
+          'account': account,
+          'name': name,
+          'level': level,
+          'status': status,
         },
         headers: postHeaders,
         encoding: postEncoding,
@@ -89,14 +89,14 @@ class UserApi extends ResponseHelper {
   ]) async {
     try {
       Response response = await post(
-        Uri.http(url, "/users"),
+        Uri.http(url, '/users'),
         body: {
-          "userToken": FileHelper().readFile("token"),
-          "order": order,
-          "account": account,
-          "name": name,
-          "level": level,
-          "status": status,
+          'userToken': FileHelper().readFile('token'),
+          'order': order,
+          'account': account,
+          'name': name,
+          'level': level,
+          'status': status,
         },
         headers: postHeaders,
         encoding: postEncoding,
@@ -114,10 +114,10 @@ class UserApi extends ResponseHelper {
   ]) async {
     try {
       Response response = await post(
-        Uri.http(url, "/user/get"),
+        Uri.http(url, '/user/get'),
         body: {
-          "userToken": FileHelper().readFile("token"),
-          "id": id,
+          'userToken': FileHelper().readFile('token'),
+          'id': id,
         },
         headers: postHeaders,
         encoding: postEncoding,
@@ -136,11 +136,11 @@ class UserApi extends ResponseHelper {
   ]) async {
     try {
       Response response = await post(
-        Uri.http(url, "/set/available/space"),
+        Uri.http(url, '/set/available/space'),
         body: {
-          "userToken": FileHelper().readFile("token"),
-          "id": id,
-          "availableSpace": availableSpace,
+          'userToken': FileHelper().readFile('token'),
+          'id': id,
+          'availableSpace': availableSpace,
         },
         headers: postHeaders,
         encoding: postEncoding,
@@ -158,10 +158,10 @@ class UserApi extends ResponseHelper {
   ]) async {
     try {
       Response response = await post(
-        Uri.http(url, "/disable/user"),
+        Uri.http(url, '/disable/user'),
         body: {
-          "userToken": FileHelper().readFile("token"),
-          "id": id,
+          'userToken': FileHelper().readFile('token'),
+          'id': id,
         },
         headers: postHeaders,
         encoding: postEncoding,
@@ -179,10 +179,10 @@ class UserApi extends ResponseHelper {
   ]) async {
     try {
       Response response = await post(
-        Uri.http(url, "/user/del"),
+        Uri.http(url, '/user/del'),
         body: {
-          "userToken": FileHelper().readFile("token"),
-          "id": id,
+          'userToken': FileHelper().readFile('token'),
+          'id': id,
         },
         headers: postHeaders,
         encoding: postEncoding,
@@ -200,9 +200,9 @@ class UserApi extends ResponseHelper {
   ]) async {
     try {
       Response response = await post(
-        Uri.http(url, "/send/email/sign/up"),
+        Uri.http(url, '/send/email/sign/up'),
         body: {
-          "email": email,
+          'email': email,
         },
         headers: postHeaders,
         encoding: postEncoding,
@@ -224,14 +224,14 @@ class UserApi extends ResponseHelper {
   ]) async {
     try {
       Response response = await post(
-        Uri.http(url, "/sign/up"),
+        Uri.http(url, '/sign/up'),
         body: {
-          "userToken": FileHelper().readFile("token"),
-          "account": account,
-          "name": name,
-          "password": password,
-          "email": email,
-          "captcha": captcha,
+          'userToken': FileHelper().readFile('token'),
+          'account': account,
+          'name': name,
+          'password': password,
+          'email': email,
+          'captcha': captcha,
         },
         headers: postHeaders,
         encoding: postEncoding,
@@ -247,9 +247,9 @@ class UserApi extends ResponseHelper {
   Future<ResultModel> checkPersonalData() async {
     try {
       Response response = await post(
-        Uri.http(url, "/check/personal/data"),
+        Uri.http(url, '/check/personal/data'),
         body: {
-          "userToken": FileHelper().readFile("token"),
+          'userToken': FileHelper().readFile('token'),
         },
         headers: postHeaders,
         encoding: postEncoding,
@@ -269,12 +269,12 @@ class UserApi extends ResponseHelper {
   ]) async {
     try {
       Response response = await post(
-        Uri.http(url, "/modify/personal/data"),
+        Uri.http(url, '/modify/personal/data'),
         body: {
-          "userToken": FileHelper().readFile("token"),
-          "name": name,
-          "password": password,
-          "email": email,
+          'userToken': FileHelper().readFile('token'),
+          'name': name,
+          'password': password,
+          'email': email,
         },
         headers: postHeaders,
         encoding: postEncoding,
@@ -292,9 +292,9 @@ class UserApi extends ResponseHelper {
   ]) async {
     try {
       Response response = await post(
-        Uri.http(url, "/send/email"),
+        Uri.http(url, '/send/email'),
         body: {
-          "email": email,
+          'email': email,
         },
         headers: postHeaders,
         encoding: postEncoding,
@@ -313,10 +313,10 @@ class UserApi extends ResponseHelper {
   ]) async {
     try {
       Response response = await post(
-        Uri.http(url, "/reset/password"),
+        Uri.http(url, '/reset/password'),
         body: {
-          "newPassword": newPassword,
-          "captcha": captcha,
+          'newPassword': newPassword,
+          'captcha': captcha,
         },
         headers: postHeaders,
         encoding: postEncoding,

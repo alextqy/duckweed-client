@@ -1,5 +1,5 @@
-import "package:app/model/result_model.dart";
-import "package:app/notifier/base_notifier.dart";
+import 'package:app/model/result_model.dart';
+import 'package:app/notifier/base_notifier.dart';
 
 class FileNotifier extends BaseNotifier {
   void fileAdd({

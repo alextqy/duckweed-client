@@ -1,5 +1,6 @@
 {
     "aerver_address": "192.168.0.29:8080",
     "lang": "en",
-    "title": "Duckweed"
+    "title": "Duckweed",
+    "port_listening": 8181
 }

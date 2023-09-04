@@ -1,12 +1,13 @@
-import "package:flutter/material.dart";
-import "package:flutter/cupertino.dart";
-import "package:app/common/lang.dart";
-import "package:app/common/file.dart";
-import "package:app/interface/common/show_alert_dialog.dart";
-import "package:app/notifier/base_notifier.dart";
-import "package:app/notifier/user_notifier.dart";
+import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:app/common/tools.dart';
+import 'package:app/common/lang.dart';
+import 'package:app/common/file.dart';
+import 'package:app/interface/common/show_alert_dialog.dart';
+import 'package:app/notifier/base_notifier.dart';
+import 'package:app/notifier/user_notifier.dart';
 
-import "package:app/forgot_password.dart";
+import 'package:app/forgot_password.dart';
 
 void main() {
   runApp(const RootApp());
@@ -22,7 +23,7 @@ class RootApp extends StatelessWidget {
         brightness: Brightness.dark,
         useMaterial3: true,
       ),
-      home: IndexPage(title: FileHelper().jsonRead(key: "title")),
+      home: IndexPage(title: FileHelper().jsonRead(key: 'title')),
       debugShowCheckedModeBanner: false,
     );
   }
@@ -86,7 +87,7 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
     animationControlle1 = AnimationController(duration: Duration(milliseconds: showSpeed), vsync: this);
     animationControlle2 = AnimationController(duration: Duration(milliseconds: showSpeed), vsync: this);
     animationControlleEmail = AnimationController(duration: Duration(milliseconds: showSpeed), vsync: this);
-    animation0 = Tween(begin: 200.0, end: 0.0).animate(animationControlle0);
+    animation0 = Tween(begin: 0.0, end: 35.0).animate(animationControlle0);
     animation1 = Tween(begin: 0.0, end: 200.0).animate(animationControlle1);
     animation2 = Tween(begin: 150.0, end: 0.0).animate(animationControlle2);
     animationEmail = Tween(begin: 20.0, end: 0.0).animate(animationControlleEmail);
@@ -206,7 +207,7 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
   // 发送邮件动效
   void playAnimationEmail() async {
     try {
-      if (newEmailController.text != "") {
+      if (newEmailController.text != '') {
         sendMail = false;
         await animationControlleEmail.forward().orCancel;
         await animationControlleEmail.reverse().orCancel;
@@ -234,6 +235,35 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
               padding: const EdgeInsets.all(0),
               width: 200,
               height: 200,
+              child: Column(
+                children: [
+                  AnimatedBuilder(
+                    animation: animation0,
+                    builder: (context, child) {
+                      return Container(
+                        margin: const EdgeInsets.all(5),
+                        padding: const EdgeInsets.all(0),
+                        width: 150,
+                        height: animation0.value,
+                        decoration: BoxDecoration(
+                          borderRadius: const BorderRadius.all(Radius.circular(8)),
+                          color: Theme.of(context).colorScheme.inversePrimary,
+                        ),
+                        child: InkWell(
+                          child: Center(
+                            child: Text('OK', style: textStyle()),
+                          ),
+                          onTap: () {
+                            Tools().clentUDP(int.parse(FileHelper().jsonRead(key: 'port_listening'))).then((value) {
+                              print(value);
+                            });
+                          },
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
         ],
@@ -338,10 +368,10 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                         ),
                         child: InkWell(
                           child: Center(
-                            child: Text("GO", style: textStyle()),
+                            child: Text('GO', style: textStyle()),
                           ),
                           onTap: () {
-                            if (accountController.text != "" && passwordController.text != "") {
+                            if (accountController.text != '' && passwordController.text != '') {
                               userNotifier.signIn(
                                 account: accountController.text,
                                 password: passwordController.text,
@@ -362,7 +392,7 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
   }
 
   Widget signUpWidget() {
-    String btnContent = "OK";
+    String btnContent = 'OK';
     return AnimatedOpacity(
       opacity: opacityShow2 ? 1.0 : 0.0,
       duration: Duration(milliseconds: showSpeed),
@@ -512,7 +542,7 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                             child: Text(btnContent, style: textStyle()),
                           ),
                           onTap: () {
-                            if (newEmailController.text != "" && newCaptchaController.text != "" && newAccountController.text != "" && newNameController.text != "" && newPasswordController.text != "") {
+                            if (newEmailController.text != '' && newCaptchaController.text != '' && newAccountController.text != '' && newNameController.text != '' && newPasswordController.text != '') {
                               userNotifier.signUp(account: newAccountController.text, name: newNameController.text, password: newPasswordController.text, email: newEmailController.text, captcha: newCaptchaController.text);
                               if (userNotifier.result.state == true) {
                                 newAccountController.clear();
@@ -521,7 +551,7 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                                 newEmailController.clear();
                                 newCaptchaController.clear();
 
-                                btnContent = "";
+                                btnContent = '';
                                 animationControlle2.forward();
                               }
                             }
