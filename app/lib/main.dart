@@ -290,7 +290,7 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                       style: textStyle(),
                       decoration: InputDecoration(
                         suffixIcon: IconButton(
-                          icon: Icon(Icons.remove_red_eye, size: iconSize, color: Colors.white70),
+                          icon: Icon(obscureText ? Icons.visibility_off : Icons.visibility, size: iconSize, color: Colors.white70),
                           onPressed: () {
                             setState(() {
                               obscureText = !obscureText;
