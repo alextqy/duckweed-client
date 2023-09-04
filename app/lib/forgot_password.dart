@@ -11,9 +11,16 @@ class ForgotPassword extends StatefulWidget {
   State<ForgotPassword> createState() => ForgotPasswordState();
 }
 
-class ForgotPasswordState extends State<ForgotPassword> {
+class ForgotPasswordState extends State<ForgotPassword> with TickerProviderStateMixin {
   double iconSize = 20;
+  int showSpeed = 450;
   bool obscureText = true;
+  bool sendMail = true;
+
+  late AnimationController animationControlleBtn;
+  late AnimationController animationControlleEmail;
+  late Animation<double> animationBtn;
+  late Animation<double> animationEmail;
 
   TextStyle textStyle({Color color = Colors.white70, double fontSize = 15}) {
     return TextStyle(fontWeight: FontWeight.bold, color: color, fontSize: fontSize, textBaseline: TextBaseline.alphabetic);
@@ -38,10 +45,34 @@ class ForgotPasswordState extends State<ForgotPassword> {
   void initState() {
     super.initState();
     userNotifier.addListener(basicListener);
+
+    animationControlleBtn = AnimationController(duration: Duration(milliseconds: showSpeed), vsync: this);
+    animationControlleEmail = AnimationController(duration: Duration(milliseconds: showSpeed), vsync: this);
+    animationBtn = Tween(begin: 150.0, end: 0.0).animate(animationControlleBtn);
+    animationEmail = Tween(begin: 20.0, end: 0.0).animate(animationControlleEmail);
+  }
+
+  // 发送邮件动效
+  void playAnimationEmail() async {
+    try {
+      if (emailController.text != "") {
+        sendMail = false;
+        await animationControlleEmail.forward().orCancel;
+        await animationControlleEmail.reverse().orCancel;
+        Future.delayed(const Duration(milliseconds: 1000)).then((value) async {
+          userNotifier.sendEmail(email: emailController.text);
+          if (userNotifier.operationStatus.value == OperationStatus.success) {}
+          sendMail = true;
+        });
+      }
+    } on TickerCanceled {
+      return;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    String btnContent = "OK";
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -60,31 +91,36 @@ class ForgotPasswordState extends State<ForgotPassword> {
             Row(
               children: [
                 const Expanded(child: SizedBox()),
-                Container(
-                  margin: const EdgeInsets.all(5),
-                  padding: const EdgeInsets.all(0),
-                  width: 300,
-                  child: TextFormField(
-                    controller: emailController,
-                    maxLines: 1,
-                    cursorHeight: 20,
-                    cursorWidth: 1,
-                    textAlign: TextAlign.center,
-                    style: textStyle(),
-                    decoration: InputDecoration(
-                      suffixIcon: IconButton(
-                        icon: Icon(Icons.send, size: iconSize, color: Colors.white70),
-                        onPressed: () {
-                          if (emailController.text != "") {
-                            userNotifier.sendEmail(email: emailController.text);
-                          }
-                        },
+                AnimatedBuilder(
+                  animation: animationEmail,
+                  builder: (context, child) {
+                    return Container(
+                      margin: const EdgeInsets.all(5),
+                      padding: const EdgeInsets.all(0),
+                      width: 300,
+                      child: TextFormField(
+                        controller: emailController,
+                        maxLines: 1,
+                        cursorHeight: 20,
+                        cursorWidth: 1,
+                        textAlign: TextAlign.center,
+                        style: textStyle(),
+                        decoration: InputDecoration(
+                          suffixIcon: IconButton(
+                            icon: Icon(Icons.send, size: animationEmail.value, color: Colors.white70),
+                            onPressed: () {
+                              if (sendMail == true) {
+                                playAnimationEmail();
+                              }
+                            },
+                          ),
+                          icon: Icon(Icons.email, size: iconSize, color: Colors.white70),
+                          labelText: Lang().email,
+                          labelStyle: textStyle(),
+                        ),
                       ),
-                      icon: Icon(Icons.email, size: iconSize, color: Colors.white70),
-                      labelText: Lang().email,
-                      labelStyle: textStyle(),
-                    ),
-                  ),
+                    );
+                  },
                 ),
                 const Expanded(child: SizedBox()),
               ],
@@ -125,7 +161,7 @@ class ForgotPasswordState extends State<ForgotPassword> {
                 style: textStyle(),
                 decoration: InputDecoration(
                   suffixIcon: IconButton(
-                    icon: Icon(Icons.remove_red_eye, size: iconSize, color: Colors.white70),
+                    icon: Icon(obscureText ? Icons.visibility_off : Icons.visibility, size: iconSize, color: Colors.white70),
                     onPressed: () {
                       setState(() {
                         obscureText = !obscureText;
@@ -138,25 +174,38 @@ class ForgotPasswordState extends State<ForgotPassword> {
                 ),
               ),
             ),
-            Container(
-              margin: const EdgeInsets.all(15),
-              padding: const EdgeInsets.all(0),
-              width: 150,
-              height: 35,
-              decoration: BoxDecoration(
-                borderRadius: const BorderRadius.all(Radius.circular(8)),
-                color: Theme.of(context).colorScheme.inversePrimary,
-              ),
-              child: InkWell(
-                child: Center(
-                  child: Text("OK", style: textStyle()),
-                ),
-                onTap: () {
-                  if (captchaController.text != "" && newPasswordController.text != "") {
-                    userNotifier.resetPassword(captcha: captchaController.text, newPassword: newPasswordController.text);
-                  }
-                },
-              ),
+            AnimatedBuilder(
+              animation: animationBtn,
+              builder: (context, child) {
+                return Container(
+                  margin: const EdgeInsets.all(15),
+                  padding: const EdgeInsets.all(0),
+                  width: animationBtn.value,
+                  height: 35,
+                  decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.all(Radius.circular(8)),
+                    color: Theme.of(context).colorScheme.inversePrimary,
+                  ),
+                  child: InkWell(
+                    child: Center(
+                      child: Text(btnContent, style: textStyle()),
+                    ),
+                    onTap: () {
+                      if (captchaController.text != "" && newPasswordController.text != "") {
+                        userNotifier.resetPassword(captcha: captchaController.text, newPassword: newPasswordController.text);
+                        if (userNotifier.result.state == true) {
+                          emailController.clear();
+                          captchaController.clear();
+                          newPasswordController.clear();
+
+                          btnContent = "";
+                          animationControlleBtn.forward();
+                        }
+                      }
+                    },
+                  ),
+                );
+              },
             ),
             const Expanded(child: SizedBox()),
           ],
