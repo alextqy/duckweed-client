@@ -41,7 +41,7 @@ class IndexPage extends StatefulWidget {
 }
 
 class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
-  LangList langListView = LangList.en;
+  LangList langListView = FileHelper().jsonRead(key: "lang") == "cn" ? LangList.cn : LangList.en;
 
   int? groupValue = 1;
   int showSpeed = 450;
