@@ -296,7 +296,7 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                           message: Lang().automaticDetection,
                           textStyle: textStyle(color: Colors.white),
                           decoration: const BoxDecoration(
-                            color: Colors.redAccent,
+                            color: Colors.deepOrangeAccent,
                             borderRadius: BorderRadius.all(Radius.elliptical(20, 50)),
                           ),
                           child: IconButton(
