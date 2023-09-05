@@ -84,9 +84,16 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
     }
   }
 
+  void setConf() {
+    if (!FileHelper().fileExists("config.json")) {
+      FileHelper().writeFile("config.json", '{"aerver_address":"","lang":"en","title":"Duckweed","port_listening":8181}');
+    }
+  }
+
   @override
   void initState() {
     super.initState();
+    setConf();
     animationControlle0 = AnimationController(duration: Duration(milliseconds: showSpeed), vsync: this);
     animationControlle1 = AnimationController(duration: Duration(milliseconds: showSpeed), vsync: this);
     animationControlle2 = AnimationController(duration: Duration(milliseconds: showSpeed), vsync: this);
