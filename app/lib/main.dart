@@ -51,6 +51,9 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
   bool opacityShow2 = false;
   bool obscureText = true;
   bool sendMail = true;
+
+  TextEditingController netController = TextEditingController();
+
   TextEditingController accountController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
@@ -94,6 +97,9 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     setConf();
+
+    netController.text = FileHelper().jsonRead(key: "server_address");
+
     animationControlle0 = AnimationController(duration: Duration(milliseconds: showSpeed), vsync: this);
     animationControlle1 = AnimationController(duration: Duration(milliseconds: showSpeed), vsync: this);
     animationControlle2 = AnimationController(duration: Duration(milliseconds: showSpeed), vsync: this);
@@ -270,10 +276,49 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
             child: Container(
               margin: const EdgeInsets.all(0),
               padding: const EdgeInsets.all(0),
-              width: 200,
-              height: 200,
+              width: 300,
               child: Column(
                 children: [
+                  Container(
+                    margin: const EdgeInsets.all(10),
+                    padding: const EdgeInsets.all(0),
+                    child: TextFormField(
+                      controller: netController,
+                      maxLines: 1,
+                      cursorHeight: 20,
+                      cursorWidth: 1,
+                      textAlign: TextAlign.center,
+                      style: textStyle(),
+                      decoration: InputDecoration(
+                        suffixIcon: Tooltip(
+                          preferBelow: false,
+                          message: Lang().automaticDetection,
+                          textStyle: textStyle(color: Colors.white),
+                          decoration: const BoxDecoration(
+                            color: Colors.redAccent,
+                            borderRadius: BorderRadius.all(Radius.elliptical(20, 50)),
+                          ),
+                          child: IconButton(
+                            icon: Icon(Icons.wifi, size: iconSize, color: Colors.white70),
+                            onPressed: () {
+                              Tools().clentUDP(int.parse(FileHelper().jsonRead(key: 'port_listening'))).then((value) {
+                                if (value.isNotEmpty) {
+                                  if (FileHelper().jsonWrite(key: "server_address", value: value)) {
+                                    setState(() {
+                                      netController.text = value;
+                                      showSnackBar(context, content: Lang().complete, backgroundColor: Theme.of(context).colorScheme.inversePrimary);
+                                    });
+                                  }
+                                }
+                              });
+                            },
+                          ),
+                        ),
+                        labelText: Lang().serverAddress,
+                        labelStyle: textStyle(),
+                      ),
+                    ),
+                  ),
                   AnimatedBuilder(
                     animation: animation0,
                     builder: (context, child) {
@@ -291,13 +336,11 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                             child: Text('OK', style: textStyle()),
                           ),
                           onTap: () {
-                            Tools().clentUDP(int.parse(FileHelper().jsonRead(key: 'port_listening'))).then((value) {
-                              if (value.isNotEmpty) {
-                                if (FileHelper().jsonWrite(key: "server_address", value: value)) {
-                                  showSnackBar(context, content: Lang().complete, backgroundColor: Theme.of(context).colorScheme.inversePrimary);
-                                }
+                            if (netController.text.isNotEmpty) {
+                              if (FileHelper().jsonWrite(key: "server_address", value: netController.text)) {
+                                showSnackBar(context, content: Lang().complete, backgroundColor: Theme.of(context).colorScheme.inversePrimary);
                               }
-                            });
+                            }
                           },
                         ),
                       );

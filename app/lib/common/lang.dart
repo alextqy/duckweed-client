@@ -22,6 +22,8 @@ class Lang {
   String captcha = "";
   String newPassword = "";
   String nickName = "";
+  String serverAddress = "";
+  String automaticDetection = "";
 
   Lang() {
     this.type = FileHelper().jsonRead(key: "lang");
@@ -43,6 +45,8 @@ class Lang {
       this.captcha = "验证码";
       this.newPassword = "新密码";
       this.nickName = "昵称";
+      this.serverAddress = "服务器地址";
+      this.automaticDetection = "自动检测";
     } else {
       this.requestTimedOut = "Request timed out";
       this.signIn = "Sign in";
@@ -59,6 +63,8 @@ class Lang {
       this.captcha = "Captcha";
       this.newPassword = "New Password";
       this.nickName = "Nick name";
+      this.serverAddress = "Server Address";
+      this.automaticDetection = "Automatic detection";
     }
   }
 }

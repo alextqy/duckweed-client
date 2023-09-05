@@ -9,7 +9,7 @@ class FileHelper {
 
   bool createFile(String filePath) {
     try {
-      if (filePath != "") {
+      if (filePath.isNotEmpty) {
         File file = File(filePath);
         file.createSync(recursive: true);
         return true;
@@ -186,7 +186,7 @@ class FileHelper {
 
   // 写入json文件
   bool jsonWrite({String key = "", dynamic value = "", String savePath = "config.json"}) {
-    if (key != "" && savePath != "") {
+    if (key.isNotEmpty && savePath.isNotEmpty) {
       try {
         File jsonFile = File(savePath);
         if (!jsonFile.existsSync()) {
@@ -195,7 +195,7 @@ class FileHelper {
         // 读取文件
         String jsonStr = jsonFile.readAsStringSync();
         Map<String, dynamic> jsonStrMap = {};
-        if (jsonStr != "") {
+        if (jsonStr.isNotEmpty) {
           jsonStrMap = jsonDecode(jsonStr);
         }
         jsonStrMap[key] = value;

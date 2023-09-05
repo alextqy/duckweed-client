@@ -55,7 +55,7 @@ class ForgotPasswordState extends State<ForgotPassword> with TickerProviderState
   // 发送邮件动效
   void playAnimationEmail() async {
     try {
-      if (emailController.text != "") {
+      if (emailController.text.isNotEmpty) {
         sendMail = false;
         await animationControlleEmail.forward().orCancel;
         await animationControlleEmail.reverse().orCancel;
@@ -191,7 +191,7 @@ class ForgotPasswordState extends State<ForgotPassword> with TickerProviderState
                       child: Text(btnContent, style: textStyle()),
                     ),
                     onTap: () {
-                      if (captchaController.text != "" && newPasswordController.text != "") {
+                      if (captchaController.text.isNotEmpty && newPasswordController.text.isNotEmpty) {
                         userNotifier.resetPassword(captcha: captchaController.text, newPassword: newPasswordController.text);
                         if (userNotifier.result.state == true) {
                           emailController.clear();
