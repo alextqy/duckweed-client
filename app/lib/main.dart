@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:app/common/tools.dart';
+// import 'package:app/common/tools.dart';
 import 'package:app/common/lang.dart';
 import 'package:app/common/file.dart';
 import 'package:app/interface/common/show_alert_dialog.dart';
@@ -12,6 +12,8 @@ import 'package:app/forgot_password.dart';
 void main() {
   runApp(const RootApp());
 }
+
+enum LangList { en, cn }
 
 class RootApp extends StatelessWidget {
   const RootApp({super.key});
@@ -39,6 +41,8 @@ class IndexPage extends StatefulWidget {
 }
 
 class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
+  LangList langListView = LangList.en;
+
   int? groupValue = 1;
   int showSpeed = 450;
   double iconSize = 20;
@@ -92,9 +96,9 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
     animation2 = Tween(begin: 150.0, end: 0.0).animate(animationControlle2);
     animationEmail = Tween(begin: 20.0, end: 0.0).animate(animationControlleEmail);
 
-    animationControlle0.forward();
+    // animationControlle0.forward();
     animationControlle1.forward();
-    animationControlle2.forward();
+    // animationControlle2.forward();
     userNotifier.addListener(basicListener);
   }
 
@@ -143,6 +147,32 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
         alignment: Alignment.center,
         child: Column(
           children: [
+            Row(
+              children: [
+                const Expanded(child: SizedBox()),
+                Container(
+                  margin: const EdgeInsets.all(5),
+                  padding: const EdgeInsets.all(0),
+                  child: SegmentedButton<LangList>(
+                    segments: <ButtonSegment<LangList>>[
+                      ButtonSegment<LangList>(value: LangList.en, label: Text('EN', style: textStyle())),
+                      ButtonSegment<LangList>(value: LangList.cn, label: Text('CN', style: textStyle())),
+                    ],
+                    selected: <LangList>{langListView},
+                    onSelectionChanged: (Set<LangList> newSelection) {
+                      setState(() {
+                        langListView = newSelection.first;
+                        if (langListView == LangList.cn) {
+                          FileHelper().jsonWrite(key: "lang", value: "cn");
+                        } else {
+                          FileHelper().jsonWrite(key: "lang", value: "en");
+                        }
+                      });
+                    },
+                  ),
+                ),
+              ],
+            ),
             const Expanded(child: SizedBox()),
             networkWidget(),
             signInWidget(),
@@ -254,9 +284,11 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                             child: Text('OK', style: textStyle()),
                           ),
                           onTap: () {
-                            Tools().clentUDP(int.parse(FileHelper().jsonRead(key: 'port_listening'))).then((value) {
-                              print(value);
-                            });
+                            // Tools().clentUDP(int.parse(FileHelper().jsonRead(key: 'port_listening'))).then((value) {
+                            //   setState(() {
+                            //     FileHelper().jsonWrite(key: 'aerver_address', value: value);
+                            //   });
+                            // });
                           },
                         ),
                       );
