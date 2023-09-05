@@ -292,7 +292,11 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                           ),
                           onTap: () {
                             Tools().clentUDP(int.parse(FileHelper().jsonRead(key: 'port_listening'))).then((value) {
-                              print(value);
+                              if (value.isNotEmpty) {
+                                if (FileHelper().jsonWrite(key: "server_address", value: value)) {
+                                  showSnackBar(context, content: Lang().complete, backgroundColor: Theme.of(context).colorScheme.inversePrimary);
+                                }
+                              }
                             });
                           },
                         ),
