@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-// import 'package:app/common/tools.dart';
+import 'package:app/common/tools.dart';
 import 'package:app/common/lang.dart';
 import 'package:app/common/file.dart';
 import 'package:app/interface/common/show_alert_dialog.dart';
@@ -86,7 +86,7 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
 
   void setConf() {
     if (!FileHelper().fileExists("config.json")) {
-      FileHelper().writeFile("config.json", '{"aerver_address":"","lang":"en","title":"Duckweed","port_listening":8181}');
+      FileHelper().writeFile("config.json", '{"server_address":"","lang":"en","title":"Duckweed","port_listening":8181}');
     }
   }
 
@@ -291,11 +291,9 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                             child: Text('OK', style: textStyle()),
                           ),
                           onTap: () {
-                            // Tools().clentUDP(int.parse(FileHelper().jsonRead(key: 'port_listening'))).then((value) {
-                            //   setState(() {
-                            //     FileHelper().jsonWrite(key: 'aerver_address', value: value);
-                            //   });
-                            // });
+                            Tools().clentUDP(int.parse(FileHelper().jsonRead(key: 'port_listening'))).then((value) {
+                              print(value);
+                            });
                           },
                         ),
                       );

@@ -87,7 +87,7 @@ class Tools {
 
   // UDP 客户端
   Future<String> clentUDP(int port) async {
-    RawDatagramSocket rawDgramSocket = await RawDatagramSocket.bind("0.0.0.0", port);
+    RawDatagramSocket rawDgramSocket = await RawDatagramSocket.bind("0.0.0.0", port).timeout(const Duration(seconds: 10));
     // rawDgramSocket.send(utf8.encode("hello,world!"), InternetAddress("0.0.0.0"), port);
     await for (RawSocketEvent event in rawDgramSocket) {
       if (event == RawSocketEvent.read) {
