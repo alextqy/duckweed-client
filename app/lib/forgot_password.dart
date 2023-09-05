@@ -48,7 +48,7 @@ class ForgotPasswordState extends State<ForgotPassword> with TickerProviderState
   void initState() {
     super.initState();
 
-    url = FileHelper().jsonRead(key: "server_address");
+    url = FileHelper().setUrl();
 
     userNotifier.addListener(basicListener);
 
