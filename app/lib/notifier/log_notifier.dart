@@ -3,9 +3,10 @@ import "package:app/notifier/base_notifier.dart";
 
 class LogNotifier extends BaseNotifier {
   Future<ResultModel> viewLog({
-    date,
-    account,
+    required url,
+    required date,
+    required account,
   }) async {
-    return await logApi.viewLog(date, account);
+    return await logApi.viewLog(url, date, account);
   }
 }

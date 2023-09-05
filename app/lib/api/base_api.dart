@@ -7,7 +7,7 @@ import "package:app/model/result_model.dart";
 
 class ResponseHelper {
   Utf8Decoder decoder = const Utf8Decoder();
-  String url = FileHelper().jsonRead(key: "server_address");
+  // String url = FileHelper().jsonRead(key: "server_address");
   int timeout = 10;
 
   // String token = "";

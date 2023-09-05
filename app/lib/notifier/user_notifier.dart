@@ -5,12 +5,13 @@ import "package:app/common/file.dart";
 
 class UserNotifier extends BaseNotifier {
   void signIn({
-    account,
-    password,
+    required url,
+    required account,
+    required password,
   }) async {
     operationStatus.value = OperationStatus.failure;
     try {
-      result = await userApi.signIn(account, password);
+      result = await userApi.signIn(url, account, password);
       if (result.state == true) {
         if (FileHelper().writeFile("token", result.data)) {
           operationStatus.value = OperationStatus.success;
@@ -25,10 +26,12 @@ class UserNotifier extends BaseNotifier {
     }
   }
 
-  void signOut() async {
+  void signOut({
+    required url,
+  }) async {
     operationStatus.value = OperationStatus.failure;
     try {
-      result = await userApi.signOut();
+      result = await userApi.signOut(url);
       if (result.state == true) {
         operationStatus.value = OperationStatus.success;
       } else {
@@ -42,40 +45,44 @@ class UserNotifier extends BaseNotifier {
   }
 
   Future<ResultListModel> userList({
-    page,
-    pageSize,
-    order,
-    account,
-    name,
-    level,
-    status,
+    required url,
+    required page,
+    required pageSize,
+    required order,
+    required account,
+    required name,
+    required level,
+    required status,
   }) async {
-    return await userApi.userList(page, pageSize, order, account, name, level, status);
+    return await userApi.userList(url, page, pageSize, order, account, name, level, status);
   }
 
   Future<ResultModel> users({
-    order,
-    account,
-    name,
-    level,
-    status,
+    required url,
+    required order,
+    required account,
+    required name,
+    required level,
+    required status,
   }) async {
-    return await userApi.users(order, account, name, level, status);
+    return await userApi.users(url, order, account, name, level, status);
   }
 
   Future<ResultModel> userGet({
-    id,
+    required url,
+    required id,
   }) async {
-    return await userApi.userGet(id);
+    return await userApi.userGet(url, id);
   }
 
   void setAvailableSpace({
-    id,
-    availableSpace,
+    required url,
+    required id,
+    required availableSpace,
   }) async {
     operationStatus.value = OperationStatus.failure;
     try {
-      result = await userApi.setAvailableSpace(id, availableSpace);
+      result = await userApi.setAvailableSpace(url, id, availableSpace);
       if (result.state == true) {
         operationStatus.value = OperationStatus.success;
       } else {
@@ -89,11 +96,12 @@ class UserNotifier extends BaseNotifier {
   }
 
   void disableUser({
-    id,
+    required url,
+    required id,
   }) async {
     operationStatus.value = OperationStatus.failure;
     try {
-      result = await userApi.disableUser(id);
+      result = await userApi.disableUser(url, id);
       if (result.state == true) {
         operationStatus.value = OperationStatus.success;
       } else {
@@ -107,11 +115,12 @@ class UserNotifier extends BaseNotifier {
   }
 
   void userDel({
-    id,
+    required url,
+    required id,
   }) async {
     operationStatus.value = OperationStatus.failure;
     try {
-      result = await userApi.userDel(id);
+      result = await userApi.userDel(url, id);
       if (result.state == true) {
         operationStatus.value = OperationStatus.success;
       } else {
@@ -125,11 +134,12 @@ class UserNotifier extends BaseNotifier {
   }
 
   void sendEmailSignUp({
-    email,
+    required url,
+    required email,
   }) async {
     operationStatus.value = OperationStatus.failure;
     try {
-      result = await userApi.sendEmailSignUp(email);
+      result = await userApi.sendEmailSignUp(url, email);
       if (result.state == true) {
         operationStatus.value = OperationStatus.success;
       } else {
@@ -143,15 +153,16 @@ class UserNotifier extends BaseNotifier {
   }
 
   void signUp({
-    account,
-    name,
-    password,
-    email,
-    captcha,
+    required url,
+    required account,
+    required name,
+    required password,
+    required email,
+    required captcha,
   }) async {
     operationStatus.value = OperationStatus.failure;
     try {
-      result = await userApi.signUp(account, name, password, email, captcha);
+      result = await userApi.signUp(url, account, name, password, email, captcha);
       if (result.state == true) {
         operationStatus.value = OperationStatus.success;
       } else {
@@ -164,18 +175,21 @@ class UserNotifier extends BaseNotifier {
     }
   }
 
-  Future<ResultModel> checkPersonalData() async {
-    return await userApi.checkPersonalData();
+  Future<ResultModel> checkPersonalData({
+    required url,
+  }) async {
+    return await userApi.checkPersonalData(url);
   }
 
   void modifyPersonalData({
-    name,
-    password,
-    email,
+    required url,
+    required name,
+    required password,
+    required email,
   }) async {
     operationStatus.value = OperationStatus.failure;
     try {
-      result = await userApi.modifyPersonalData(name, password, email);
+      result = await userApi.modifyPersonalData(url, name, password, email);
       if (result.state == true) {
         operationStatus.value = OperationStatus.success;
       } else {
@@ -189,11 +203,12 @@ class UserNotifier extends BaseNotifier {
   }
 
   void sendEmail({
-    email,
+    required url,
+    required email,
   }) async {
     operationStatus.value = OperationStatus.failure;
     try {
-      result = await userApi.sendEmail(email);
+      result = await userApi.sendEmail(url, email);
       if (result.state == true) {
         operationStatus.value = OperationStatus.success;
       } else {
@@ -207,12 +222,13 @@ class UserNotifier extends BaseNotifier {
   }
 
   void resetPassword({
-    newPassword,
-    captcha,
+    required url,
+    required newPassword,
+    required captcha,
   }) async {
     operationStatus.value = OperationStatus.failure;
     try {
-      result = await userApi.resetPassword(newPassword, captcha);
+      result = await userApi.resetPassword(url, newPassword, captcha);
       if (result.state == true) {
         operationStatus.value = OperationStatus.success;
       } else {

@@ -3,15 +3,16 @@ import "package:app/notifier/base_notifier.dart";
 
 class FileNotifier extends BaseNotifier {
   void fileAdd({
-    fileName,
-    fileType,
-    fileSize,
-    md5,
-    dirID,
+    required url,
+    required fileName,
+    required fileType,
+    required fileSize,
+    required md5,
+    required dirID,
   }) async {
     operationStatus.value = OperationStatus.failure;
     try {
-      result = await fileApi.fileAdd(fileName, fileType, fileSize, md5, dirID);
+      result = await fileApi.fileAdd(url, fileName, fileType, fileSize, md5, dirID);
       if (result.state == true) {
         operationStatus.value = OperationStatus.success;
       } else {
@@ -25,13 +26,14 @@ class FileNotifier extends BaseNotifier {
   }
 
   void fileModify({
-    id,
-    fileName,
-    dirID,
+    required url,
+    required id,
+    required fileName,
+    required dirID,
   }) async {
     operationStatus.value = OperationStatus.failure;
     try {
-      result = await fileApi.fileModify(id, fileName, dirID);
+      result = await fileApi.fileModify(url, id, fileName, dirID);
       if (result.state == true) {
         operationStatus.value = OperationStatus.success;
       } else {
@@ -45,19 +47,21 @@ class FileNotifier extends BaseNotifier {
   }
 
   Future<ResultModel> files({
-    order,
-    fileName,
-    dirID,
+    required url,
+    required order,
+    required fileName,
+    required dirID,
   }) async {
-    return await fileApi.files(order, fileName, dirID);
+    return await fileApi.files(url, order, fileName, dirID);
   }
 
   void fileDel({
-    id,
+    required url,
+    required id,
   }) async {
     operationStatus.value = OperationStatus.failure;
     try {
-      result = await fileApi.fileDel(id);
+      result = await fileApi.fileDel(url, id);
       if (result.state == true) {
         operationStatus.value = OperationStatus.success;
       } else {

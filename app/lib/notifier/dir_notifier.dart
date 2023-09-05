@@ -3,21 +3,23 @@ import "package:app/model/result_model.dart";
 
 class DirNotifier extends BaseNotifier {
   Future<ResultModel> dirs({
-    order,
-    parentID,
-    dirName,
+    required url,
+    required order,
+    required parentID,
+    required dirName,
   }) async {
-    return await dirApi.dirs(order, parentID, dirName);
+    return await dirApi.dirs(url, order, parentID, dirName);
   }
 
   void dirAction({
-    dirName,
-    parentID,
-    id,
+    required url,
+    required dirName,
+    required parentID,
+    required id,
   }) async {
     operationStatus.value = OperationStatus.failure;
     try {
-      result = await dirApi.dirAction(dirName, parentID, id);
+      result = await dirApi.dirAction(url, dirName, parentID, id);
       if (result.state == true) {
         operationStatus.value = OperationStatus.success;
       } else {

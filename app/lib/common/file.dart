@@ -218,4 +218,8 @@ class FileHelper {
     }
     return "";
   }
+
+  String setUrl() {
+    return FileHelper().jsonRead(key: "server_address");
+  }
 }

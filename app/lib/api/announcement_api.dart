@@ -6,7 +6,7 @@ import "package:app/api/base_api.dart";
 import "package:app/model/result_model.dart";
 
 class AnnouncementApi extends ResponseHelper {
-  Future<ResultModel> announcements() async {
+  Future<ResultModel> announcements([url]) async {
     try {
       Response response = await post(
         Uri.http(url, "/announcements"),
@@ -25,6 +25,7 @@ class AnnouncementApi extends ResponseHelper {
   }
 
   Future<ResultModel> announcementGet([
+    url,
     id,
   ]) async {
     try {
@@ -46,6 +47,7 @@ class AnnouncementApi extends ResponseHelper {
   }
 
   Future<ResultModel> announcementAdd([
+    url,
     content,
   ]) async {
     try {
@@ -67,6 +69,7 @@ class AnnouncementApi extends ResponseHelper {
   }
 
   Future<ResultModel> announcementDel([
+    url,
     id,
   ]) async {
     try {

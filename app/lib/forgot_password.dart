@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import "package:app/common/lang.dart";
+import "package:app/common/file.dart";
 import "package:app/interface/common/show_alert_dialog.dart";
 import "package:app/notifier/base_notifier.dart";
 import "package:app/notifier/user_notifier.dart";
@@ -12,6 +13,8 @@ class ForgotPassword extends StatefulWidget {
 }
 
 class ForgotPasswordState extends State<ForgotPassword> with TickerProviderStateMixin {
+  late String url;
+
   double iconSize = 20;
   int showSpeed = 450;
   bool obscureText = true;
@@ -44,6 +47,9 @@ class ForgotPasswordState extends State<ForgotPassword> with TickerProviderState
   @override
   void initState() {
     super.initState();
+
+    url = FileHelper().jsonRead(key: "server_address");
+
     userNotifier.addListener(basicListener);
 
     animationControlleBtn = AnimationController(duration: Duration(milliseconds: showSpeed), vsync: this);
@@ -60,7 +66,7 @@ class ForgotPasswordState extends State<ForgotPassword> with TickerProviderState
         await animationControlleEmail.forward().orCancel;
         await animationControlleEmail.reverse().orCancel;
         Future.delayed(const Duration(milliseconds: 1000)).then((value) async {
-          userNotifier.sendEmail(email: emailController.text);
+          userNotifier.sendEmail(url: url, email: emailController.text);
           if (userNotifier.operationStatus.value == OperationStatus.success) {}
           sendMail = true;
         });
@@ -192,7 +198,7 @@ class ForgotPasswordState extends State<ForgotPassword> with TickerProviderState
                     ),
                     onTap: () {
                       if (captchaController.text.isNotEmpty && newPasswordController.text.isNotEmpty) {
-                        userNotifier.resetPassword(captcha: captchaController.text, newPassword: newPasswordController.text);
+                        userNotifier.resetPassword(url: url, captcha: captchaController.text, newPassword: newPasswordController.text);
                         if (userNotifier.result.state == true) {
                           emailController.clear();
                           captchaController.clear();

@@ -7,6 +7,7 @@ import "package:app/model/result_model.dart";
 
 class FileApi extends ResponseHelper {
   Future<ResultModel> fileAdd([
+    url,
     fileName,
     fileType,
     fileSize,
@@ -36,6 +37,7 @@ class FileApi extends ResponseHelper {
   }
 
   Future<ResultModel> fileModify([
+    url,
     id,
     fileName,
     dirID,
@@ -61,6 +63,7 @@ class FileApi extends ResponseHelper {
   }
 
   Future<ResultModel> files([
+    url,
     order,
     fileName,
     dirID,
@@ -86,6 +89,7 @@ class FileApi extends ResponseHelper {
   }
 
   Future<ResultModel> fileDel([
+    url,
     id,
   ]) async {
     try {

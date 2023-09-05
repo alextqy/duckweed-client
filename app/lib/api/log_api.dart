@@ -7,6 +7,7 @@ import "package:app/model/result_model.dart";
 
 class LogApi extends ResponseHelper {
   Future<ResultModel> viewLog([
+    url,
     date,
     account,
   ]) async {

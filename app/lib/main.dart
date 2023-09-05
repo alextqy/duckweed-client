@@ -41,6 +41,7 @@ class IndexPage extends StatefulWidget {
 }
 
 class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
+  String url = "";
   LangList langListView = FileHelper().jsonRead(key: "lang") == "cn" ? LangList.cn : LangList.en;
 
   int? groupValue = 1;
@@ -98,7 +99,7 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
     super.initState();
     setConf();
 
-    netController.text = FileHelper().jsonRead(key: "server_address");
+    netController.text = url;
 
     animationControlle0 = AnimationController(duration: Duration(milliseconds: showSpeed), vsync: this);
     animationControlle1 = AnimationController(duration: Duration(milliseconds: showSpeed), vsync: this);
@@ -117,6 +118,7 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    url = FileHelper().setUrl();
     Color bgColor = Theme.of(context).colorScheme.inversePrimary;
 
     // Size screenSize = MediaQuery.of(context).size;
@@ -255,7 +257,7 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
         await animationControlleEmail.forward().orCancel;
         await animationControlleEmail.reverse().orCancel;
         Future.delayed(const Duration(milliseconds: 1000)).then((value) async {
-          userNotifier.sendEmailSignUp(email: newEmailController.text);
+          userNotifier.sendEmailSignUp(url: url, email: newEmailController.text);
           if (userNotifier.operationStatus.value == OperationStatus.success) {}
           sendMail = true;
         });
@@ -338,7 +340,9 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                           onTap: () {
                             if (netController.text.isNotEmpty) {
                               if (FileHelper().jsonWrite(key: "server_address", value: netController.text)) {
-                                showSnackBar(context, content: Lang().complete, backgroundColor: Theme.of(context).colorScheme.inversePrimary);
+                                setState(() {
+                                  showSnackBar(context, content: Lang().complete, backgroundColor: Theme.of(context).colorScheme.inversePrimary);
+                                });
                               }
                             }
                           },
@@ -457,6 +461,7 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                           onTap: () {
                             if (accountController.text != '' && passwordController.text != '') {
                               userNotifier.signIn(
+                                url: url,
                                 account: accountController.text,
                                 password: passwordController.text,
                               );
@@ -627,7 +632,7 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                           ),
                           onTap: () {
                             if (newEmailController.text != '' && newCaptchaController.text != '' && newAccountController.text != '' && newNameController.text != '' && newPasswordController.text != '') {
-                              userNotifier.signUp(account: newAccountController.text, name: newNameController.text, password: newPasswordController.text, email: newEmailController.text, captcha: newCaptchaController.text);
+                              userNotifier.signUp(url: url, account: newAccountController.text, name: newNameController.text, password: newPasswordController.text, email: newEmailController.text, captcha: newCaptchaController.text);
                               if (userNotifier.result.state == true) {
                                 newAccountController.clear();
                                 newNameController.clear();

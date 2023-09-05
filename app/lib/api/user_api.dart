@@ -8,6 +8,7 @@ import "package:app/model/result_list_model.dart";
 
 class UserApi extends ResponseHelper {
   Future<ResultModel> signIn([
+    url,
     account,
     password,
   ]) async {
@@ -29,7 +30,9 @@ class UserApi extends ResponseHelper {
     }
   }
 
-  Future<ResultModel> signOut() async {
+  Future<ResultModel> signOut([
+    url,
+  ]) async {
     try {
       Response response = await post(
         Uri.http(url, "/sign/out"),
@@ -48,6 +51,7 @@ class UserApi extends ResponseHelper {
   }
 
   Future<ResultListModel> userList([
+    url,
     page,
     pageSize,
     order,
@@ -81,6 +85,7 @@ class UserApi extends ResponseHelper {
   }
 
   Future<ResultModel> users([
+    url,
     order,
     account,
     name,
@@ -110,6 +115,7 @@ class UserApi extends ResponseHelper {
   }
 
   Future<ResultModel> userGet([
+    url,
     id,
   ]) async {
     try {
@@ -131,6 +137,7 @@ class UserApi extends ResponseHelper {
   }
 
   Future<ResultModel> setAvailableSpace([
+    url,
     id,
     availableSpace,
   ]) async {
@@ -154,6 +161,7 @@ class UserApi extends ResponseHelper {
   }
 
   Future<ResultModel> disableUser([
+    url,
     id,
   ]) async {
     try {
@@ -175,6 +183,7 @@ class UserApi extends ResponseHelper {
   }
 
   Future<ResultModel> userDel([
+    url,
     id,
   ]) async {
     try {
@@ -196,6 +205,7 @@ class UserApi extends ResponseHelper {
   }
 
   Future<ResultModel> sendEmailSignUp([
+    url,
     email,
   ]) async {
     try {
@@ -216,6 +226,7 @@ class UserApi extends ResponseHelper {
   }
 
   Future<ResultModel> signUp([
+    url,
     account,
     name,
     password,
@@ -244,7 +255,9 @@ class UserApi extends ResponseHelper {
     }
   }
 
-  Future<ResultModel> checkPersonalData() async {
+  Future<ResultModel> checkPersonalData([
+    url,
+  ]) async {
     try {
       Response response = await post(
         Uri.http(url, "/check/personal/data"),
@@ -263,6 +276,7 @@ class UserApi extends ResponseHelper {
   }
 
   Future<ResultModel> modifyPersonalData([
+    url,
     name,
     password,
     email,
@@ -288,6 +302,7 @@ class UserApi extends ResponseHelper {
   }
 
   Future<ResultModel> sendEmail([
+    url,
     email,
   ]) async {
     try {
@@ -308,6 +323,7 @@ class UserApi extends ResponseHelper {
   }
 
   Future<ResultModel> resetPassword([
+    url,
     newPassword,
     captcha,
   ]) async {

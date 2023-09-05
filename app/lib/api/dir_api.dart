@@ -7,6 +7,7 @@ import "package:app/model/result_model.dart";
 
 class DirApi extends ResponseHelper {
   Future<ResultModel> dirs([
+    url,
     order,
     parentID,
     dirName,
@@ -32,6 +33,7 @@ class DirApi extends ResponseHelper {
   }
 
   Future<ResultModel> dirAction([
+    url,
     dirName,
     parentID,
     id,
