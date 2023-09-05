@@ -99,8 +99,6 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
     super.initState();
     setConf();
 
-    netController.text = url;
-
     animationControlle0 = AnimationController(duration: Duration(milliseconds: showSpeed), vsync: this);
     animationControlle1 = AnimationController(duration: Duration(milliseconds: showSpeed), vsync: this);
     animationControlle2 = AnimationController(duration: Duration(milliseconds: showSpeed), vsync: this);
@@ -119,6 +117,7 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     url = FileHelper().setUrl();
+    netController.text = url;
     Color bgColor = Theme.of(context).colorScheme.inversePrimary;
 
     // Size screenSize = MediaQuery.of(context).size;

@@ -13,7 +13,7 @@ class ForgotPassword extends StatefulWidget {
 }
 
 class ForgotPasswordState extends State<ForgotPassword> with TickerProviderStateMixin {
-  late String url;
+  String url = "";
 
   double iconSize = 20;
   int showSpeed = 450;
@@ -48,8 +48,6 @@ class ForgotPasswordState extends State<ForgotPassword> with TickerProviderState
   void initState() {
     super.initState();
 
-    url = FileHelper().setUrl();
-
     userNotifier.addListener(basicListener);
 
     animationControlleBtn = AnimationController(duration: Duration(milliseconds: showSpeed), vsync: this);
@@ -78,6 +76,7 @@ class ForgotPasswordState extends State<ForgotPassword> with TickerProviderState
 
   @override
   Widget build(BuildContext context) {
+    url = FileHelper().setUrl();
     String btnContent = "OK";
     return Scaffold(
       appBar: AppBar(
