@@ -1,17 +1,17 @@
-import 'dart:async';
-import 'dart:convert';
-import 'package:http/http.dart';
-import 'package:app/common/file.dart';
-import 'package:app/api/base_api.dart';
-import 'package:app/model/result_model.dart';
+import "dart:async";
+import "dart:convert";
+import "package:http/http.dart";
+import "package:app/common/file.dart";
+import "package:app/api/base_api.dart";
+import "package:app/model/result_model.dart";
 
 class AnnouncementApi extends ResponseHelper {
   Future<ResultModel> announcements() async {
     try {
       Response response = await post(
-        Uri.http(url, '/announcements'),
+        Uri.http(url, "/announcements"),
         body: {
-          'userToken': FileHelper().readFile('token'),
+          "userToken": FileHelper().readFile("token"),
         },
         headers: postHeaders,
         encoding: postEncoding,
@@ -29,10 +29,10 @@ class AnnouncementApi extends ResponseHelper {
   ]) async {
     try {
       Response response = await post(
-        Uri.http(url, '/announcement/get'),
+        Uri.http(url, "/announcement/get"),
         body: {
-          'userToken': FileHelper().readFile('token'),
-          'id': id,
+          "userToken": FileHelper().readFile("token"),
+          "id": id,
         },
         headers: postHeaders,
         encoding: postEncoding,
@@ -50,10 +50,10 @@ class AnnouncementApi extends ResponseHelper {
   ]) async {
     try {
       Response response = await post(
-        Uri.http(url, '/announcement/add'),
+        Uri.http(url, "/announcement/add"),
         body: {
-          'userToken': FileHelper().readFile('token'),
-          'content': content,
+          "userToken": FileHelper().readFile("token"),
+          "content": content,
         },
         headers: postHeaders,
         encoding: postEncoding,
@@ -71,10 +71,10 @@ class AnnouncementApi extends ResponseHelper {
   ]) async {
     try {
       Response response = await post(
-        Uri.http(url, '/announcement/del'),
+        Uri.http(url, "/announcement/del"),
         body: {
-          'userToken': FileHelper().readFile('token'),
-          'id': id,
+          "userToken": FileHelper().readFile("token"),
+          "id": id,
         },
         headers: postHeaders,
         encoding: postEncoding,

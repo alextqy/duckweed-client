@@ -1,5 +1,5 @@
-import 'package:app/notifier/base_notifier.dart';
-import 'package:app/model/result_model.dart';
+import "package:app/notifier/base_notifier.dart";
+import "package:app/model/result_model.dart";
 
 class AnnouncementNotifier extends BaseNotifier {
   Future<ResultModel> announcements() async {

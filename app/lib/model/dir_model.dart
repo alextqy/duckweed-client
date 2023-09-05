@@ -7,7 +7,7 @@ class DirModel {
 
   DirModel({
     this.id = 0,
-    this.dirName = '',
+    this.dirName = "",
     this.parentID = 0,
     this.userID = 0,
     this.createtime = 0,
@@ -15,11 +15,11 @@ class DirModel {
 
   factory DirModel.fromJson(Map<String, dynamic> json) {
     return DirModel(
-      id: json['ID'],
-      dirName: json['DirName'],
-      parentID: json['ParentID'],
-      userID: json['UserID'],
-      createtime: json['Createtime'],
+      id: json["ID"],
+      dirName: json["DirName"],
+      parentID: json["ParentID"],
+      userID: json["UserID"],
+      createtime: json["Createtime"],
     );
   }
 }

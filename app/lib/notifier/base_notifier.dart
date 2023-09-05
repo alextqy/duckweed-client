@@ -1,21 +1,21 @@
 // ignore_for_file: file_names
 
-// import 'dart:io';
+// import "dart:io";
 
-import 'package:flutter/widgets.dart';
-import 'package:app/model/result_model.dart';
-import 'package:app/model/result_list_model.dart';
+import "package:flutter/widgets.dart";
+import "package:app/model/result_model.dart";
+import "package:app/model/result_list_model.dart";
 
-import 'package:app/model/announcement_model.dart';
-import 'package:app/model/dir_model.dart';
-import 'package:app/model/file_model.dart';
-import 'package:app/model/user_model.dart';
+import "package:app/model/announcement_model.dart";
+import "package:app/model/dir_model.dart";
+import "package:app/model/file_model.dart";
+import "package:app/model/user_model.dart";
 
-import 'package:app/api/user_api.dart';
-import 'package:app/api/announcement_api.dart';
-import 'package:app/api/log_api.dart';
-import 'package:app/api/dir_api.dart';
-import 'package:app/api/file_api.dart';
+import "package:app/api/user_api.dart";
+import "package:app/api/announcement_api.dart";
+import "package:app/api/log_api.dart";
+import "package:app/api/dir_api.dart";
+import "package:app/api/file_api.dart";
 
 enum OperationStatus {
   init, // 加载中
@@ -41,7 +41,7 @@ class ApiResponse<T> {
 
 class BaseNotifier extends ChangeNotifier {
   ValueNotifier operationStatus = ValueNotifier(OperationStatus.loading);
-  String operationMemo = '';
+  String operationMemo = "";
   int operationCode = 0;
 
   late ResultModel result;

@@ -1,8 +1,8 @@
-import 'package:flutter/material.dart';
-import 'package:app/common/lang.dart';
-import 'package:app/interface/common/show_alert_dialog.dart';
-import 'package:app/notifier/base_notifier.dart';
-import 'package:app/notifier/user_notifier.dart';
+import "package:flutter/material.dart";
+import "package:app/common/lang.dart";
+import "package:app/interface/common/show_alert_dialog.dart";
+import "package:app/notifier/base_notifier.dart";
+import "package:app/notifier/user_notifier.dart";
 
 class ForgotPassword extends StatefulWidget {
   const ForgotPassword({super.key});
@@ -55,7 +55,7 @@ class ForgotPasswordState extends State<ForgotPassword> with TickerProviderState
   // 发送邮件动效
   void playAnimationEmail() async {
     try {
-      if (emailController.text != '') {
+      if (emailController.text != "") {
         sendMail = false;
         await animationControlleEmail.forward().orCancel;
         await animationControlleEmail.reverse().orCancel;
@@ -72,7 +72,7 @@ class ForgotPasswordState extends State<ForgotPassword> with TickerProviderState
 
   @override
   Widget build(BuildContext context) {
-    String btnContent = 'OK';
+    String btnContent = "OK";
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -191,14 +191,14 @@ class ForgotPasswordState extends State<ForgotPassword> with TickerProviderState
                       child: Text(btnContent, style: textStyle()),
                     ),
                     onTap: () {
-                      if (captchaController.text != '' && newPasswordController.text != '') {
+                      if (captchaController.text != "" && newPasswordController.text != "") {
                         userNotifier.resetPassword(captcha: captchaController.text, newPassword: newPasswordController.text);
                         if (userNotifier.result.state == true) {
                           emailController.clear();
                           captchaController.clear();
                           newPasswordController.clear();
 
-                          btnContent = '';
+                          btnContent = "";
                           animationControlleBtn.forward();
                         }
                       }
