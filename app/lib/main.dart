@@ -8,6 +8,7 @@ import "package:app/notifier/base_notifier.dart";
 import "package:app/notifier/user_notifier.dart";
 
 import "package:app/interface/forgot_password.dart";
+import "package:app/interface/home_page.dart";
 
 void main() {
   runApp(const RootApp());
@@ -111,9 +112,7 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
     animation2 = Tween(begin: 150.0, end: 0.0).animate(animationControlle2);
     animationEmail = Tween(begin: 20.0, end: 0.0).animate(animationControlleEmail);
 
-    // animationControlle0.forward();
     animationControlle1.forward();
-    // animationControlle2.forward();
     userNotifier.addListener(basicListener);
   }
 
@@ -123,38 +122,9 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
     netController.text = url;
     Color bgColor = Theme.of(context).colorScheme.inversePrimary;
 
-    // Size screenSize = MediaQuery.of(context).size;
-
-    /*
-    Drawer actionMenu(BuildContext context) {
-      return Drawer(
-        width: screenSize.width * 0.45,
-        backgroundColor: Colors.black54,
-        child: Column(
-          children: [
-            const Expanded(child: SizedBox()),
-            ListTile(
-              horizontalTitleGap: 20,
-              leading: const Icon(Icons.search_outlined, size: 20),
-              title: Text(
-                Lang().forgotPassword,
-                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 15),
-              ),
-              onTap: () async {
-                Navigator.of(context).pop();
-              },
-            ),
-            const Expanded(child: SizedBox()),
-          ],
-        ),
-      );
-    }
-    */
-
     return Scaffold(
-      // endDrawer: actionMenu(context),
       appBar: AppBar(
-        toolbarHeight: 25,
+        toolbarHeight: 35,
         backgroundColor: bgColor,
         title: Text(widget.title, style: textStyle()),
       ),
@@ -468,17 +438,22 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                             if (accountController.text != "" && passwordController.text != "" && loginBtn == true) {
                               loginBtn = false;
                               Future.delayed(const Duration(milliseconds: 1500)).then((value) async {
-                                userNotifier.signIn(
+                                userNotifier
+                                    .signIn(
                                   url: url,
                                   account: accountController.text,
                                   password: passwordController.text,
-                                );
+                                )
+                                    .then((value) {
+                                  if (value.state == true) {
+                                    Navigator.pushAndRemoveUntil(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => HomePage()),
+                                      (route) => false,
+                                    );
+                                  }
+                                });
                                 loginBtn = true;
-                                if (userNotifier.result.state) {
-                                  // Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => const HomePage()), (Route<dynamic> route) {
-                                  //   return route.isFirst;
-                                  // });
-                                }
                               });
                             }
                           },

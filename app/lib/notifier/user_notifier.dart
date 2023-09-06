@@ -4,26 +4,12 @@ import "package:app/notifier/base_notifier.dart";
 import "package:app/common/file.dart";
 
 class UserNotifier extends BaseNotifier {
-  void signIn({
+  Future<ResultModel> signIn({
     required url,
     required account,
     required password,
   }) async {
-    operationStatus.value = OperationStatus.failure;
-    try {
-      result = await userApi.signIn(url, account, password);
-      if (result.state == true) {
-        if (FileHelper().writeFile("token", result.data)) {
-          operationStatus.value = OperationStatus.success;
-        }
-      } else {
-        operationMemo = result.message;
-      }
-    } catch (e) {
-      operationMemo = e.toString();
-    } finally {
-      notifyListeners();
-    }
+    return await userApi.signIn(url, account, password);
   }
 
   void signOut({
