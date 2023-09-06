@@ -258,7 +258,7 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
         sendMail = false;
         await animationControlleEmail.forward().orCancel;
         await animationControlleEmail.reverse().orCancel;
-        Future.delayed(const Duration(milliseconds: 2000)).then((value) async {
+        Future.delayed(const Duration(milliseconds: 1500)).then((value) async {
           userNotifier.sendEmailSignUp(url: url, email: newEmailController.text);
           sendMail = true;
         });
@@ -341,7 +341,7 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                           onTap: () {
                             if (netController.text.isNotEmpty && netBtn == true) {
                               netBtn = false;
-                              Future.delayed(const Duration(milliseconds: 2000)).then((value) async {
+                              Future.delayed(const Duration(milliseconds: 1500)).then((value) async {
                                 if (FileHelper().jsonWrite(key: "server_address", value: netController.text)) {
                                   setState(() {
                                     showSnackBar(context, content: Lang().complete, backgroundColor: Theme.of(context).colorScheme.inversePrimary);
@@ -467,13 +467,18 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                           onTap: () {
                             if (accountController.text != "" && passwordController.text != "" && loginBtn == true) {
                               loginBtn = false;
-                              Future.delayed(const Duration(milliseconds: 2000)).then((value) async {
+                              Future.delayed(const Duration(milliseconds: 1500)).then((value) async {
                                 userNotifier.signIn(
                                   url: url,
                                   account: accountController.text,
                                   password: passwordController.text,
                                 );
                                 loginBtn = true;
+                                if (userNotifier.result.state) {
+                                  // Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => const HomePage()), (Route<dynamic> route) {
+                                  //   return route.isFirst;
+                                  // });
+                                }
                               });
                             }
                           },
@@ -643,7 +648,7 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                           onTap: () {
                             if (newEmailController.text != "" && newCaptchaController.text != "" && newAccountController.text != "" && newNameController.text != "" && newPasswordController.text != "" && regBtn == true) {
                               regBtn = false;
-                              Future.delayed(const Duration(milliseconds: 2000)).then((value) async {
+                              Future.delayed(const Duration(milliseconds: 1500)).then((value) async {
                                 userNotifier.signUp(url: url, account: newAccountController.text, name: newNameController.text, password: newPasswordController.text, email: newEmailController.text, captcha: newCaptchaController.text);
                                 if (userNotifier.result.state == true) {
                                   newAccountController.clear();
