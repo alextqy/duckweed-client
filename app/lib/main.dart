@@ -7,7 +7,7 @@ import 'package:app/interface/common/show_alert_dialog.dart';
 import 'package:app/notifier/base_notifier.dart';
 import 'package:app/notifier/user_notifier.dart';
 
-import 'package:app/forgot_password.dart';
+import 'package:app/interface/forgot_password.dart';
 
 void main() {
   runApp(const RootApp());
