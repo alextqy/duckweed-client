@@ -44,8 +44,8 @@ class BaseNotifier extends ChangeNotifier {
   String operationMemo = "";
   int operationCode = 0;
 
-  late ResultModel result;
-  late ResultListModel resultList;
+  ResultModel result = ResultModel();
+  ResultListModel resultList = ResultListModel();
 
   /// model ===================================================================
 

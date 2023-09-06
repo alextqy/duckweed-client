@@ -1,13 +1,13 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:app/common/tools.dart';
-import 'package:app/common/lang.dart';
-import 'package:app/common/file.dart';
-import 'package:app/interface/common/show_alert_dialog.dart';
-import 'package:app/notifier/base_notifier.dart';
-import 'package:app/notifier/user_notifier.dart';
+import "package:flutter/material.dart";
+import "package:flutter/cupertino.dart";
+import "package:app/common/tools.dart";
+import "package:app/common/lang.dart";
+import "package:app/common/file.dart";
+import "package:app/interface/common/show_alert_dialog.dart";
+import "package:app/notifier/base_notifier.dart";
+import "package:app/notifier/user_notifier.dart";
 
-import 'package:app/interface/forgot_password.dart';
+import "package:app/interface/forgot_password.dart";
 
 void main() {
   runApp(const RootApp());
@@ -25,7 +25,7 @@ class RootApp extends StatelessWidget {
         brightness: Brightness.dark,
         useMaterial3: true,
       ),
-      home: IndexPage(title: FileHelper().jsonRead(key: 'title')),
+      home: IndexPage(title: FileHelper().jsonRead(key: "title")),
       debugShowCheckedModeBanner: false,
     );
   }
@@ -51,6 +51,9 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
   bool opacityShow1 = true;
   bool opacityShow2 = false;
   bool obscureText = true;
+  bool netBtn = true;
+  bool loginBtn = true;
+  bool regBtn = true;
   bool sendMail = true;
 
   TextEditingController netController = TextEditingController();
@@ -169,8 +172,8 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                   padding: const EdgeInsets.all(0),
                   child: SegmentedButton<LangList>(
                     segments: <ButtonSegment<LangList>>[
-                      ButtonSegment<LangList>(value: LangList.en, label: Text('EN', style: textStyle())),
-                      ButtonSegment<LangList>(value: LangList.cn, label: Text('CN', style: textStyle())),
+                      ButtonSegment<LangList>(value: LangList.en, label: Text("EN", style: textStyle())),
+                      ButtonSegment<LangList>(value: LangList.cn, label: Text("CN", style: textStyle())),
                     ],
                     selected: <LangList>{langListView},
                     onSelectionChanged: (Set<LangList> newSelection) {
@@ -251,13 +254,12 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
   // 发送邮件动效
   void playAnimationEmail() async {
     try {
-      if (newEmailController.text != '') {
+      if (newEmailController.text != "") {
         sendMail = false;
         await animationControlleEmail.forward().orCancel;
         await animationControlleEmail.reverse().orCancel;
-        Future.delayed(const Duration(milliseconds: 1000)).then((value) async {
+        Future.delayed(const Duration(milliseconds: 2000)).then((value) async {
           userNotifier.sendEmailSignUp(url: url, email: newEmailController.text);
-          if (userNotifier.operationStatus.value == OperationStatus.success) {}
           sendMail = true;
         });
       }
@@ -302,7 +304,7 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                           child: IconButton(
                             icon: Icon(Icons.wifi, size: iconSize, color: Colors.white70),
                             onPressed: () {
-                              Tools().clentUDP(int.parse(FileHelper().jsonRead(key: 'port_listening'))).then((value) {
+                              Tools().clentUDP(int.parse(FileHelper().jsonRead(key: "port_listening"))).then((value) {
                                 if (value.isNotEmpty) {
                                   if (FileHelper().jsonWrite(key: "server_address", value: value)) {
                                     setState(() {
@@ -334,15 +336,20 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                         ),
                         child: InkWell(
                           child: Center(
-                            child: Text('OK', style: textStyle()),
+                            child: Text("OK", style: textStyle()),
                           ),
                           onTap: () {
-                            if (netController.text.isNotEmpty) {
-                              if (FileHelper().jsonWrite(key: "server_address", value: netController.text)) {
-                                setState(() {
-                                  showSnackBar(context, content: Lang().complete, backgroundColor: Theme.of(context).colorScheme.inversePrimary);
-                                });
-                              }
+                            if (netController.text.isNotEmpty && netBtn == true) {
+                              netBtn = false;
+                              Future.delayed(const Duration(milliseconds: 2000)).then((value) async {
+                                if (FileHelper().jsonWrite(key: "server_address", value: netController.text)) {
+                                  setState(() {
+                                    showSnackBar(context, content: Lang().complete, backgroundColor: Theme.of(context).colorScheme.inversePrimary);
+                                  });
+                                }
+                                netBtn = true;
+                                print(netBtn);
+                              });
                             }
                           },
                         ),
@@ -455,15 +462,19 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                         ),
                         child: InkWell(
                           child: Center(
-                            child: Text('GO', style: textStyle()),
+                            child: Text("GO", style: textStyle()),
                           ),
                           onTap: () {
-                            if (accountController.text != '' && passwordController.text != '') {
-                              userNotifier.signIn(
-                                url: url,
-                                account: accountController.text,
-                                password: passwordController.text,
-                              );
+                            if (accountController.text != "" && passwordController.text != "" && loginBtn == true) {
+                              loginBtn = false;
+                              Future.delayed(const Duration(milliseconds: 2000)).then((value) async {
+                                userNotifier.signIn(
+                                  url: url,
+                                  account: accountController.text,
+                                  password: passwordController.text,
+                                );
+                                loginBtn = true;
+                              });
                             }
                           },
                         ),
@@ -480,7 +491,7 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
   }
 
   Widget signUpWidget() {
-    String btnContent = 'OK';
+    String btnContent = "OK";
     return AnimatedOpacity(
       opacity: opacityShow2 ? 1.0 : 0.0,
       duration: Duration(milliseconds: showSpeed),
@@ -630,18 +641,22 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                             child: Text(btnContent, style: textStyle()),
                           ),
                           onTap: () {
-                            if (newEmailController.text != '' && newCaptchaController.text != '' && newAccountController.text != '' && newNameController.text != '' && newPasswordController.text != '') {
-                              userNotifier.signUp(url: url, account: newAccountController.text, name: newNameController.text, password: newPasswordController.text, email: newEmailController.text, captcha: newCaptchaController.text);
-                              if (userNotifier.result.state == true) {
-                                newAccountController.clear();
-                                newNameController.clear();
-                                newPasswordController.clear();
-                                newEmailController.clear();
-                                newCaptchaController.clear();
+                            if (newEmailController.text != "" && newCaptchaController.text != "" && newAccountController.text != "" && newNameController.text != "" && newPasswordController.text != "" && regBtn == true) {
+                              regBtn = false;
+                              Future.delayed(const Duration(milliseconds: 2000)).then((value) async {
+                                userNotifier.signUp(url: url, account: newAccountController.text, name: newNameController.text, password: newPasswordController.text, email: newEmailController.text, captcha: newCaptchaController.text);
+                                if (userNotifier.result.state == true) {
+                                  newAccountController.clear();
+                                  newNameController.clear();
+                                  newPasswordController.clear();
+                                  newEmailController.clear();
+                                  newCaptchaController.clear();
 
-                                btnContent = '';
-                                animationControlle2.forward();
-                              }
+                                  btnContent = "";
+                                  animationControlle2.forward();
+                                }
+                                regBtn = true;
+                              });
                             }
                           },
                         ),
