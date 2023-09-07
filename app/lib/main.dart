@@ -43,7 +43,6 @@ class IndexPage extends StatefulWidget {
 }
 
 class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
-  String url = "";
   LangList langListView = FileHelper().jsonRead(key: "lang") == "cn" ? LangList.cn : LangList.en;
 
   int? groupValue = 1;
@@ -113,8 +112,7 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    url = FileHelper().setUrl();
-    netController.text = url;
+    netController.text = appUrl;
 
     return Scaffold(
       appBar: AppBar(
@@ -222,7 +220,7 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
         await animationControlleEmail.forward().orCancel;
         await animationControlleEmail.reverse().orCancel;
         Future.delayed(const Duration(milliseconds: 1500)).then((value) async {
-          userNotifier.sendEmailSignUp(url: url, email: newEmailController.text);
+          userNotifier.sendEmailSignUp(url: appUrl, email: newEmailController.text);
           sendMail = true;
         });
       }
@@ -419,27 +417,18 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                         padding: const EdgeInsets.all(0),
                         width: animation1.value,
                         height: 35,
-                        decoration: BoxDecoration(
-                          borderRadius: const BorderRadius.all(Radius.circular(8)),
-                          color: bgColor(context),
-                        ),
+                        decoration: BoxDecoration(borderRadius: const BorderRadius.all(Radius.circular(8)), color: bgColor(context)),
                         child: InkWell(
-                          child: Center(
-                            child: Text("GO", style: textStyle()),
-                          ),
+                          child: Center(child: Text("GO", style: textStyle())),
                           onTap: () {
                             if (accountController.text != "" && passwordController.text != "" && loginBtn == true) {
                               loginBtn = false;
                               Future.delayed(const Duration(milliseconds: 1500)).then((value) async {
-                                userNotifier.signIn(url: url, account: accountController.text, password: passwordController.text).then((value) {
+                                userNotifier.signIn(url: appUrl, account: accountController.text, password: passwordController.text).then((value) {
                                   if (value.state == true) {
                                     FileHelper().jsonWrite(key: "account", value: accountController.text);
                                     FileHelper().writeFile("token", value.data);
-                                    Navigator.pushAndRemoveUntil(
-                                      context,
-                                      MaterialPageRoute(builder: (context) => const HomePage()),
-                                      (route) => false,
-                                    );
+                                    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const HomePage()), (route) => false);
                                   } else {
                                     showSnackBar(context, content: value.message, backgroundColor: bgColor(context));
                                   }
@@ -615,7 +604,7 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                             if (newEmailController.text != "" && newCaptchaController.text != "" && newAccountController.text != "" && newNameController.text != "" && newPasswordController.text != "" && regBtn == true) {
                               regBtn = false;
                               Future.delayed(const Duration(milliseconds: 1500)).then((value) async {
-                                userNotifier.signUp(url: url, account: newAccountController.text, name: newNameController.text, password: newPasswordController.text, email: newEmailController.text, captcha: newCaptchaController.text);
+                                userNotifier.signUp(url: appUrl, account: newAccountController.text, name: newNameController.text, password: newPasswordController.text, email: newEmailController.text, captcha: newCaptchaController.text);
                                 if (userNotifier.result.state == true) {
                                   newAccountController.clear();
                                   newNameController.clear();

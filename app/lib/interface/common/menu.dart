@@ -1,4 +1,8 @@
+import "dart:io";
+
+import "package:app/interface/common/show_alert_dialog.dart";
 import "package:app/main.dart";
+import "package:app/notifier/user_notifier.dart";
 import "package:flutter/material.dart";
 import "package:app/common/lang.dart";
 import "package:app/common/file.dart";
@@ -6,6 +10,8 @@ import "package:app/interface/common/pub_lib.dart";
 import "package:app/interface/common/routes.dart";
 
 Drawer actionMenu(BuildContext context) {
+  UserNotifier userNotifier = UserNotifier();
+
   dynamic menuHeader(BuildContext context) {
     return SizedBox(
       height: 80,
@@ -70,37 +76,36 @@ Drawer actionMenu(BuildContext context) {
             ],
           ),
           onLongPress: () {
-            // try {
-            //   .then((value) {
-            //     if (value.state == true) {
-            //       if (FileHelper().delFile("token")) {
-            //         exit(0);
-            //       }
-            //     } else {
-            //       Toast().show(context, message: value.memo);
-            //     }
-            //   });
-            // } catch (e) {
-            //   Toast().show(context, message: e.toString());
-            // }
+            try {
+              userNotifier.signOut(url: appUrl).then((value) {
+                if (value.state == true) {
+                  if (FileHelper().delFile("token")) {
+                    exit(0);
+                  }
+                } else {
+                  showSnackBar(context, content: value.message, backgroundColor: bgColor(context));
+                }
+              });
+            } catch (e) {
+              showSnackBar(context, content: e.toString(), backgroundColor: bgColor(context));
+            }
           },
           onPressed: () {
-            // try {
-            //   .then((value) {
-            //     if (value.state == true) {
-            //       if (FileHelper().delFile("token")) {
-            //         // 返回到首页并清理路由节点
-            //         Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (_) => IndexPage(title: appTitle)), (Route<dynamic> route) {
-            //           return route.isFirst;
-            //         });
-            //       }
-            //     } else {
-            //       Toast().show(context, message: value.message);
-            //     }
-            //   });
-            // } catch (e) {
-            //   Toast().show(context, message: e.toString());
-            // }
+            try {
+              userNotifier.signOut(url: appUrl).then((value) {
+                if (value.state == true) {
+                  if (FileHelper().delFile("token")) {
+                    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => IndexPage(title: appTitle)), (Route<dynamic> route) {
+                      return route.isFirst;
+                    });
+                  }
+                } else {
+                  showSnackBar(context, content: value.message, backgroundColor: bgColor(context));
+                }
+              });
+            } catch (e) {
+              showSnackBar(context, content: e.toString(), backgroundColor: bgColor(context));
+            }
           },
         ),
       ),

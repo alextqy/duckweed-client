@@ -11,22 +11,10 @@ class UserNotifier extends BaseNotifier {
     return await userApi.signIn(url, account, password);
   }
 
-  void signOut({
+  Future<ResultModel> signOut({
     required url,
   }) async {
-    operationStatus.value = OperationStatus.failure;
-    try {
-      result = await userApi.signOut(url);
-      if (result.state == true) {
-        operationStatus.value = OperationStatus.success;
-      } else {
-        operationMemo = result.message;
-      }
-    } catch (e) {
-      operationMemo = e.toString();
-    } finally {
-      notifyListeners();
-    }
+    return await userApi.signOut(url);
   }
 
   Future<ResultListModel> userList({

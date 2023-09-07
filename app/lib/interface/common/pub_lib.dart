@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import "package:app/common/file.dart";
 
+String appUrl = FileHelper().setUrl();
 double toolbarHeight = 37;
 String appTitle = FileHelper().jsonRead(key: "title");
 String appAccount = FileHelper().jsonRead(key: "account");
