@@ -24,6 +24,9 @@ class Lang {
   String nickName = "";
   String serverAddress = "";
   String automaticDetection = "";
+  String invalidPage = "";
+  String longPressToExit = "";
+  String exit = "";
 
   Lang() {
     this.type = FileHelper().jsonRead(key: "lang");
@@ -47,6 +50,9 @@ class Lang {
       this.nickName = "昵称";
       this.serverAddress = "服务器地址";
       this.automaticDetection = "自动检测";
+      this.invalidPage = "页面错误";
+      this.longPressToExit = "长按退出";
+      this.exit = "退出";
     } else {
       this.requestTimedOut = "Request timed out";
       this.signIn = "Sign in";
@@ -65,6 +71,9 @@ class Lang {
       this.nickName = "Nick name";
       this.serverAddress = "Server Address";
       this.automaticDetection = "Automatic detection";
+      this.invalidPage = "Invalid Page";
+      this.longPressToExit = "Long press to exit";
+      this.exit = "Exit";
     }
   }
 }

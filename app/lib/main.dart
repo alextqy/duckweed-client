@@ -3,6 +3,7 @@ import "package:flutter/cupertino.dart";
 import "package:app/common/tools.dart";
 import "package:app/common/lang.dart";
 import "package:app/common/file.dart";
+import "package:app/interface/common/pub_lib.dart";
 import "package:app/interface/common/show_alert_dialog.dart";
 import "package:app/notifier/base_notifier.dart";
 import "package:app/notifier/user_notifier.dart";
@@ -26,7 +27,7 @@ class RootApp extends StatelessWidget {
         brightness: Brightness.dark,
         useMaterial3: true,
       ),
-      home: IndexPage(title: FileHelper().jsonRead(key: "title")),
+      home: IndexPage(title: appTitle),
       debugShowCheckedModeBanner: false,
     );
   }
@@ -58,10 +59,8 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
   bool sendMail = true;
 
   TextEditingController netController = TextEditingController();
-
   TextEditingController accountController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-
   TextEditingController newAccountController = TextEditingController();
   TextEditingController newNameController = TextEditingController();
   TextEditingController newPasswordController = TextEditingController();
@@ -79,22 +78,18 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
 
   UserNotifier userNotifier = UserNotifier();
 
-  TextStyle textStyle({Color color = Colors.white70, double fontSize = 15}) {
-    return TextStyle(fontWeight: FontWeight.bold, color: color, fontSize: fontSize, textBaseline: TextBaseline.alphabetic);
-  }
-
   basicListener() async {
-    showSnackBar(context, content: Lang().loading, backgroundColor: Theme.of(context).colorScheme.inversePrimary, duration: 1);
+    showSnackBar(context, content: Lang().loading, backgroundColor: bgColor(context), duration: 1);
     if (userNotifier.operationStatus.value == OperationStatus.success) {
-      showSnackBar(context, content: Lang().complete, backgroundColor: Theme.of(context).colorScheme.inversePrimary);
+      showSnackBar(context, content: Lang().complete, backgroundColor: bgColor(context));
     } else {
-      showSnackBar(context, content: userNotifier.operationMemo, backgroundColor: Theme.of(context).colorScheme.inversePrimary);
+      showSnackBar(context, content: userNotifier.operationMemo, backgroundColor: bgColor(context));
     }
   }
 
   void setConf() {
     if (!FileHelper().fileExists("config.json")) {
-      FileHelper().writeFile("config.json", '{"server_address":"","lang":"en","title":"Duckweed","port_listening":8181}');
+      FileHelper().writeFile("config.json", '{"server_address":"","lang":"en","title":"Duckweed","port_listening":8181,"account": ""}');
     }
   }
 
@@ -120,12 +115,11 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     url = FileHelper().setUrl();
     netController.text = url;
-    Color bgColor = Theme.of(context).colorScheme.inversePrimary;
 
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 35,
-        backgroundColor: bgColor,
+        toolbarHeight: toolbarHeight,
+        backgroundColor: bgColor(context),
         title: Text(widget.title, style: textStyle()),
       ),
       body: Container(
@@ -179,7 +173,6 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                 setState(() {
                   accountController.clear();
                   passwordController.clear();
-
                   newAccountController.clear();
                   newNameController.clear();
                   newPasswordController.clear();
@@ -279,7 +272,7 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                                   if (FileHelper().jsonWrite(key: "server_address", value: value)) {
                                     setState(() {
                                       netController.text = value;
-                                      showSnackBar(context, content: Lang().complete, backgroundColor: Theme.of(context).colorScheme.inversePrimary);
+                                      showSnackBar(context, content: Lang().complete, backgroundColor: bgColor(context));
                                     });
                                   }
                                 }
@@ -302,7 +295,7 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                         height: animation0.value,
                         decoration: BoxDecoration(
                           borderRadius: const BorderRadius.all(Radius.circular(8)),
-                          color: Theme.of(context).colorScheme.inversePrimary,
+                          color: bgColor(context),
                         ),
                         child: InkWell(
                           child: Center(
@@ -314,7 +307,7 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                               Future.delayed(const Duration(milliseconds: 1500)).then((value) async {
                                 if (FileHelper().jsonWrite(key: "server_address", value: netController.text)) {
                                   setState(() {
-                                    showSnackBar(context, content: Lang().complete, backgroundColor: Theme.of(context).colorScheme.inversePrimary);
+                                    showSnackBar(context, content: Lang().complete, backgroundColor: bgColor(context));
                                   });
                                 }
                                 netBtn = true;
@@ -428,7 +421,7 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                         height: 35,
                         decoration: BoxDecoration(
                           borderRadius: const BorderRadius.all(Radius.circular(8)),
-                          color: Theme.of(context).colorScheme.inversePrimary,
+                          color: bgColor(context),
                         ),
                         child: InkWell(
                           child: Center(
@@ -438,19 +431,17 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                             if (accountController.text != "" && passwordController.text != "" && loginBtn == true) {
                               loginBtn = false;
                               Future.delayed(const Duration(milliseconds: 1500)).then((value) async {
-                                userNotifier
-                                    .signIn(
-                                  url: url,
-                                  account: accountController.text,
-                                  password: passwordController.text,
-                                )
-                                    .then((value) {
+                                userNotifier.signIn(url: url, account: accountController.text, password: passwordController.text).then((value) {
                                   if (value.state == true) {
+                                    FileHelper().jsonWrite(key: "account", value: accountController.text);
+                                    FileHelper().writeFile("token", value.data);
                                     Navigator.pushAndRemoveUntil(
                                       context,
-                                      MaterialPageRoute(builder: (context) => HomePage()),
+                                      MaterialPageRoute(builder: (context) => const HomePage()),
                                       (route) => false,
                                     );
+                                  } else {
+                                    showSnackBar(context, content: value.message, backgroundColor: bgColor(context));
                                   }
                                 });
                                 loginBtn = true;
@@ -614,7 +605,7 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                         height: 35,
                         decoration: BoxDecoration(
                           borderRadius: const BorderRadius.all(Radius.circular(8)),
-                          color: Theme.of(context).colorScheme.inversePrimary,
+                          color: bgColor(context),
                         ),
                         child: InkWell(
                           child: Center(

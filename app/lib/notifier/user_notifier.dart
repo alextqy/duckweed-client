@@ -1,7 +1,6 @@
 import "package:app/model/result_model.dart";
 import "package:app/model/result_list_model.dart";
 import "package:app/notifier/base_notifier.dart";
-import "package:app/common/file.dart";
 
 class UserNotifier extends BaseNotifier {
   Future<ResultModel> signIn({

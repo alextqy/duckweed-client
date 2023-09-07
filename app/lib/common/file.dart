@@ -3,10 +3,7 @@ import "dart:io";
 import "package:file_selector/file_selector.dart";
 import "package:mime/mime.dart";
 
-// ignore_for_file: unnecessary_this
 class FileHelper {
-  final String tokenFileName = "token";
-
   bool createFile(String filePath) {
     try {
       if (filePath.isNotEmpty) {

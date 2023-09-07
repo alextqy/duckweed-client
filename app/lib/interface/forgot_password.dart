@@ -1,3 +1,4 @@
+import "package:app/interface/common/pub_lib.dart";
 import "package:flutter/material.dart";
 import "package:app/common/lang.dart";
 import "package:app/common/file.dart";
@@ -25,10 +26,6 @@ class ForgotPasswordState extends State<ForgotPassword> with TickerProviderState
   late Animation<double> animationBtn;
   late Animation<double> animationEmail;
 
-  TextStyle textStyle({Color color = Colors.white70, double fontSize = 15}) {
-    return TextStyle(fontWeight: FontWeight.bold, color: color, fontSize: fontSize, textBaseline: TextBaseline.alphabetic);
-  }
-
   TextEditingController emailController = TextEditingController();
   TextEditingController captchaController = TextEditingController();
   TextEditingController newPasswordController = TextEditingController();
@@ -36,11 +33,11 @@ class ForgotPasswordState extends State<ForgotPassword> with TickerProviderState
   UserNotifier userNotifier = UserNotifier();
 
   basicListener() async {
-    showSnackBar(context, content: Lang().loading, backgroundColor: Theme.of(context).colorScheme.inversePrimary, duration: 1);
+    showSnackBar(context, content: Lang().loading, backgroundColor: bgColor(context), duration: 1);
     if (userNotifier.operationStatus.value == OperationStatus.success) {
-      showSnackBar(context, content: Lang().complete, backgroundColor: Theme.of(context).colorScheme.inversePrimary);
+      showSnackBar(context, content: Lang().complete, backgroundColor: bgColor(context));
     } else {
-      showSnackBar(context, content: userNotifier.operationMemo, backgroundColor: Theme.of(context).colorScheme.inversePrimary);
+      showSnackBar(context, content: userNotifier.operationMemo, backgroundColor: bgColor(context));
     }
   }
 
@@ -188,7 +185,7 @@ class ForgotPasswordState extends State<ForgotPassword> with TickerProviderState
                   height: 35,
                   decoration: BoxDecoration(
                     borderRadius: const BorderRadius.all(Radius.circular(8)),
-                    color: Theme.of(context).colorScheme.inversePrimary,
+                    color: bgColor(context),
                   ),
                   child: InkWell(
                     child: Center(
