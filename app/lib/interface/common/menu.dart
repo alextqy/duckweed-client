@@ -1,13 +1,16 @@
 import "dart:io";
 
-import "package:app/interface/common/show_alert_dialog.dart";
-import "package:app/main.dart";
-import "package:app/notifier/user_notifier.dart";
 import "package:flutter/material.dart";
+
 import "package:app/common/lang.dart";
 import "package:app/common/file.dart";
+
+import "package:app/notifier/user_notifier.dart";
+
 import "package:app/interface/common/pub_lib.dart";
 import "package:app/interface/common/routes.dart";
+import "package:app/interface/common/show_alert_dialog.dart";
+import "package:app/main.dart";
 
 Drawer actionMenu(BuildContext context) {
   UserNotifier userNotifier = UserNotifier();
@@ -41,7 +44,7 @@ Drawer actionMenu(BuildContext context) {
                   ),
                 ),
                 onTap: () {
-                  // Navigator.of(context).push(RouteHelper().generate("", headline: headline));
+                  Navigator.of(context).push(RouteHelper().generate(context, "/personal/settings"));
                 },
               ),
             ),
@@ -68,11 +71,11 @@ Drawer actionMenu(BuildContext context) {
           ),
           child: Row(
             children: [
-              const Text("v 0.1.0"),
+              Text("v 0.1.0", style: textStyle()),
               const Expanded(child: SizedBox()),
-              Text(Lang().exit),
+              Text(Lang().exit, style: textStyle()),
               const SizedBox(width: 10),
-              const Icon(size: 18, Icons.exit_to_app),
+              const Icon(size: 20, Icons.exit_to_app),
             ],
           ),
           onLongPress: () {

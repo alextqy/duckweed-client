@@ -27,6 +27,7 @@ class Lang {
   String invalidPage = "";
   String longPressToExit = "";
   String exit = "";
+  String personalSettings = "";
 
   Lang() {
     this.type = FileHelper().jsonRead(key: "lang");
@@ -53,6 +54,7 @@ class Lang {
       this.invalidPage = "页面错误";
       this.longPressToExit = "长按退出";
       this.exit = "退出";
+      this.personalSettings = "个人设置";
     } else {
       this.requestTimedOut = "Request timed out";
       this.signIn = "Sign in";
@@ -74,6 +76,7 @@ class Lang {
       this.invalidPage = "Invalid Page";
       this.longPressToExit = "Long press to exit";
       this.exit = "Exit";
+      this.personalSettings = "Personal settings";
     }
   }
 }

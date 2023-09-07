@@ -1,13 +1,15 @@
 import "package:flutter/material.dart";
 import "package:flutter/cupertino.dart";
+
 import "package:app/common/tools.dart";
 import "package:app/common/lang.dart";
 import "package:app/common/file.dart";
-import "package:app/interface/common/pub_lib.dart";
-import "package:app/interface/common/show_alert_dialog.dart";
+
 import "package:app/notifier/base_notifier.dart";
 import "package:app/notifier/user_notifier.dart";
 
+import "package:app/interface/common/pub_lib.dart";
+import "package:app/interface/common/show_alert_dialog.dart";
 import "package:app/interface/forgot_password.dart";
 import "package:app/interface/home_page.dart";
 
