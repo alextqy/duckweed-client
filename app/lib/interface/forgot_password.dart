@@ -21,8 +21,8 @@ class ForgotPasswordState extends State<ForgotPassword> with TickerProviderState
   bool obscureText = true;
   bool sendMail = true;
 
-  late AnimationController animationControlleBtn;
-  late AnimationController animationControlleEmail;
+  late AnimationController animationControllerBtn;
+  late AnimationController animationControllerEmail;
   late Animation<double> animationBtn;
   late Animation<double> animationEmail;
 
@@ -47,10 +47,10 @@ class ForgotPasswordState extends State<ForgotPassword> with TickerProviderState
 
     userNotifier.addListener(basicListener);
 
-    animationControlleBtn = AnimationController(duration: Duration(milliseconds: showSpeed), vsync: this);
-    animationControlleEmail = AnimationController(duration: Duration(milliseconds: showSpeed), vsync: this);
-    animationBtn = Tween(begin: 150.0, end: 0.0).animate(animationControlleBtn);
-    animationEmail = Tween(begin: 20.0, end: 0.0).animate(animationControlleEmail);
+    animationControllerBtn = AnimationController(duration: Duration(milliseconds: showSpeed), vsync: this);
+    animationControllerEmail = AnimationController(duration: Duration(milliseconds: showSpeed), vsync: this);
+    animationBtn = Tween(begin: 150.0, end: 0.0).animate(animationControllerBtn);
+    animationEmail = Tween(begin: 20.0, end: 0.0).animate(animationControllerEmail);
   }
 
   // 发送邮件动效
@@ -58,10 +58,10 @@ class ForgotPasswordState extends State<ForgotPassword> with TickerProviderState
     try {
       if (emailController.text.isNotEmpty) {
         sendMail = false;
-        await animationControlleEmail.forward().orCancel;
-        await animationControlleEmail.reverse().orCancel;
+        await animationControllerEmail.forward().orCancel;
+        await animationControllerEmail.reverse().orCancel;
         Future.delayed(const Duration(milliseconds: 1500)).then((value) async {
-          userNotifier.sendEmail(url: url, email: emailController.text);
+          userNotifier.sendEmail(url: url, email: emailController.text, sendType: 2);
           sendMail = true;
         });
       }
@@ -200,7 +200,7 @@ class ForgotPasswordState extends State<ForgotPassword> with TickerProviderState
                           newPasswordController.clear();
 
                           btnContent = "";
-                          animationControlleBtn.forward();
+                          animationControllerBtn.forward();
                         }
                       }
                     },

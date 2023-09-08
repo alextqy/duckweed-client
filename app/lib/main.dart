@@ -66,10 +66,10 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
   TextEditingController newEmailController = TextEditingController();
   TextEditingController newCaptchaController = TextEditingController();
 
-  late AnimationController animationControlle0;
-  late AnimationController animationControlle1;
-  late AnimationController animationControlle2;
-  late AnimationController animationControlleEmail;
+  late AnimationController animationController0;
+  late AnimationController animationController1;
+  late AnimationController animationController2;
+  late AnimationController animationControllerEmail;
   late Animation<double> animation0;
   late Animation<double> animation1;
   late Animation<double> animation2;
@@ -97,16 +97,16 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
     super.initState();
     setConf();
 
-    animationControlle0 = AnimationController(duration: Duration(milliseconds: showSpeed), vsync: this);
-    animationControlle1 = AnimationController(duration: Duration(milliseconds: showSpeed), vsync: this);
-    animationControlle2 = AnimationController(duration: Duration(milliseconds: showSpeed), vsync: this);
-    animationControlleEmail = AnimationController(duration: Duration(milliseconds: showSpeed), vsync: this);
-    animation0 = Tween(begin: 0.0, end: 35.0).animate(animationControlle0);
-    animation1 = Tween(begin: 0.0, end: 200.0).animate(animationControlle1);
-    animation2 = Tween(begin: 150.0, end: 0.0).animate(animationControlle2);
-    animationEmail = Tween(begin: 20.0, end: 0.0).animate(animationControlleEmail);
+    animationController0 = AnimationController(duration: Duration(milliseconds: showSpeed), vsync: this);
+    animationController1 = AnimationController(duration: Duration(milliseconds: showSpeed), vsync: this);
+    animationController2 = AnimationController(duration: Duration(milliseconds: showSpeed), vsync: this);
+    animationControllerEmail = AnimationController(duration: Duration(milliseconds: showSpeed), vsync: this);
+    animation0 = Tween(begin: 0.0, end: 35.0).animate(animationController0);
+    animation1 = Tween(begin: 0.0, end: 200.0).animate(animationController1);
+    animation2 = Tween(begin: 150.0, end: 0.0).animate(animationController2);
+    animationEmail = Tween(begin: 20.0, end: 0.0).animate(animationControllerEmail);
 
-    animationControlle1.forward();
+    animationController1.forward();
     userNotifier.addListener(basicListener);
   }
 
@@ -183,17 +183,17 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                   opacityShow2 = groupValue == 2 ? true : false;
 
                   if (groupValue == 0) {
-                    animationControlle0.forward();
+                    animationController0.forward();
                   } else {
-                    animationControlle0.reset();
+                    animationController0.reset();
                   }
                   if (groupValue == 1) {
-                    animationControlle1.forward();
+                    animationController1.forward();
                   } else {
-                    animationControlle1.reset();
+                    animationController1.reset();
                   }
                   if (groupValue == 2) {
-                    animationControlle2.reset();
+                    animationController2.reset();
                   }
                 });
               },
@@ -217,10 +217,10 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
     try {
       if (newEmailController.text != "") {
         sendMail = false;
-        await animationControlleEmail.forward().orCancel;
-        await animationControlleEmail.reverse().orCancel;
+        await animationControllerEmail.forward().orCancel;
+        await animationControllerEmail.reverse().orCancel;
         Future.delayed(const Duration(milliseconds: 1500)).then((value) async {
-          userNotifier.sendEmailSignUp(url: appUrl, email: newEmailController.text);
+          userNotifier.sendEmail(url: appUrl, email: newEmailController.text, sendType: 1);
           sendMail = true;
         });
       }
@@ -613,7 +613,7 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                                   newCaptchaController.clear();
 
                                   btnContent = "";
-                                  animationControlle2.forward();
+                                  animationController2.forward();
                                 }
                                 regBtn = true;
                               });

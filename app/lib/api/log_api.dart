@@ -16,8 +16,8 @@ class LogApi extends ResponseHelper {
         Uri.http(url, "/view/log"),
         body: {
           "userToken": FileHelper().readFile("token"),
-          "date": date,
-          "account": account,
+          "date": date.toString(),
+          "account": account.toString(),
         },
         headers: postHeaders,
         encoding: postEncoding,

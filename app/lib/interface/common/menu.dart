@@ -98,9 +98,7 @@ Drawer actionMenu(BuildContext context) {
               userNotifier.signOut(url: appUrl).then((value) {
                 if (value.state == true) {
                   if (FileHelper().delFile("token")) {
-                    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => IndexPage(title: appTitle)), (Route<dynamic> route) {
-                      return route.isFirst;
-                    });
+                    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => IndexPage(title: appTitle)), (route) => false);
                   }
                 } else {
                   showSnackBar(context, content: value.message, backgroundColor: bgColor(context));

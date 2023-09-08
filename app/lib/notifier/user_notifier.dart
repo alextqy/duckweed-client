@@ -106,25 +106,6 @@ class UserNotifier extends BaseNotifier {
     }
   }
 
-  void sendEmailSignUp({
-    required url,
-    required email,
-  }) async {
-    operationStatus.value = OperationStatus.failure;
-    try {
-      result = await userApi.sendEmailSignUp(url, email);
-      if (result.state == true) {
-        operationStatus.value = OperationStatus.success;
-      } else {
-        operationMemo = result.message;
-      }
-    } catch (e) {
-      operationMemo = e.toString();
-    } finally {
-      notifyListeners();
-    }
-  }
-
   void signUp({
     required url,
     required account,
@@ -159,29 +140,11 @@ class UserNotifier extends BaseNotifier {
     required name,
     required password,
     required email,
+    required captcha,
   }) async {
     operationStatus.value = OperationStatus.failure;
     try {
-      result = await userApi.modifyPersonalData(url, name, password, email);
-      if (result.state == true) {
-        operationStatus.value = OperationStatus.success;
-      } else {
-        operationMemo = result.message;
-      }
-    } catch (e) {
-      operationMemo = e.toString();
-    } finally {
-      notifyListeners();
-    }
-  }
-
-  void sendEmail({
-    required url,
-    required email,
-  }) async {
-    operationStatus.value = OperationStatus.failure;
-    try {
-      result = await userApi.sendEmail(url, email);
+      result = await userApi.modifyPersonalData(url, name, password, email, captcha);
       if (result.state == true) {
         operationStatus.value = OperationStatus.success;
       } else {
@@ -202,6 +165,26 @@ class UserNotifier extends BaseNotifier {
     operationStatus.value = OperationStatus.failure;
     try {
       result = await userApi.resetPassword(url, newPassword, captcha);
+      if (result.state == true) {
+        operationStatus.value = OperationStatus.success;
+      } else {
+        operationMemo = result.message;
+      }
+    } catch (e) {
+      operationMemo = e.toString();
+    } finally {
+      notifyListeners();
+    }
+  }
+
+  void sendEmail({
+    required url,
+    required email,
+    required sendType,
+  }) async {
+    operationStatus.value = OperationStatus.failure;
+    try {
+      result = await userApi.sendEmail(url, email, sendType);
       if (result.state == true) {
         operationStatus.value = OperationStatus.success;
       } else {

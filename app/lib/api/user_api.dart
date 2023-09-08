@@ -16,8 +16,8 @@ class UserApi extends ResponseHelper {
       Response response = await post(
         Uri.http(url, "/sign/in"),
         body: {
-          "account": account,
-          "password": password,
+          "account": account.toString(),
+          "password": password.toString(),
         },
         headers: postHeaders,
         encoding: postEncoding,
@@ -65,13 +65,13 @@ class UserApi extends ResponseHelper {
         Uri.http(url, "/user/list"),
         body: {
           "userToken": FileHelper().readFile("token"),
-          "page": page,
-          "pageSize": pageSize,
-          "order": order,
-          "account": account,
-          "name": name,
-          "level": level,
-          "status": status,
+          "page": page.toString(),
+          "pageSize": pageSize.toString(),
+          "order": order.toString(),
+          "account": account.toString(),
+          "name": name.toString(),
+          "level": level.toString(),
+          "status": status.toString(),
         },
         headers: postHeaders,
         encoding: postEncoding,
@@ -97,11 +97,11 @@ class UserApi extends ResponseHelper {
         Uri.http(url, "/users"),
         body: {
           "userToken": FileHelper().readFile("token"),
-          "order": order,
-          "account": account,
-          "name": name,
-          "level": level,
-          "status": status,
+          "order": order.toString(),
+          "account": account.toString(),
+          "name": name.toString(),
+          "level": level.toString(),
+          "status": status.toString(),
         },
         headers: postHeaders,
         encoding: postEncoding,
@@ -123,7 +123,7 @@ class UserApi extends ResponseHelper {
         Uri.http(url, "/user/get"),
         body: {
           "userToken": FileHelper().readFile("token"),
-          "id": id,
+          "id": id.toString(),
         },
         headers: postHeaders,
         encoding: postEncoding,
@@ -146,8 +146,8 @@ class UserApi extends ResponseHelper {
         Uri.http(url, "/set/available/space"),
         body: {
           "userToken": FileHelper().readFile("token"),
-          "id": id,
-          "availableSpace": availableSpace,
+          "id": id.toString(),
+          "availableSpace": availableSpace.toString(),
         },
         headers: postHeaders,
         encoding: postEncoding,
@@ -169,7 +169,7 @@ class UserApi extends ResponseHelper {
         Uri.http(url, "/disable/user"),
         body: {
           "userToken": FileHelper().readFile("token"),
-          "id": id,
+          "id": id.toString(),
         },
         headers: postHeaders,
         encoding: postEncoding,
@@ -191,28 +191,7 @@ class UserApi extends ResponseHelper {
         Uri.http(url, "/user/del"),
         body: {
           "userToken": FileHelper().readFile("token"),
-          "id": id,
-        },
-        headers: postHeaders,
-        encoding: postEncoding,
-      ).timeout(Duration(seconds: timeout));
-      return ResultModel.fromJson(jsonDecode(decoder.convert(response.bodyBytes)));
-    } on TimeoutException catch (e) {
-      return ResultModel(code: 200, message: e.toString());
-    } catch (e) {
-      return ResultModel(code: 200, message: e.toString());
-    }
-  }
-
-  Future<ResultModel> sendEmailSignUp([
-    url,
-    email,
-  ]) async {
-    try {
-      Response response = await post(
-        Uri.http(url, "/send/email/sign/up"),
-        body: {
-          "email": email,
+          "id": id.toString(),
         },
         headers: postHeaders,
         encoding: postEncoding,
@@ -238,11 +217,11 @@ class UserApi extends ResponseHelper {
         Uri.http(url, "/sign/up"),
         body: {
           "userToken": FileHelper().readFile("token"),
-          "account": account,
-          "name": name,
-          "password": password,
-          "email": email,
-          "captcha": captcha,
+          "account": account.toString(),
+          "name": name.toString(),
+          "password": password.toString(),
+          "email": email.toString(),
+          "captcha": captcha.toString(),
         },
         headers: postHeaders,
         encoding: postEncoding,
@@ -280,36 +259,17 @@ class UserApi extends ResponseHelper {
     name,
     password,
     email,
+    captcha,
   ]) async {
     try {
       Response response = await post(
         Uri.http(url, "/modify/personal/data"),
         body: {
           "userToken": FileHelper().readFile("token"),
-          "name": name,
-          "password": password,
-          "email": email,
-        },
-        headers: postHeaders,
-        encoding: postEncoding,
-      ).timeout(Duration(seconds: timeout));
-      return ResultModel.fromJson(jsonDecode(decoder.convert(response.bodyBytes)));
-    } on TimeoutException catch (e) {
-      return ResultModel(code: 200, message: e.toString());
-    } catch (e) {
-      return ResultModel(code: 200, message: e.toString());
-    }
-  }
-
-  Future<ResultModel> sendEmail([
-    url,
-    email,
-  ]) async {
-    try {
-      Response response = await post(
-        Uri.http(url, "/send/email"),
-        body: {
-          "email": email,
+          "name": name.toString(),
+          "password": password.toString(),
+          "email": email.toString(),
+          "captcha": captcha.toString(),
         },
         headers: postHeaders,
         encoding: postEncoding,
@@ -331,8 +291,31 @@ class UserApi extends ResponseHelper {
       Response response = await post(
         Uri.http(url, "/reset/password"),
         body: {
-          "newPassword": newPassword,
-          "captcha": captcha,
+          "newPassword": newPassword.toString(),
+          "captcha": captcha.toString(),
+        },
+        headers: postHeaders,
+        encoding: postEncoding,
+      ).timeout(Duration(seconds: timeout));
+      return ResultModel.fromJson(jsonDecode(decoder.convert(response.bodyBytes)));
+    } on TimeoutException catch (e) {
+      return ResultModel(code: 200, message: e.toString());
+    } catch (e) {
+      return ResultModel(code: 200, message: e.toString());
+    }
+  }
+
+  Future<ResultModel> sendEmail([
+    url,
+    email,
+    sendType,
+  ]) async {
+    try {
+      Response response = await post(
+        Uri.http(url, "/send/email"),
+        body: {
+          "email": email.toString(),
+          "sendType": sendType.toString(),
         },
         headers: postHeaders,
         encoding: postEncoding,

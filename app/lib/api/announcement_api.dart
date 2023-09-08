@@ -33,7 +33,7 @@ class AnnouncementApi extends ResponseHelper {
         Uri.http(url, "/announcement/get"),
         body: {
           "userToken": FileHelper().readFile("token"),
-          "id": id,
+          "id": id.toString(),
         },
         headers: postHeaders,
         encoding: postEncoding,
@@ -55,7 +55,7 @@ class AnnouncementApi extends ResponseHelper {
         Uri.http(url, "/announcement/add"),
         body: {
           "userToken": FileHelper().readFile("token"),
-          "content": content,
+          "content": content.toString(),
         },
         headers: postHeaders,
         encoding: postEncoding,
@@ -77,7 +77,7 @@ class AnnouncementApi extends ResponseHelper {
         Uri.http(url, "/announcement/del"),
         body: {
           "userToken": FileHelper().readFile("token"),
-          "id": id,
+          "id": id.toString(),
         },
         headers: postHeaders,
         encoding: postEncoding,
