@@ -48,8 +48,6 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
   LangList langListView = FileHelper().jsonRead(key: "lang") == "cn" ? LangList.cn : LangList.en;
 
   int? groupValue = 1;
-  int showSpeed = 450;
-  double iconSize = 20;
   bool opacityShow0 = false;
   bool opacityShow1 = true;
   bool opacityShow2 = false;

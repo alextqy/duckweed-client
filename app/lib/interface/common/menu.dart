@@ -33,12 +33,12 @@ Drawer actionMenu(BuildContext context) {
                 splashColor: Colors.black12,
                 highlightColor: Colors.black12,
                 child: CircleAvatar(
-                  backgroundColor: Colors.white,
+                  backgroundColor: Colors.white70,
                   child: SizedBox(
                     height: 53,
                     width: 53,
                     child: CircleAvatar(
-                      backgroundColor: Colors.deepPurple,
+                      backgroundColor: bgColor(context),
                       child: Text(appAccount.substring(0, 2), style: textStyle(fontSize: 24)),
                     ),
                   ),
@@ -75,7 +75,7 @@ Drawer actionMenu(BuildContext context) {
               const Expanded(child: SizedBox()),
               Text(Lang().exit, style: textStyle()),
               const SizedBox(width: 10),
-              const Icon(size: 20, Icons.exit_to_app),
+              Icon(size: iconSize, Icons.exit_to_app),
             ],
           ),
           onLongPress: () {
