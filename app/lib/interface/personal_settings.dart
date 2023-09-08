@@ -118,7 +118,7 @@ class PersonalSettingsState extends State<PersonalSettings> with TickerProviderS
                     onPressed: () => passwordController.clear(),
                   ),
                   icon: Icon(Icons.password, size: iconSize, color: Colors.white70),
-                  labelText: Lang().password,
+                  labelText: Lang().newPassword,
                   labelStyle: textStyle(),
                 ),
               ),
