@@ -171,7 +171,7 @@ class PersonalSettingsState extends State<PersonalSettings> with TickerProviderS
                     textAlign: TextAlign.center,
                     style: textStyle(),
                     onChanged: (text) {
-                      if (text != userNotifier.userModel.email) {
+                      if (text.isNotEmpty && text != userNotifier.userModel.email) {
                         sendStatus = true;
                         animationControllerEmail.forward();
                         showCaptcha = true;
