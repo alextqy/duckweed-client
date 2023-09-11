@@ -216,7 +216,6 @@ class UserApi extends ResponseHelper {
       Response response = await post(
         Uri.http(url, "/sign/up"),
         body: {
-          "userToken": FileHelper().readFile("token"),
           "account": account.toString(),
           "name": name.toString(),
           "password": password.toString(),

@@ -186,7 +186,9 @@ class PersonalSettingsState extends State<PersonalSettings> with TickerProviderS
                       suffixIcon: sendStatus
                           ? IconButton(
                               icon: Icon(Icons.send, size: animationEmail.value, color: Colors.white70),
-                              onPressed: () {},
+                              onPressed: () {
+                                userNotifier.sendEmail(url: appUrl, email: emailController.text, sendType: 3);
+                              },
                             )
                           : null,
                       icon: Icon(Icons.mail, size: iconSize, color: Colors.white70),

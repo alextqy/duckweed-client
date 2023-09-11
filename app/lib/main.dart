@@ -309,7 +309,6 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                                   });
                                 }
                                 netBtn = true;
-                                print(netBtn);
                               });
                             }
                           },
