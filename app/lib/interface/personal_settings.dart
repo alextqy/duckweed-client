@@ -123,6 +123,39 @@ class PersonalSettingsState extends State<PersonalSettings> with TickerProviderS
                 ),
               ),
             ),
+            Visibility(
+              visible: showCaptcha,
+              child: AnimatedBuilder(
+                animation: animationInput,
+                builder: (context, child) {
+                  return showCaptcha
+                      ? Container(
+                          margin: const EdgeInsets.all(5),
+                          padding: const EdgeInsets.all(0),
+                          height: animationInput.value,
+                          width: 300,
+                          child: TextFormField(
+                            controller: captchaController,
+                            maxLines: 1,
+                            cursorHeight: 20,
+                            cursorWidth: 1,
+                            textAlign: TextAlign.center,
+                            style: textStyle(),
+                            decoration: InputDecoration(
+                              suffixIcon: IconButton(
+                                icon: Icon(Icons.clear, size: iconSize, color: Colors.white70),
+                                onPressed: () => captchaController.clear(),
+                              ),
+                              icon: Icon(Icons.verified, size: iconSize, color: Colors.white70),
+                              labelText: Lang().captcha,
+                              labelStyle: textStyle(),
+                            ),
+                          ),
+                        )
+                      : Container();
+                },
+              ),
+            ),
             AnimatedBuilder(
               animation: animationEmail,
               builder: (context, child) {
@@ -163,39 +196,6 @@ class PersonalSettingsState extends State<PersonalSettings> with TickerProviderS
                   ),
                 );
               },
-            ),
-            Visibility(
-              visible: showCaptcha,
-              child: AnimatedBuilder(
-                animation: animationInput,
-                builder: (context, child) {
-                  return showCaptcha
-                      ? Container(
-                          margin: const EdgeInsets.all(5),
-                          padding: const EdgeInsets.all(0),
-                          height: animationInput.value,
-                          width: 300,
-                          child: TextFormField(
-                            controller: captchaController,
-                            maxLines: 1,
-                            cursorHeight: 20,
-                            cursorWidth: 1,
-                            textAlign: TextAlign.center,
-                            style: textStyle(),
-                            decoration: InputDecoration(
-                              suffixIcon: IconButton(
-                                icon: Icon(Icons.clear, size: iconSize, color: Colors.white70),
-                                onPressed: () => captchaController.clear(),
-                              ),
-                              icon: Icon(Icons.verified, size: iconSize, color: Colors.white70),
-                              labelText: Lang().captcha,
-                              labelStyle: textStyle(),
-                            ),
-                          ),
-                        )
-                      : Container();
-                },
-              ),
             ),
             Container(
               margin: const EdgeInsets.all(15),
