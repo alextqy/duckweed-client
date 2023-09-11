@@ -92,7 +92,7 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
     if (!FileHelper().fileExists("config.json")) {
       FileHelper().writeFile(
         "config.json",
-        '{"server_address":"","lang":"en","title":"Duckweed","port_listening":8181,"account": "","master":false}',
+        '{"server_address":"","lang":"en","title":"Duckweed","port_listening":8181,"account":"","master":false,"current_page":""}',
       );
     }
   }
@@ -433,11 +433,26 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                               if (accountController.text != "" && passwordController.text != "" && loginBtn == true) {
                                 loginBtn = false;
                                 Future.delayed(const Duration(milliseconds: 1500)).then((value) async {
-                                  userNotifier.signIn(url: appUrl, account: accountController.text, password: passwordController.text).then((value) {
+                                  userNotifier
+                                      .signIn(
+                                    url: appUrl,
+                                    account: accountController.text,
+                                    password: passwordController.text,
+                                  )
+                                      .then((value) {
                                     if (value.state == true) {
+                                      if (int.parse(value.message) == 2) {
+                                        FileHelper().jsonWrite(key: "master", value: true);
+                                      } else {
+                                        FileHelper().jsonWrite(key: "master", value: false);
+                                      }
                                       FileHelper().jsonWrite(key: "account", value: accountController.text);
                                       FileHelper().writeFile("token", value.data);
-                                      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const HomePage()), (route) => false);
+                                      Navigator.pushAndRemoveUntil(
+                                        context,
+                                        MaterialPageRoute(builder: (context) => const HomePage()),
+                                        (route) => false,
+                                      );
                                     } else {
                                       showSnackBar(context, content: value.message, backgroundColor: bgColor(context));
                                     }

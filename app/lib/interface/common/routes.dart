@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import "package:app/common/lang.dart";
+import "package:app/common/file.dart";
 
 import "package:app/interface/common/pub_lib.dart";
 import "package:app/interface/home_page.dart";
@@ -7,6 +8,8 @@ import "package:app/interface/personal_settings.dart";
 
 class RouteHelper {
   dynamic generate(BuildContext context, String routeName, {dynamic data}) {
+    // if (routeName != FileHelper().jsonRead(key: "current_page")) {
+    FileHelper().jsonWrite(key: "current_page", value: routeName);
     switch (routeName) {
       case "/":
         return MaterialPageRoute(builder: (context) => const HomePage());
@@ -26,5 +29,6 @@ class RouteHelper {
           ),
         );
     }
+    // }
   }
 }
