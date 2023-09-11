@@ -80,6 +80,7 @@ Drawer actionMenu(BuildContext context) {
           ),
           onLongPress: () {
             try {
+              FileHelper().jsonWrite(key: "current_page", value: "");
               userNotifier.signOut(url: appUrl).then((value) {
                 if (value.state == true) {
                   if (FileHelper().delFile("token")) {
@@ -95,6 +96,7 @@ Drawer actionMenu(BuildContext context) {
           },
           onPressed: () {
             try {
+              FileHelper().jsonWrite(key: "current_page", value: "");
               userNotifier.signOut(url: appUrl).then((value) {
                 if (value.state == true) {
                   if (FileHelper().delFile("token")) {

@@ -101,6 +101,7 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     setConf();
+    FileHelper().jsonWrite(key: "current_page", value: "");
 
     animationController0 = AnimationController(duration: Duration(milliseconds: showSpeed), vsync: this);
     animationController1 = AnimationController(duration: Duration(milliseconds: showSpeed), vsync: this);
