@@ -60,7 +60,7 @@ class ForgotPasswordState extends State<ForgotPassword> with TickerProviderState
         sendMail = false;
         await animationControllerEmail.forward().orCancel;
         await animationControllerEmail.reverse().orCancel;
-        Future.delayed(const Duration(milliseconds: 1500)).then((value) async {
+        Future.delayed(const Duration(milliseconds: 1000)).then((value) async {
           userNotifier.sendEmail(url: url, email: emailController.text, sendType: 2);
           sendMail = true;
         });

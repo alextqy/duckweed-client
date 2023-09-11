@@ -6,6 +6,7 @@ class Lang {
   String type = "";
   String title = "";
 
+  String theServerAddressIsIncorrect = "";
   String requestTimedOut = "";
   String cancel = "";
   String signIn = "";
@@ -28,12 +29,14 @@ class Lang {
   String longPressToExit = "";
   String exit = "";
   String personalSettings = "";
+  String home = "";
 
   Lang() {
     this.type = FileHelper().jsonRead(key: "lang");
     this.title = FileHelper().jsonRead(key: "title");
 
     if (this.type == "cn") {
+      this.theServerAddressIsIncorrect = "服务器地址未设置";
       this.requestTimedOut = "请求超时";
       this.signIn = "登录";
       this.signOut = "退出";
@@ -55,7 +58,9 @@ class Lang {
       this.longPressToExit = "长按退出";
       this.exit = "退出";
       this.personalSettings = "个人设置";
+      this.home = "首页";
     } else {
+      this.theServerAddressIsIncorrect = "The server address is incorrect";
       this.requestTimedOut = "Request timed out";
       this.signIn = "Sign in";
       this.signOut = "Sign out";
@@ -77,6 +82,7 @@ class Lang {
       this.longPressToExit = "Long press to exit";
       this.exit = "Exit";
       this.personalSettings = "Personal settings";
+      this.home = "Home";
     }
   }
 }

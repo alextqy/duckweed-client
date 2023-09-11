@@ -98,7 +98,11 @@ Drawer actionMenu(BuildContext context) {
               userNotifier.signOut(url: appUrl).then((value) {
                 if (value.state == true) {
                   if (FileHelper().delFile("token")) {
-                    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => IndexPage(title: appTitle)), (route) => false);
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (context) => IndexPage(title: appTitle)),
+                      (route) => false,
+                    );
                   }
                 } else {
                   showSnackBar(context, content: value.message, backgroundColor: bgColor(context));
@@ -119,15 +123,14 @@ Drawer actionMenu(BuildContext context) {
     child: Column(
       children: [
         menuHeader(context),
-        const Expanded(child: SizedBox()),
-        // ListTile(
-        //   horizontalTitleGap: 20,
-        //   leading: const Icon(Icons.),
-        //   title: Text("...", style: textStyle()),
-        //   onTap: () async {
-        //     Navigator.of(context).push(RouteHelper().generate(context, "/"));
-        //   },
-        // ),
+        ListTile(
+          horizontalTitleGap: 20,
+          leading: const Icon(Icons.home),
+          title: Text(Lang().home, style: textStyle()),
+          onTap: () async {
+            Navigator.of(context).push(RouteHelper().generate(context, "/"));
+          },
+        ),
         const Expanded(child: SizedBox()),
         menuFooter(context),
       ],
