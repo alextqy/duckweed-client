@@ -12,24 +12,18 @@ class DirApi extends ResponseHelper {
     parentID,
     dirName,
   ]) async {
-    try {
-      Response response = await post(
-        Uri.http(url, "/dirs"),
-        body: {
-          "userToken": FileHelper().readFile("token"),
-          "order": order.toString(),
-          "parentID": parentID.toString(),
-          "dirName": dirName.toString(),
-        },
-        headers: postHeaders,
-        encoding: postEncoding,
-      ).timeout(Duration(seconds: timeout));
-      return ResultModel.fromJson(jsonDecode(decoder.convert(response.bodyBytes)));
-    } on TimeoutException catch (e) {
-      return ResultModel(code: 200, message: e.toString());
-    } catch (e) {
-      return ResultModel(code: 200, message: e.toString());
-    }
+    Response response = await post(
+      Uri.http(url, "/dirs"),
+      body: {
+        "userToken": FileHelper().readFile("token"),
+        "order": order.toString(),
+        "parentID": parentID.toString(),
+        "dirName": dirName.toString(),
+      },
+      headers: postHeaders,
+      encoding: postEncoding,
+    ).timeout(Duration(seconds: timeout));
+    return ResultModel.fromJson(jsonDecode(decoder.convert(response.bodyBytes)));
   }
 
   Future<ResultModel> dirAction([
@@ -38,23 +32,17 @@ class DirApi extends ResponseHelper {
     parentID,
     id,
   ]) async {
-    try {
-      Response response = await post(
-        Uri.http(url, "/dir/action"),
-        body: {
-          "userToken": FileHelper().readFile("token"),
-          "dirName": dirName.toString(),
-          "parentID": parentID.toString(),
-          "id": id.toString(),
-        },
-        headers: postHeaders,
-        encoding: postEncoding,
-      ).timeout(Duration(seconds: timeout));
-      return ResultModel.fromJson(jsonDecode(decoder.convert(response.bodyBytes)));
-    } on TimeoutException catch (e) {
-      return ResultModel(code: 200, message: e.toString());
-    } catch (e) {
-      return ResultModel(code: 200, message: e.toString());
-    }
+    Response response = await post(
+      Uri.http(url, "/dir/action"),
+      body: {
+        "userToken": FileHelper().readFile("token"),
+        "dirName": dirName.toString(),
+        "parentID": parentID.toString(),
+        "id": id.toString(),
+      },
+      headers: postHeaders,
+      encoding: postEncoding,
+    ).timeout(Duration(seconds: timeout));
+    return ResultModel.fromJson(jsonDecode(decoder.convert(response.bodyBytes)));
   }
 }

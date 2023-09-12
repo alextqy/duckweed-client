@@ -12,42 +12,30 @@ class UserApi extends ResponseHelper {
     account,
     password,
   ]) async {
-    try {
-      Response response = await post(
-        Uri.http(url, "/sign/in"),
-        body: {
-          "account": account.toString(),
-          "password": password.toString(),
-        },
-        headers: postHeaders,
-        encoding: postEncoding,
-      ).timeout(Duration(seconds: timeout));
-      return ResultModel.fromJson(jsonDecode(decoder.convert(response.bodyBytes)));
-    } on TimeoutException catch (e) {
-      return ResultModel(code: 200, message: e.toString());
-    } catch (e) {
-      return ResultModel(code: 200, message: e.toString());
-    }
+    Response response = await post(
+      Uri.http(url, "/sign/in"),
+      body: {
+        "account": account.toString(),
+        "password": password.toString(),
+      },
+      headers: postHeaders,
+      encoding: postEncoding,
+    ).timeout(Duration(seconds: timeout));
+    return ResultModel.fromJson(jsonDecode(decoder.convert(response.bodyBytes)));
   }
 
   Future<ResultModel> signOut([
     url,
   ]) async {
-    try {
-      Response response = await post(
-        Uri.http(url, "/sign/out"),
-        body: {
-          "userToken": FileHelper().readFile("token"),
-        },
-        headers: postHeaders,
-        encoding: postEncoding,
-      ).timeout(Duration(seconds: timeout));
-      return ResultModel.fromJson(jsonDecode(decoder.convert(response.bodyBytes)));
-    } on TimeoutException catch (e) {
-      return ResultModel(code: 200, message: e.toString());
-    } catch (e) {
-      return ResultModel(code: 200, message: e.toString());
-    }
+    Response response = await post(
+      Uri.http(url, "/sign/out"),
+      body: {
+        "userToken": FileHelper().readFile("token"),
+      },
+      headers: postHeaders,
+      encoding: postEncoding,
+    ).timeout(Duration(seconds: timeout));
+    return ResultModel.fromJson(jsonDecode(decoder.convert(response.bodyBytes)));
   }
 
   Future<ResultListModel> userList([
@@ -60,28 +48,22 @@ class UserApi extends ResponseHelper {
     level,
     status,
   ]) async {
-    try {
-      Response response = await post(
-        Uri.http(url, "/user/list"),
-        body: {
-          "userToken": FileHelper().readFile("token"),
-          "page": page.toString(),
-          "pageSize": pageSize.toString(),
-          "order": order.toString(),
-          "account": account.toString(),
-          "name": name.toString(),
-          "level": level.toString(),
-          "status": status.toString(),
-        },
-        headers: postHeaders,
-        encoding: postEncoding,
-      ).timeout(Duration(seconds: timeout));
-      return ResultListModel.fromJson(jsonDecode(decoder.convert(response.bodyBytes)));
-    } on TimeoutException catch (e) {
-      return ResultListModel(code: 200, message: e.toString());
-    } catch (e) {
-      return ResultListModel(code: 200, message: e.toString());
-    }
+    Response response = await post(
+      Uri.http(url, "/user/list"),
+      body: {
+        "userToken": FileHelper().readFile("token"),
+        "page": page.toString(),
+        "pageSize": pageSize.toString(),
+        "order": order.toString(),
+        "account": account.toString(),
+        "name": name.toString(),
+        "level": level.toString(),
+        "status": status.toString(),
+      },
+      headers: postHeaders,
+      encoding: postEncoding,
+    ).timeout(Duration(seconds: timeout));
+    return ResultListModel.fromJson(jsonDecode(decoder.convert(response.bodyBytes)));
   }
 
   Future<ResultModel> users([
@@ -92,48 +74,36 @@ class UserApi extends ResponseHelper {
     level,
     status,
   ]) async {
-    try {
-      Response response = await post(
-        Uri.http(url, "/users"),
-        body: {
-          "userToken": FileHelper().readFile("token"),
-          "order": order.toString(),
-          "account": account.toString(),
-          "name": name.toString(),
-          "level": level.toString(),
-          "status": status.toString(),
-        },
-        headers: postHeaders,
-        encoding: postEncoding,
-      ).timeout(Duration(seconds: timeout));
-      return ResultModel.fromJson(jsonDecode(decoder.convert(response.bodyBytes)));
-    } on TimeoutException catch (e) {
-      return ResultModel(code: 200, message: e.toString());
-    } catch (e) {
-      return ResultModel(code: 200, message: e.toString());
-    }
+    Response response = await post(
+      Uri.http(url, "/users"),
+      body: {
+        "userToken": FileHelper().readFile("token"),
+        "order": order.toString(),
+        "account": account.toString(),
+        "name": name.toString(),
+        "level": level.toString(),
+        "status": status.toString(),
+      },
+      headers: postHeaders,
+      encoding: postEncoding,
+    ).timeout(Duration(seconds: timeout));
+    return ResultModel.fromJson(jsonDecode(decoder.convert(response.bodyBytes)));
   }
 
   Future<ResultModel> userGet([
     url,
     id,
   ]) async {
-    try {
-      Response response = await post(
-        Uri.http(url, "/user/get"),
-        body: {
-          "userToken": FileHelper().readFile("token"),
-          "id": id.toString(),
-        },
-        headers: postHeaders,
-        encoding: postEncoding,
-      ).timeout(Duration(seconds: timeout));
-      return ResultModel.fromJson(jsonDecode(decoder.convert(response.bodyBytes)));
-    } on TimeoutException catch (e) {
-      return ResultModel(code: 200, message: e.toString());
-    } catch (e) {
-      return ResultModel(code: 200, message: e.toString());
-    }
+    Response response = await post(
+      Uri.http(url, "/user/get"),
+      body: {
+        "userToken": FileHelper().readFile("token"),
+        "id": id.toString(),
+      },
+      headers: postHeaders,
+      encoding: postEncoding,
+    ).timeout(Duration(seconds: timeout));
+    return ResultModel.fromJson(jsonDecode(decoder.convert(response.bodyBytes)));
   }
 
   Future<ResultModel> setAvailableSpace([
@@ -141,67 +111,49 @@ class UserApi extends ResponseHelper {
     id,
     availableSpace,
   ]) async {
-    try {
-      Response response = await post(
-        Uri.http(url, "/set/available/space"),
-        body: {
-          "userToken": FileHelper().readFile("token"),
-          "id": id.toString(),
-          "availableSpace": availableSpace.toString(),
-        },
-        headers: postHeaders,
-        encoding: postEncoding,
-      ).timeout(Duration(seconds: timeout));
-      return ResultModel.fromJson(jsonDecode(decoder.convert(response.bodyBytes)));
-    } on TimeoutException catch (e) {
-      return ResultModel(code: 200, message: e.toString());
-    } catch (e) {
-      return ResultModel(code: 200, message: e.toString());
-    }
+    Response response = await post(
+      Uri.http(url, "/set/available/space"),
+      body: {
+        "userToken": FileHelper().readFile("token"),
+        "id": id.toString(),
+        "availableSpace": availableSpace.toString(),
+      },
+      headers: postHeaders,
+      encoding: postEncoding,
+    ).timeout(Duration(seconds: timeout));
+    return ResultModel.fromJson(jsonDecode(decoder.convert(response.bodyBytes)));
   }
 
   Future<ResultModel> disableUser([
     url,
     id,
   ]) async {
-    try {
-      Response response = await post(
-        Uri.http(url, "/disable/user"),
-        body: {
-          "userToken": FileHelper().readFile("token"),
-          "id": id.toString(),
-        },
-        headers: postHeaders,
-        encoding: postEncoding,
-      ).timeout(Duration(seconds: timeout));
-      return ResultModel.fromJson(jsonDecode(decoder.convert(response.bodyBytes)));
-    } on TimeoutException catch (e) {
-      return ResultModel(code: 200, message: e.toString());
-    } catch (e) {
-      return ResultModel(code: 200, message: e.toString());
-    }
+    Response response = await post(
+      Uri.http(url, "/disable/user"),
+      body: {
+        "userToken": FileHelper().readFile("token"),
+        "id": id.toString(),
+      },
+      headers: postHeaders,
+      encoding: postEncoding,
+    ).timeout(Duration(seconds: timeout));
+    return ResultModel.fromJson(jsonDecode(decoder.convert(response.bodyBytes)));
   }
 
   Future<ResultModel> userDel([
     url,
     id,
   ]) async {
-    try {
-      Response response = await post(
-        Uri.http(url, "/user/del"),
-        body: {
-          "userToken": FileHelper().readFile("token"),
-          "id": id.toString(),
-        },
-        headers: postHeaders,
-        encoding: postEncoding,
-      ).timeout(Duration(seconds: timeout));
-      return ResultModel.fromJson(jsonDecode(decoder.convert(response.bodyBytes)));
-    } on TimeoutException catch (e) {
-      return ResultModel(code: 200, message: e.toString());
-    } catch (e) {
-      return ResultModel(code: 200, message: e.toString());
-    }
+    Response response = await post(
+      Uri.http(url, "/user/del"),
+      body: {
+        "userToken": FileHelper().readFile("token"),
+        "id": id.toString(),
+      },
+      headers: postHeaders,
+      encoding: postEncoding,
+    ).timeout(Duration(seconds: timeout));
+    return ResultModel.fromJson(jsonDecode(decoder.convert(response.bodyBytes)));
   }
 
   Future<ResultModel> signUp([
@@ -212,45 +164,33 @@ class UserApi extends ResponseHelper {
     email,
     captcha,
   ]) async {
-    try {
-      Response response = await post(
-        Uri.http(url, "/sign/up"),
-        body: {
-          "account": account.toString(),
-          "name": name.toString(),
-          "password": password.toString(),
-          "email": email.toString(),
-          "captcha": captcha.toString(),
-        },
-        headers: postHeaders,
-        encoding: postEncoding,
-      ).timeout(Duration(seconds: timeout));
-      return ResultModel.fromJson(jsonDecode(decoder.convert(response.bodyBytes)));
-    } on TimeoutException catch (e) {
-      return ResultModel(code: 200, message: e.toString());
-    } catch (e) {
-      return ResultModel(code: 200, message: e.toString());
-    }
+    Response response = await post(
+      Uri.http(url, "/sign/up"),
+      body: {
+        "account": account.toString(),
+        "name": name.toString(),
+        "password": password.toString(),
+        "email": email.toString(),
+        "captcha": captcha.toString(),
+      },
+      headers: postHeaders,
+      encoding: postEncoding,
+    ).timeout(Duration(seconds: timeout));
+    return ResultModel.fromJson(jsonDecode(decoder.convert(response.bodyBytes)));
   }
 
   Future<ResultModel> checkPersonalData([
     url,
   ]) async {
-    try {
-      Response response = await post(
-        Uri.http(url, "/check/personal/data"),
-        body: {
-          "userToken": FileHelper().readFile("token"),
-        },
-        headers: postHeaders,
-        encoding: postEncoding,
-      ).timeout(Duration(seconds: timeout));
-      return ResultModel.fromJson(jsonDecode(decoder.convert(response.bodyBytes)));
-    } on TimeoutException catch (e) {
-      return ResultModel(code: 200, message: e.toString());
-    } catch (e) {
-      return ResultModel(code: 200, message: e.toString());
-    }
+    Response response = await post(
+      Uri.http(url, "/check/personal/data"),
+      body: {
+        "userToken": FileHelper().readFile("token"),
+      },
+      headers: postHeaders,
+      encoding: postEncoding,
+    ).timeout(Duration(seconds: timeout));
+    return ResultModel.fromJson(jsonDecode(decoder.convert(response.bodyBytes)));
   }
 
   Future<ResultModel> modifyPersonalData([
@@ -260,25 +200,19 @@ class UserApi extends ResponseHelper {
     email,
     captcha,
   ]) async {
-    try {
-      Response response = await post(
-        Uri.http(url, "/modify/personal/data"),
-        body: {
-          "userToken": FileHelper().readFile("token"),
-          "name": name.toString(),
-          "password": password.toString(),
-          "email": email.toString(),
-          "captcha": captcha.toString(),
-        },
-        headers: postHeaders,
-        encoding: postEncoding,
-      ).timeout(Duration(seconds: timeout));
-      return ResultModel.fromJson(jsonDecode(decoder.convert(response.bodyBytes)));
-    } on TimeoutException catch (e) {
-      return ResultModel(code: 200, message: e.toString());
-    } catch (e) {
-      return ResultModel(code: 200, message: e.toString());
-    }
+    Response response = await post(
+      Uri.http(url, "/modify/personal/data"),
+      body: {
+        "userToken": FileHelper().readFile("token"),
+        "name": name.toString(),
+        "password": password.toString(),
+        "email": email.toString(),
+        "captcha": captcha.toString(),
+      },
+      headers: postHeaders,
+      encoding: postEncoding,
+    ).timeout(Duration(seconds: timeout));
+    return ResultModel.fromJson(jsonDecode(decoder.convert(response.bodyBytes)));
   }
 
   Future<ResultModel> resetPassword([
@@ -286,22 +220,16 @@ class UserApi extends ResponseHelper {
     newPassword,
     captcha,
   ]) async {
-    try {
-      Response response = await post(
-        Uri.http(url, "/reset/password"),
-        body: {
-          "newPassword": newPassword.toString(),
-          "captcha": captcha.toString(),
-        },
-        headers: postHeaders,
-        encoding: postEncoding,
-      ).timeout(Duration(seconds: timeout));
-      return ResultModel.fromJson(jsonDecode(decoder.convert(response.bodyBytes)));
-    } on TimeoutException catch (e) {
-      return ResultModel(code: 200, message: e.toString());
-    } catch (e) {
-      return ResultModel(code: 200, message: e.toString());
-    }
+    Response response = await post(
+      Uri.http(url, "/reset/password"),
+      body: {
+        "newPassword": newPassword.toString(),
+        "captcha": captcha.toString(),
+      },
+      headers: postHeaders,
+      encoding: postEncoding,
+    ).timeout(Duration(seconds: timeout));
+    return ResultModel.fromJson(jsonDecode(decoder.convert(response.bodyBytes)));
   }
 
   Future<ResultModel> sendEmail([
@@ -309,21 +237,15 @@ class UserApi extends ResponseHelper {
     email,
     sendType,
   ]) async {
-    try {
-      Response response = await post(
-        Uri.http(url, "/send/email"),
-        body: {
-          "email": email.toString(),
-          "sendType": sendType.toString(),
-        },
-        headers: postHeaders,
-        encoding: postEncoding,
-      ).timeout(Duration(seconds: timeout));
-      return ResultModel.fromJson(jsonDecode(decoder.convert(response.bodyBytes)));
-    } on TimeoutException catch (e) {
-      return ResultModel(code: 200, message: e.toString());
-    } catch (e) {
-      return ResultModel(code: 200, message: e.toString());
-    }
+    Response response = await post(
+      Uri.http(url, "/send/email"),
+      body: {
+        "email": email.toString(),
+        "sendType": sendType.toString(),
+      },
+      headers: postHeaders,
+      encoding: postEncoding,
+    ).timeout(Duration(seconds: timeout));
+    return ResultModel.fromJson(jsonDecode(decoder.convert(response.bodyBytes)));
   }
 }

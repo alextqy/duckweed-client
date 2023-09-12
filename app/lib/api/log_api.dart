@@ -11,22 +11,16 @@ class LogApi extends ResponseHelper {
     date,
     account,
   ]) async {
-    try {
-      Response response = await post(
-        Uri.http(url, "/view/log"),
-        body: {
-          "userToken": FileHelper().readFile("token"),
-          "date": date.toString(),
-          "account": account.toString(),
-        },
-        headers: postHeaders,
-        encoding: postEncoding,
-      ).timeout(Duration(seconds: timeout));
-      return ResultModel.fromJson(jsonDecode(decoder.convert(response.bodyBytes)));
-    } on TimeoutException catch (e) {
-      return ResultModel(code: 200, message: e.toString());
-    } catch (e) {
-      return ResultModel(code: 200, message: e.toString());
-    }
+    Response response = await post(
+      Uri.http(url, "/view/log"),
+      body: {
+        "userToken": FileHelper().readFile("token"),
+        "date": date.toString(),
+        "account": account.toString(),
+      },
+      headers: postHeaders,
+      encoding: postEncoding,
+    ).timeout(Duration(seconds: timeout));
+    return ResultModel.fromJson(jsonDecode(decoder.convert(response.bodyBytes)));
   }
 }
