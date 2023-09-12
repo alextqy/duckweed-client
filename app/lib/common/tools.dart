@@ -1,6 +1,7 @@
 import "dart:io";
 import "dart:convert";
 import "dart:typed_data";
+import "package:app/common/file.dart";
 import "package:crypto/crypto.dart" as crypto;
 import "package:flutter/material.dart";
 import "package:app/interface/common/show_alert_dialog.dart";
@@ -87,7 +88,7 @@ class Tools {
 
   // UDP 客户端
   Future<String> clentUDP(int port) async {
-    RawDatagramSocket rawDgramSocket = await RawDatagramSocket.bind("0.0.0.0", port).timeout(const Duration(seconds: 10));
+    RawDatagramSocket rawDgramSocket = await RawDatagramSocket.bind("0.0.0.0", port);
     // rawDgramSocket.send(utf8.encode("hello,world!"), InternetAddress("0.0.0.0"), port);
     await for (RawSocketEvent event in rawDgramSocket) {
       if (event == RawSocketEvent.read) {
@@ -110,9 +111,13 @@ class Tools {
     })).listen((event) async {
       if (event == RawSocketEvent.read) {
         try {
-          showSnackBar(context, content: utf8.decode(rawDgramSocket.receive()!.data));
+          if (!FileHelper().jsonWrite(key: "server_address", value: utf8.decode(rawDgramSocket.receive()!.data))) {
+            showSnackBar(context, content: Lang().operationFailed, backgroundColor: Colors.black);
+          } else {
+            showSnackBar(context, content: Lang().complete, backgroundColor: Colors.black);
+          }
         } catch (e) {
-          showSnackBar(context, content: e.toString());
+          showSnackBar(context, content: e.toString(), backgroundColor: Colors.black);
         }
         rawDgramSocket.close();
       }
