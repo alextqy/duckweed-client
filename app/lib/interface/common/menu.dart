@@ -118,44 +118,54 @@ Drawer actionMenu(BuildContext context) {
     child: Column(
       children: [
         menuHeader(context),
-        ListTile(
-          horizontalTitleGap: 20,
-          leading: const Icon(Icons.home_outlined),
-          title: Text(Lang().home, style: textStyle()),
-          onTap: () async {
-            Navigator.of(context).push(RouteHelper().generate(context, "/"));
-          },
+        Expanded(
+          child: ListView(
+            padding: const EdgeInsets.all(0),
+            children: [
+              ListTile(
+                horizontalTitleGap: 20,
+                leading: const Icon(Icons.home_outlined),
+                title: Text(Lang().home, style: textStyle()),
+                onTap: () async {
+                  Navigator.of(context).push(RouteHelper().generate(context, "/"));
+                },
+              ),
+              Visibility(
+                visible: master ? true : false,
+                child: ListTile(
+                  horizontalTitleGap: 20,
+                  leading: const Icon(Icons.people_outlined),
+                  title: Text(Lang().users, style: textStyle()),
+                  onTap: () async {
+                    Navigator.of(context).push(RouteHelper().generate(context, "/users"));
+                  },
+                ),
+              ),
+              Visibility(
+                visible: master ? true : false,
+                child: ListTile(
+                  horizontalTitleGap: 20,
+                  leading: const Icon(Icons.announcement_outlined),
+                  title: Text(Lang().announcements, style: textStyle()),
+                  onTap: () async {
+                    Navigator.of(context).push(RouteHelper().generate(context, "/announcements"));
+                  },
+                ),
+              ),
+              Visibility(
+                visible: master ? true : false,
+                child: ListTile(
+                  horizontalTitleGap: 20,
+                  leading: const Icon(Icons.topic_outlined),
+                  title: Text(Lang().systemLog, style: textStyle()),
+                  onTap: () async {
+                    Navigator.of(context).push(RouteHelper().generate(context, "/system_log"));
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
-        master
-            ? ListTile(
-                horizontalTitleGap: 20,
-                leading: const Icon(Icons.people_outlined),
-                title: Text(Lang().users, style: textStyle()),
-                onTap: () async {
-                  Navigator.of(context).push(RouteHelper().generate(context, "/users"));
-                },
-              )
-            : Container(),
-        master
-            ? ListTile(
-                horizontalTitleGap: 20,
-                leading: const Icon(Icons.announcement_outlined),
-                title: Text(Lang().announcements, style: textStyle()),
-                onTap: () async {
-                  Navigator.of(context).push(RouteHelper().generate(context, "/announcements"));
-                },
-              )
-            : Container(),
-        master
-            ? ListTile(
-                horizontalTitleGap: 20,
-                leading: const Icon(Icons.topic_outlined),
-                title: Text(Lang().systemLog, style: textStyle()),
-                onTap: () async {
-                  Navigator.of(context).push(RouteHelper().generate(context, "/system_log"));
-                },
-              )
-            : Container(),
         const Expanded(child: SizedBox()),
         menuFooter(context),
       ],
