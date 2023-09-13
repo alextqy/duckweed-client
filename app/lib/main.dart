@@ -150,7 +150,7 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                       ButtonSegment<LangList>(value: LangList.cn, label: Text("CN", style: textStyle())),
                     ],
                     selected: <LangList>{langListView},
-                    onSelectionChanged: (Set<LangList> newSelection) {
+                    onSelectionChanged: (Set<LangList> newSelection) async {
                       setState(() {
                         langListView = newSelection.first;
                         if (langListView == LangList.cn) {
@@ -269,7 +269,7 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                           cursorWidth: 1,
                           textAlign: TextAlign.center,
                           style: textStyle(),
-                          onChanged: (text) {
+                          onChanged: (text) async {
                             if (text.isNotEmpty) {
                               testStatus = true;
                               animationControllerTest.forward();
@@ -288,7 +288,7 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                               ),
                               child: IconButton(
                                 icon: Icon(Icons.wifi, size: iconSize, color: Colors.white70),
-                                onPressed: () {
+                                onPressed: () async {
                                   Tools().clentUDP(int.parse(FileHelper().jsonRead(key: "port_listening"))).then((value) {
                                     if (value.isNotEmpty) {
                                       if (FileHelper().jsonWrite(key: "server_address", value: value)) {
@@ -315,7 +315,11 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                                 ),
                                 child: IconButton(
                                   icon: Icon(Icons.ads_click, size: animationTest.value, color: Colors.white70),
-                                  onPressed: () {},
+                                  onPressed: () async {
+                                    if (netController.text.isNotEmpty) {
+                                      userNotifier.test(url: netController.text);
+                                    }
+                                  },
                                 ),
                               ),
                             ),
@@ -342,7 +346,7 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                           child: Center(
                             child: Text("OK", style: textStyle()),
                           ),
-                          onTap: () {
+                          onTap: () async {
                             if (netController.text.isNotEmpty && netBtn == true) {
                               netBtn = false;
                               Future.delayed(const Duration(milliseconds: 1000)).then((_) async {
@@ -396,7 +400,7 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                       decoration: InputDecoration(
                         suffixIcon: IconButton(
                           icon: Icon(Icons.clear, size: iconSize, color: Colors.white70),
-                          onPressed: () => accountController.clear(),
+                          onPressed: () async => accountController.clear(),
                         ),
                         icon: Icon(Icons.account_box, size: iconSize, color: Colors.white70),
                         labelText: Lang().account,
@@ -419,7 +423,7 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                       decoration: InputDecoration(
                         suffixIcon: IconButton(
                           icon: Icon(obscureText ? Icons.visibility_off : Icons.visibility, size: iconSize, color: Colors.white70),
-                          onPressed: () {
+                          onPressed: () async {
                             setState(() {
                               obscureText = !obscureText;
                             });
@@ -443,7 +447,7 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                             Lang().forgotPassword,
                             style: textStyle(color: Colors.white60, fontSize: 12),
                           ),
-                          onPressed: () {
+                          onPressed: () async {
                             Navigator.push(context, MaterialPageRoute(builder: (context) {
                               return const ForgotPassword();
                             }));
@@ -463,7 +467,7 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                         decoration: BoxDecoration(borderRadius: const BorderRadius.all(Radius.circular(8)), color: bgColor(context)),
                         child: InkWell(
                           child: Center(child: Text("GO", style: textStyle())),
-                          onTap: () {
+                          onTap: () async {
                             if (appUrl.isEmpty) {
                               showSnackBar(context, content: Lang().theServerAddressIsIncorrect, backgroundColor: bgColor(context));
                             } else {
@@ -543,7 +547,7 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                           decoration: InputDecoration(
                             suffixIcon: IconButton(
                               icon: Icon(Icons.send, size: animationEmail.value, color: Colors.white70),
-                              onPressed: () {
+                              onPressed: () async {
                                 if (sendMail == true) {
                                   playAnimationEmail();
                                 }
@@ -571,7 +575,7 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                       decoration: InputDecoration(
                         suffixIcon: IconButton(
                           icon: Icon(Icons.clear, size: iconSize, color: Colors.white70),
-                          onPressed: () => newCaptchaController.clear(),
+                          onPressed: () async => newCaptchaController.clear(),
                         ),
                         icon: Icon(Icons.verified, size: iconSize, color: Colors.white70),
                         hintText: Lang().captcha,
@@ -593,7 +597,7 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                       decoration: InputDecoration(
                         suffixIcon: IconButton(
                           icon: Icon(Icons.clear, size: iconSize, color: Colors.white70),
-                          onPressed: () => newAccountController.clear(),
+                          onPressed: () async => newAccountController.clear(),
                         ),
                         icon: Icon(Icons.account_box, size: iconSize, color: Colors.white70),
                         hintText: Lang().account,
@@ -615,7 +619,7 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                       decoration: InputDecoration(
                         suffixIcon: IconButton(
                           icon: Icon(Icons.clear, size: iconSize, color: Colors.white70),
-                          onPressed: () => newNameController.clear(),
+                          onPressed: () async => newNameController.clear(),
                         ),
                         icon: Icon(Icons.person, size: iconSize, color: Colors.white70),
                         hintText: Lang().nickName,
@@ -638,7 +642,7 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                       decoration: InputDecoration(
                         suffixIcon: IconButton(
                           icon: Icon(Icons.clear, size: iconSize, color: Colors.white70),
-                          onPressed: () => newPasswordController.clear(),
+                          onPressed: () async => newPasswordController.clear(),
                         ),
                         icon: Icon(Icons.password, size: iconSize, color: Colors.white70),
                         hintText: Lang().password,
@@ -662,7 +666,7 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                           child: Center(
                             child: Text(btnContent, style: textStyle()),
                           ),
-                          onTap: () {
+                          onTap: () async {
                             if (newEmailController.text != "" && newCaptchaController.text != "" && newAccountController.text != "" && newNameController.text != "" && newPasswordController.text != "" && regBtn == true) {
                               regBtn = false;
                               Future.delayed(const Duration(milliseconds: 1000)).then((value) async {

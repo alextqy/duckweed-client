@@ -13,7 +13,7 @@ showAlertDialog(BuildContext context, {String memo = ""}) {
             content: Text(memo),
             actions: [
               TextButton(
-                onPressed: () {
+                onPressed: () async {
                   Navigator.of(context).pop();
                 },
                 child: Text(Lang().cancel),

@@ -44,7 +44,7 @@ Drawer actionMenu(BuildContext context) {
                     ),
                   ),
                 ),
-                onTap: () {
+                onTap: () async {
                   Navigator.of(context).push(RouteHelper().generate(context, "/personal/settings"));
                 },
               ),
@@ -79,7 +79,7 @@ Drawer actionMenu(BuildContext context) {
               Icon(size: iconSize, Icons.exit_to_app),
             ],
           ),
-          onLongPress: () {
+          onLongPress: () async {
             try {
               FileHelper().jsonWrite(key: "current_page", value: "");
               userNotifier.signOut(url: appUrl).then((value) {
@@ -95,7 +95,7 @@ Drawer actionMenu(BuildContext context) {
               showSnackBar(context, content: e.toString(), backgroundColor: bgColor(context));
             }
           },
-          onPressed: () {
+          onPressed: () async {
             try {
               FileHelper().jsonWrite(key: "current_page", value: "");
               userNotifier.signOut(url: appUrl).then((value) {

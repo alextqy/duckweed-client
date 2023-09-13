@@ -109,7 +109,7 @@ class ForgotPasswordState extends State<ForgotPassword> with TickerProviderState
                         decoration: InputDecoration(
                           suffixIcon: IconButton(
                             icon: Icon(Icons.send, size: animationEmail.value, color: Colors.white70),
-                            onPressed: () {
+                            onPressed: () async {
                               if (sendMail == true) {
                                 playAnimationEmail();
                               }
@@ -140,7 +140,7 @@ class ForgotPasswordState extends State<ForgotPassword> with TickerProviderState
                 decoration: InputDecoration(
                   suffixIcon: IconButton(
                     icon: Icon(Icons.clear, size: iconSize, color: Colors.white70),
-                    onPressed: () => captchaController.clear(),
+                    onPressed: () async => captchaController.clear(),
                   ),
                   icon: Icon(Icons.verified, size: iconSize, color: Colors.white70),
                   labelText: Lang().captcha,
@@ -163,7 +163,7 @@ class ForgotPasswordState extends State<ForgotPassword> with TickerProviderState
                 decoration: InputDecoration(
                   suffixIcon: IconButton(
                     icon: Icon(obscureText ? Icons.visibility_off : Icons.visibility, size: iconSize, color: Colors.white70),
-                    onPressed: () {
+                    onPressed: () async {
                       setState(() {
                         obscureText = !obscureText;
                       });
@@ -191,7 +191,7 @@ class ForgotPasswordState extends State<ForgotPassword> with TickerProviderState
                     child: Center(
                       child: Text(btnContent, style: textStyle()),
                     ),
-                    onTap: () {
+                    onTap: () async {
                       if (captchaController.text.isNotEmpty && newPasswordController.text.isNotEmpty) {
                         userNotifier.resetPassword(url: url, captcha: captchaController.text, newPassword: newPasswordController.text);
                         if (userNotifier.result.state == true) {
