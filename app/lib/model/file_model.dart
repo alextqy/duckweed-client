@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class FileModel {
   int id;
   String fileName;
@@ -39,5 +41,10 @@ class FileModel {
       status: json["Status"],
       outreachID: json["OutreachID"],
     );
+  }
+
+  List<FileModel> fromJsonList(String jsonString) {
+    List<FileModel> dataList = (jsonDecode(jsonString) as List).map((i) => FileModel.fromJson(i)).toList();
+    return dataList;
   }
 }

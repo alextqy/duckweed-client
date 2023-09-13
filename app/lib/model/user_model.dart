@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class UserModel {
   int id;
   String account;
@@ -42,5 +44,10 @@ class UserModel {
       email: json["Email"],
       captcha: json["Captcha"],
     );
+  }
+
+  List<UserModel> fromJsonList(String jsonString) {
+    List<UserModel> dataList = (jsonDecode(jsonString) as List).map((i) => UserModel.fromJson(i)).toList();
+    return dataList;
   }
 }

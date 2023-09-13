@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class DirModel {
   int id;
   String dirName;
@@ -21,5 +23,10 @@ class DirModel {
       userID: json["UserID"],
       createtime: json["Createtime"],
     );
+  }
+
+  List<DirModel> fromJsonList(String jsonString) {
+    List<DirModel> dataList = (jsonDecode(jsonString) as List).map((i) => DirModel.fromJson(i)).toList();
+    return dataList;
   }
 }

@@ -1,12 +1,15 @@
 // ignore_for_file: must_be_immutable
 
-import "package:app/model/user_model.dart";
 import "package:flutter/material.dart";
 import "package:app/common/lang.dart";
-import "package:app/interface/common/pub_lib.dart";
-import "package:app/interface/common/show_alert_dialog.dart";
+
 import "package:app/notifier/base_notifier.dart";
 import "package:app/notifier/user_notifier.dart";
+
+import "package:app/interface/common/pub_lib.dart";
+import "package:app/interface/common/show_alert_dialog.dart";
+
+import "package:app/model/user_model.dart";
 
 class PersonalSettings extends StatefulWidget {
   const PersonalSettings({super.key});
@@ -43,6 +46,8 @@ class PersonalSettingsState extends State<PersonalSettings> with TickerProviderS
   @override
   void initState() {
     super.initState();
+    userNotifier.addListener(basicListener);
+
     emailController.text = "";
     nameController.text = "";
     passwordController.text = "";
@@ -59,8 +64,13 @@ class PersonalSettingsState extends State<PersonalSettings> with TickerProviderS
     animationEmail = Tween(begin: 0.0, end: 20.0).animate(animationControllerEmail);
     animationControllerInput = AnimationController(duration: Duration(milliseconds: showSpeed), vsync: this);
     animationInput = Tween(begin: 0.0, end: 64.5).animate(animationControllerInput);
+  }
 
-    userNotifier.addListener(basicListener);
+  @override
+  void dispose() {
+    userNotifier.removeListener(basicListener);
+    userNotifier.dispose();
+    super.dispose();
   }
 
   @override

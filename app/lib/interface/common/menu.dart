@@ -7,10 +7,10 @@ import "package:app/common/file.dart";
 
 import "package:app/notifier/user_notifier.dart";
 
+import "package:app/main.dart";
 import "package:app/interface/common/pub_lib.dart";
 import "package:app/interface/common/routes.dart";
 import "package:app/interface/common/show_alert_dialog.dart";
-import "package:app/main.dart";
 
 Drawer actionMenu(BuildContext context) {
   UserNotifier userNotifier = UserNotifier();

@@ -1,10 +1,12 @@
-import "package:app/interface/common/pub_lib.dart";
 import "package:flutter/material.dart";
 import "package:app/common/lang.dart";
 import "package:app/common/file.dart";
-import "package:app/interface/common/show_alert_dialog.dart";
+
 import "package:app/notifier/base_notifier.dart";
 import "package:app/notifier/user_notifier.dart";
+
+import "package:app/interface/common/pub_lib.dart";
+import "package:app/interface/common/show_alert_dialog.dart";
 
 class ForgotPassword extends StatefulWidget {
   const ForgotPassword({super.key});
@@ -44,13 +46,19 @@ class ForgotPasswordState extends State<ForgotPassword> with TickerProviderState
   @override
   void initState() {
     super.initState();
-
     userNotifier.addListener(basicListener);
 
     animationControllerBtn = AnimationController(duration: Duration(milliseconds: showSpeed), vsync: this);
     animationControllerEmail = AnimationController(duration: Duration(milliseconds: showSpeed), vsync: this);
     animationBtn = Tween(begin: 150.0, end: 0.0).animate(animationControllerBtn);
     animationEmail = Tween(begin: 20.0, end: 0.0).animate(animationControllerEmail);
+  }
+
+  @override
+  void dispose() {
+    userNotifier.removeListener(basicListener);
+    userNotifier.dispose();
+    super.dispose();
   }
 
   // 发送邮件动效

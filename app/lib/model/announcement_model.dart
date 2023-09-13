@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class AnnouncementModel {
   int id;
   String content;
@@ -15,5 +17,10 @@ class AnnouncementModel {
       content: json["Content"],
       createtime: json["Createtime"],
     );
+  }
+
+  List<AnnouncementModel> fromJsonList(String jsonString) {
+    List<AnnouncementModel> dataList = (jsonDecode(jsonString) as List).map((i) => AnnouncementModel.fromJson(i)).toList();
+    return dataList;
   }
 }

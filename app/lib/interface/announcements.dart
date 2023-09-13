@@ -1,7 +1,6 @@
-// ignore_for_file: must_be_immutable
-
 import "package:flutter/material.dart";
 import "package:app/common/lang.dart";
+
 import "package:app/interface/common/menu.dart";
 import "package:app/interface/common/pub_lib.dart";
 
@@ -16,6 +15,11 @@ class AnnouncementsState extends State<Announcements> with TickerProviderStateMi
   @override
   void initState() {
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
