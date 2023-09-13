@@ -5,14 +5,14 @@ import "package:app/common/lang.dart";
 import "package:app/interface/common/menu.dart";
 import "package:app/interface/common/pub_lib.dart";
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class Announcements extends StatefulWidget {
+  const Announcements({super.key});
 
   @override
-  State<HomePage> createState() => HomePageState();
+  State<Announcements> createState() => AnnouncementsState();
 }
 
-class HomePageState extends State<HomePage> with TickerProviderStateMixin {
+class AnnouncementsState extends State<Announcements> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
@@ -26,7 +26,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
         automaticallyImplyLeading: false,
         toolbarHeight: toolbarHeight,
         backgroundColor: bgColor(context),
-        title: Text(Lang().home, style: textStyle()),
+        title: Text(Lang().announcements, style: textStyle()),
       ),
       body: Container(
         margin: const EdgeInsets.all(0),

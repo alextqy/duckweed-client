@@ -14,6 +14,7 @@ import "package:app/main.dart";
 
 Drawer actionMenu(BuildContext context) {
   UserNotifier userNotifier = UserNotifier();
+  bool master = bool.parse(FileHelper().jsonRead(key: "master"));
 
   dynamic menuHeader(BuildContext context) {
     return SizedBox(
@@ -127,12 +128,42 @@ Drawer actionMenu(BuildContext context) {
         menuHeader(context),
         ListTile(
           horizontalTitleGap: 20,
-          leading: const Icon(Icons.home),
+          leading: const Icon(Icons.home_outlined),
           title: Text(Lang().home, style: textStyle()),
           onTap: () async {
             Navigator.of(context).push(RouteHelper().generate(context, "/"));
           },
         ),
+        master
+            ? ListTile(
+                horizontalTitleGap: 20,
+                leading: const Icon(Icons.people_outlined),
+                title: Text(Lang().users, style: textStyle()),
+                onTap: () async {
+                  Navigator.of(context).push(RouteHelper().generate(context, "/users"));
+                },
+              )
+            : Container(),
+        master
+            ? ListTile(
+                horizontalTitleGap: 20,
+                leading: const Icon(Icons.announcement_outlined),
+                title: Text(Lang().announcements, style: textStyle()),
+                onTap: () async {
+                  Navigator.of(context).push(RouteHelper().generate(context, "/announcements"));
+                },
+              )
+            : Container(),
+        master
+            ? ListTile(
+                horizontalTitleGap: 20,
+                leading: const Icon(Icons.topic_outlined),
+                title: Text(Lang().systemLog, style: textStyle()),
+                onTap: () async {
+                  Navigator.of(context).push(RouteHelper().generate(context, "/system_log"));
+                },
+              )
+            : Container(),
         const Expanded(child: SizedBox()),
         menuFooter(context),
       ],

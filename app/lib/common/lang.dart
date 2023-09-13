@@ -31,6 +31,9 @@ class Lang {
   String exit = "";
   String personalSettings = "";
   String home = "";
+  String users = "";
+  String announcements = "";
+  String systemLog = "";
 
   Lang() {
     this.type = FileHelper().jsonRead(key: "lang");
@@ -61,6 +64,9 @@ class Lang {
       this.exit = "退出";
       this.personalSettings = "个人设置";
       this.home = "首页";
+      this.users = "用户";
+      this.announcements = "公告";
+      this.systemLog = "系统日志";
     } else {
       this.theServerAddressIsIncorrect = "The server address is incorrect";
       this.operationFailed = "Operation failed";
@@ -86,6 +92,9 @@ class Lang {
       this.exit = "Exit";
       this.personalSettings = "Personal settings";
       this.home = "Home";
+      this.users = "Users";
+      this.announcements = "Announcements";
+      this.systemLog = "System log";
     }
   }
 }

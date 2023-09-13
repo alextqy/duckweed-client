@@ -5,6 +5,9 @@ import "package:app/common/file.dart";
 import "package:app/interface/common/pub_lib.dart";
 import "package:app/interface/home_page.dart";
 import "package:app/interface/personal_settings.dart";
+import "package:app/interface/users.dart";
+import "package:app/interface/announcements.dart";
+import "package:app/interface/system_log.dart";
 
 class RouteHelper {
   dynamic generate(BuildContext context, String routeName, {dynamic data}) {
@@ -16,7 +19,11 @@ class RouteHelper {
       case "/personal/settings":
         return MaterialPageRoute(builder: (context) => const PersonalSettings());
       case "/users":
-      // return MaterialPageRoute(builder: (context) => ());
+        return MaterialPageRoute(builder: (context) => const Users());
+      case "/announcements":
+        return MaterialPageRoute(builder: (context) => const Announcements());
+      case "/system_log":
+        return MaterialPageRoute(builder: (context) => const SystemLog());
       default:
         return MaterialPageRoute(
           builder: (context) => Scaffold(
