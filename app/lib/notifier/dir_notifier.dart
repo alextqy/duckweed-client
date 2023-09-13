@@ -19,12 +19,13 @@ class DirNotifier extends BaseNotifier {
   }) async {
     operationStatus.value = OperationStatus.failure;
     try {
-      result = await dirApi.dirAction(url, dirName, parentID, id);
-      if (result.state == true) {
-        operationStatus.value = OperationStatus.success;
-      } else {
-        operationMemo = result.message;
-      }
+      await dirApi.dirAction(url, dirName, parentID, id).then((value) {
+        if (value.state == true) {
+          operationStatus.value = OperationStatus.success;
+        } else {
+          operationMemo = value.message;
+        }
+      });
     } catch (e) {
       operationMemo = e.toString();
     } finally {

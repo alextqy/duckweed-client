@@ -14,12 +14,13 @@ class AnnouncementNotifier extends BaseNotifier {
   }) async {
     operationStatus.value = OperationStatus.failure;
     try {
-      result = await announcementApi.announcementGet(url, id);
-      if (result.state == true) {
-        operationStatus.value = OperationStatus.success;
-      } else {
-        operationMemo = result.message;
-      }
+      await announcementApi.announcementGet(url, id).then((value) {
+        if (value.state == true) {
+          operationStatus.value = OperationStatus.success;
+        } else {
+          operationMemo = value.message;
+        }
+      });
     } catch (e) {
       operationMemo = e.toString();
     } finally {
@@ -33,12 +34,13 @@ class AnnouncementNotifier extends BaseNotifier {
   }) async {
     operationStatus.value = OperationStatus.failure;
     try {
-      result = await announcementApi.announcementAdd(url, content);
-      if (result.state == true) {
-        operationStatus.value = OperationStatus.success;
-      } else {
-        operationMemo = result.message;
-      }
+      await announcementApi.announcementAdd(url, content).then((value) {
+        if (value.state == true) {
+          operationStatus.value = OperationStatus.success;
+        } else {
+          operationMemo = value.message;
+        }
+      });
     } catch (e) {
       operationMemo = e.toString();
     } finally {
@@ -52,12 +54,13 @@ class AnnouncementNotifier extends BaseNotifier {
   }) async {
     operationStatus.value = OperationStatus.failure;
     try {
-      result = await announcementApi.announcementDel(url, id);
-      if (result.state == true) {
-        operationStatus.value = OperationStatus.success;
-      } else {
-        operationMemo = result.message;
-      }
+      await announcementApi.announcementDel(url, id).then((value) {
+        if (value.state == true) {
+          operationStatus.value = OperationStatus.success;
+        } else {
+          operationMemo = value.message;
+        }
+      });
     } catch (e) {
       operationMemo = e.toString();
     } finally {

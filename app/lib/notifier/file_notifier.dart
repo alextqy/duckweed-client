@@ -12,12 +12,13 @@ class FileNotifier extends BaseNotifier {
   }) async {
     operationStatus.value = OperationStatus.failure;
     try {
-      result = await fileApi.fileAdd(url, fileName, fileType, fileSize, md5, dirID);
-      if (result.state == true) {
-        operationStatus.value = OperationStatus.success;
-      } else {
-        operationMemo = result.message;
-      }
+      await fileApi.fileAdd(url, fileName, fileType, fileSize, md5, dirID).then((value) {
+        if (value.state == true) {
+          operationStatus.value = OperationStatus.success;
+        } else {
+          operationMemo = value.message;
+        }
+      });
     } catch (e) {
       operationMemo = e.toString();
     } finally {
@@ -33,12 +34,13 @@ class FileNotifier extends BaseNotifier {
   }) async {
     operationStatus.value = OperationStatus.failure;
     try {
-      result = await fileApi.fileModify(url, id, fileName, dirID);
-      if (result.state == true) {
-        operationStatus.value = OperationStatus.success;
-      } else {
-        operationMemo = result.message;
-      }
+      await fileApi.fileModify(url, id, fileName, dirID).then((value) {
+        if (value.state == true) {
+          operationStatus.value = OperationStatus.success;
+        } else {
+          operationMemo = value.message;
+        }
+      });
     } catch (e) {
       operationMemo = e.toString();
     } finally {
@@ -61,12 +63,13 @@ class FileNotifier extends BaseNotifier {
   }) async {
     operationStatus.value = OperationStatus.failure;
     try {
-      result = await fileApi.fileDel(url, id);
-      if (result.state == true) {
-        operationStatus.value = OperationStatus.success;
-      } else {
-        operationMemo = result.message;
-      }
+      await fileApi.fileDel(url, id).then((value) {
+        if (value.state == true) {
+          operationStatus.value = OperationStatus.success;
+        } else {
+          operationMemo = value.message;
+        }
+      });
     } catch (e) {
       operationMemo = e.toString();
     } finally {

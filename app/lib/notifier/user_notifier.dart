@@ -6,12 +6,13 @@ class UserNotifier extends BaseNotifier {
   void test({required url}) async {
     operationStatus.value = OperationStatus.failure;
     try {
-      result = await userApi.test(url);
-      if (result.state == true) {
-        operationStatus.value = OperationStatus.success;
-      } else {
-        operationMemo = result.message;
-      }
+      await userApi.test(url).then((value) {
+        if (value.state == true) {
+          operationStatus.value = OperationStatus.success;
+        } else {
+          operationMemo = value.message;
+        }
+      });
     } catch (e) {
       operationMemo = e.toString();
     } finally {
@@ -71,12 +72,13 @@ class UserNotifier extends BaseNotifier {
   }) async {
     operationStatus.value = OperationStatus.failure;
     try {
-      result = await userApi.setAvailableSpace(url, id, availableSpace);
-      if (result.state == true) {
-        operationStatus.value = OperationStatus.success;
-      } else {
-        operationMemo = result.message;
-      }
+      await userApi.setAvailableSpace(url, id, availableSpace).then((value) {
+        if (value.state == true) {
+          operationStatus.value = OperationStatus.success;
+        } else {
+          operationMemo = value.message;
+        }
+      });
     } catch (e) {
       operationMemo = e.toString();
     } finally {
@@ -90,12 +92,13 @@ class UserNotifier extends BaseNotifier {
   }) async {
     operationStatus.value = OperationStatus.failure;
     try {
-      result = await userApi.disableUser(url, id);
-      if (result.state == true) {
-        operationStatus.value = OperationStatus.success;
-      } else {
-        operationMemo = result.message;
-      }
+      await userApi.disableUser(url, id).then((value) {
+        if (value.state == true) {
+          operationStatus.value = OperationStatus.success;
+        } else {
+          operationMemo = value.message;
+        }
+      });
     } catch (e) {
       operationMemo = e.toString();
     } finally {
@@ -109,12 +112,13 @@ class UserNotifier extends BaseNotifier {
   }) async {
     operationStatus.value = OperationStatus.failure;
     try {
-      result = await userApi.userDel(url, id);
-      if (result.state == true) {
-        operationStatus.value = OperationStatus.success;
-      } else {
-        operationMemo = result.message;
-      }
+      await userApi.userDel(url, id).then((value) {
+        if (value.state == true) {
+          operationStatus.value = OperationStatus.success;
+        } else {
+          operationMemo = value.message;
+        }
+      });
     } catch (e) {
       operationMemo = e.toString();
     } finally {
@@ -132,12 +136,13 @@ class UserNotifier extends BaseNotifier {
   }) async {
     operationStatus.value = OperationStatus.failure;
     try {
-      result = await userApi.signUp(url, account, name, password, email, captcha);
-      if (result.state == true) {
-        operationStatus.value = OperationStatus.success;
-      } else {
-        operationMemo = result.message;
-      }
+      await userApi.signUp(url, account, name, password, email, captcha).then((value) {
+        if (value.state == true) {
+          operationStatus.value = OperationStatus.success;
+        } else {
+          operationMemo = value.message;
+        }
+      });
     } catch (e) {
       operationMemo = e.toString();
     } finally {
@@ -160,12 +165,13 @@ class UserNotifier extends BaseNotifier {
   }) async {
     operationStatus.value = OperationStatus.failure;
     try {
-      result = await userApi.modifyPersonalData(url, name, password, email, captcha);
-      if (result.state == true) {
-        operationStatus.value = OperationStatus.success;
-      } else {
-        operationMemo = result.message;
-      }
+      await userApi.modifyPersonalData(url, name, password, email, captcha).then((value) {
+        if (value.state == true) {
+          operationStatus.value = OperationStatus.success;
+        } else {
+          operationMemo = value.message;
+        }
+      });
     } catch (e) {
       operationMemo = e.toString();
     } finally {
@@ -180,12 +186,13 @@ class UserNotifier extends BaseNotifier {
   }) async {
     operationStatus.value = OperationStatus.failure;
     try {
-      result = await userApi.resetPassword(url, newPassword, captcha);
-      if (result.state == true) {
-        operationStatus.value = OperationStatus.success;
-      } else {
-        operationMemo = result.message;
-      }
+      await userApi.resetPassword(url, newPassword, captcha).then((value) {
+        if (value.state == true) {
+          operationStatus.value = OperationStatus.success;
+        } else {
+          operationMemo = value.message;
+        }
+      });
     } catch (e) {
       operationMemo = e.toString();
     } finally {
@@ -200,12 +207,13 @@ class UserNotifier extends BaseNotifier {
   }) async {
     operationStatus.value = OperationStatus.failure;
     try {
-      result = await userApi.sendEmail(url, email, sendType);
-      if (result.state == true) {
-        operationStatus.value = OperationStatus.success;
-      } else {
-        operationMemo = result.message;
-      }
+      await userApi.sendEmail(url, email, sendType).then((value) {
+        if (value.state == true) {
+          operationStatus.value = OperationStatus.success;
+        } else {
+          operationMemo = value.message;
+        }
+      });
     } catch (e) {
       operationMemo = e.toString();
     } finally {
