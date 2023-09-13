@@ -3,6 +3,22 @@ import "package:app/model/result_list_model.dart";
 import "package:app/notifier/base_notifier.dart";
 
 class UserNotifier extends BaseNotifier {
+  void test({required url}) async {
+    operationStatus.value = OperationStatus.failure;
+    try {
+      result = await userApi.test(url);
+      if (result.state == true) {
+        operationStatus.value = OperationStatus.success;
+      } else {
+        operationMemo = result.message;
+      }
+    } catch (e) {
+      operationMemo = e.toString();
+    } finally {
+      notifyListeners();
+    }
+  }
+
   Future<ResultModel> signIn({
     required url,
     required account,

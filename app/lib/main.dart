@@ -58,6 +58,7 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
   bool loginBtn = true;
   bool regBtn = true;
   bool sendMail = true;
+  late bool testStatus;
 
   TextEditingController netController = TextEditingController();
   TextEditingController accountController = TextEditingController();
@@ -72,10 +73,12 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
   late AnimationController animationController1;
   late AnimationController animationController2;
   late AnimationController animationControllerEmail;
+  late AnimationController animationControllerTest;
   late Animation<double> animation0;
   late Animation<double> animation1;
   late Animation<double> animation2;
   late Animation<double> animationEmail;
+  late Animation<double> animationTest;
 
   UserNotifier userNotifier = UserNotifier();
 
@@ -107,10 +110,12 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
     animationController1 = AnimationController(duration: Duration(milliseconds: showSpeed), vsync: this);
     animationController2 = AnimationController(duration: Duration(milliseconds: showSpeed), vsync: this);
     animationControllerEmail = AnimationController(duration: Duration(milliseconds: showSpeed), vsync: this);
+    animationControllerTest = AnimationController(duration: Duration(milliseconds: showSpeed), vsync: this);
     animation0 = Tween(begin: 0.0, end: 35.0).animate(animationController0);
     animation1 = Tween(begin: 0.0, end: 200.0).animate(animationController1);
     animation2 = Tween(begin: 150.0, end: 0.0).animate(animationController2);
     animationEmail = Tween(begin: 20.0, end: 0.0).animate(animationControllerEmail);
+    animationTest = Tween(begin: 0.0, end: 20.0).animate(animationControllerTest);
 
     animationController1.forward();
     userNotifier.addListener(basicListener);
@@ -118,6 +123,8 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    testStatus = netController.text.isEmpty ? false : true;
+    netController.text.isEmpty ? animationControllerTest.reverse() : animationControllerTest.forward();
     netController.text = appUrl.isNotEmpty ? appUrl : "";
     return Scaffold(
       appBar: AppBar(
@@ -249,46 +256,75 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
               width: 300,
               child: Column(
                 children: [
-                  Container(
-                    margin: const EdgeInsets.all(10),
-                    padding: const EdgeInsets.all(0),
-                    child: TextFormField(
-                      controller: netController,
-                      maxLines: 1,
-                      cursorHeight: 20,
-                      cursorWidth: 1,
-                      textAlign: TextAlign.center,
-                      style: textStyle(),
-                      decoration: InputDecoration(
-                        suffixIcon: Tooltip(
-                          preferBelow: false,
-                          message: Lang().automaticDetection,
-                          textStyle: textStyle(color: Colors.white),
-                          decoration: const BoxDecoration(
-                            color: Colors.deepOrangeAccent,
-                            borderRadius: BorderRadius.all(Radius.elliptical(20, 50)),
-                          ),
-                          child: IconButton(
-                            icon: Icon(Icons.wifi, size: iconSize, color: Colors.white70),
-                            onPressed: () {
-                              Tools().clentUDP(int.parse(FileHelper().jsonRead(key: "port_listening"))).then((value) {
-                                if (value.isNotEmpty) {
-                                  if (FileHelper().jsonWrite(key: "server_address", value: value)) {
-                                    setState(() {
-                                      netController.text = value;
-                                      appUrl = netController.text;
-                                      showSnackBar(context, content: Lang().complete, backgroundColor: bgColor(context));
-                                    });
-                                  }
-                                }
-                              });
-                            },
+                  AnimatedBuilder(
+                    animation: animationTest,
+                    builder: (context, child) {
+                      return Container(
+                        margin: const EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(0),
+                        child: TextFormField(
+                          controller: netController,
+                          maxLines: 1,
+                          cursorHeight: 20,
+                          cursorWidth: 1,
+                          textAlign: TextAlign.center,
+                          style: textStyle(),
+                          onChanged: (text) {
+                            if (text.isNotEmpty) {
+                              testStatus = true;
+                              animationControllerTest.forward();
+                            } else {
+                              animationControllerTest.reverse().whenCompleteOrCancel(() => testStatus = false);
+                            }
+                          },
+                          decoration: InputDecoration(
+                            suffixIcon: Tooltip(
+                              preferBelow: false,
+                              message: Lang().automaticDetection,
+                              textStyle: textStyle(color: Colors.white),
+                              decoration: const BoxDecoration(
+                                color: Colors.deepOrangeAccent,
+                                borderRadius: BorderRadius.all(Radius.elliptical(20, 50)),
+                              ),
+                              child: IconButton(
+                                icon: Icon(Icons.wifi, size: iconSize, color: Colors.white70),
+                                onPressed: () {
+                                  Tools().clentUDP(int.parse(FileHelper().jsonRead(key: "port_listening"))).then((value) {
+                                    if (value.isNotEmpty) {
+                                      if (FileHelper().jsonWrite(key: "server_address", value: value)) {
+                                        setState(() {
+                                          netController.text = value;
+                                          appUrl = netController.text;
+                                          showSnackBar(context, content: Lang().complete, backgroundColor: bgColor(context));
+                                        });
+                                      }
+                                    }
+                                  });
+                                },
+                              ),
+                            ),
+                            icon: Visibility(
+                              visible: testStatus,
+                              child: Tooltip(
+                                preferBelow: false,
+                                message: Lang().testConnection,
+                                textStyle: textStyle(color: Colors.white),
+                                decoration: const BoxDecoration(
+                                  color: Colors.deepOrangeAccent,
+                                  borderRadius: BorderRadius.all(Radius.elliptical(20, 50)),
+                                ),
+                                child: IconButton(
+                                  icon: Icon(Icons.ads_click, size: animationTest.value, color: Colors.white70),
+                                  onPressed: () {},
+                                ),
+                              ),
+                            ),
+                            labelText: Lang().serverAddress,
+                            labelStyle: textStyle(),
                           ),
                         ),
-                        labelText: Lang().serverAddress,
-                        labelStyle: textStyle(),
-                      ),
-                    ),
+                      );
+                    },
                   ),
                   AnimatedBuilder(
                     animation: animation0,

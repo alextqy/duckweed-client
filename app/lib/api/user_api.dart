@@ -7,6 +7,18 @@ import "package:app/model/result_model.dart";
 import "package:app/model/result_list_model.dart";
 
 class UserApi extends ResponseHelper {
+  Future<ResultModel> test(
+    url,
+  ) async {
+    Response response = await post(
+      Uri.http(url, "/test"),
+      body: {},
+      headers: postHeaders,
+      encoding: postEncoding,
+    ).timeout(Duration(seconds: timeout));
+    return ResultModel.fromJson(jsonDecode(decoder.convert(response.bodyBytes)));
+  }
+
   Future<ResultModel> signIn([
     url,
     account,

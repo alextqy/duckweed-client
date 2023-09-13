@@ -7,6 +7,7 @@ class Lang {
   String title = "";
 
   String theServerAddressIsIncorrect = "";
+  String testConnection = "";
   String operationFailed = "";
   String requestTimedOut = "";
   String cancel = "";
@@ -41,6 +42,7 @@ class Lang {
 
     if (this.type == "cn") {
       this.theServerAddressIsIncorrect = "服务器地址未设置";
+      this.testConnection = "测试连接";
       this.operationFailed = "操作失败";
       this.requestTimedOut = "请求超时";
       this.signIn = "登录";
@@ -69,6 +71,7 @@ class Lang {
       this.systemLog = "系统日志";
     } else {
       this.theServerAddressIsIncorrect = "The server address is incorrect";
+      this.testConnection = "Test connection";
       this.operationFailed = "Operation failed";
       this.requestTimedOut = "Request timed out";
       this.signIn = "Sign in";
