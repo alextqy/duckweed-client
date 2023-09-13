@@ -30,11 +30,7 @@ class FileHelper {
 
   Future<bool> writeFileAsync(String fileName, String content) async {
     File file = File(fileName);
-    try {
-      file.writeAsStringSync(content);
-    } catch (e) {
-      return false;
-    }
+    file.writeAsStringSync(content);
     return true;
   }
 

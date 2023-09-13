@@ -227,18 +227,14 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
 
   // 发送邮件动效
   void playAnimationEmail() async {
-    try {
-      if (newEmailController.text != "") {
-        sendMail = false;
-        await animationControllerEmail.forward().orCancel;
-        await animationControllerEmail.reverse().orCancel;
-        Future.delayed(const Duration(milliseconds: 1000)).then((value) async {
-          userNotifier.sendEmail(url: appUrl, email: newEmailController.text, sendType: 1);
-          sendMail = true;
-        });
-      }
-    } on TickerCanceled {
-      return;
+    if (newEmailController.text != "") {
+      sendMail = false;
+      await animationControllerEmail.forward().orCancel;
+      await animationControllerEmail.reverse().orCancel;
+      Future.delayed(const Duration(milliseconds: 1000)).then((value) async {
+        userNotifier.sendEmail(url: appUrl, email: newEmailController.text, sendType: 1);
+        sendMail = true;
+      });
     }
   }
 

@@ -80,40 +80,32 @@ Drawer actionMenu(BuildContext context) {
             ],
           ),
           onLongPress: () async {
-            try {
-              FileHelper().jsonWrite(key: "current_page", value: "");
-              userNotifier.signOut(url: appUrl).then((value) {
-                if (value.state == true) {
-                  if (FileHelper().delFile("token")) {
-                    exit(0);
-                  }
-                } else {
-                  showSnackBar(context, content: value.message, backgroundColor: bgColor(context));
+            FileHelper().jsonWrite(key: "current_page", value: "");
+            userNotifier.signOut(url: appUrl).then((value) {
+              if (value.state == true) {
+                if (FileHelper().delFile("token")) {
+                  exit(0);
                 }
-              });
-            } catch (e) {
-              showSnackBar(context, content: e.toString(), backgroundColor: bgColor(context));
-            }
+              } else {
+                showSnackBar(context, content: value.message, backgroundColor: bgColor(context));
+              }
+            });
           },
           onPressed: () async {
-            try {
-              FileHelper().jsonWrite(key: "current_page", value: "");
-              userNotifier.signOut(url: appUrl).then((value) {
-                if (value.state == true) {
-                  if (FileHelper().delFile("token")) {
-                    Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(builder: (context) => IndexPage(title: appTitle)),
-                      (route) => false,
-                    );
-                  }
-                } else {
-                  showSnackBar(context, content: value.message, backgroundColor: bgColor(context));
+            FileHelper().jsonWrite(key: "current_page", value: "");
+            userNotifier.signOut(url: appUrl).then((value) {
+              if (value.state == true) {
+                if (FileHelper().delFile("token")) {
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => IndexPage(title: appTitle)),
+                    (route) => false,
+                  );
                 }
-              });
-            } catch (e) {
-              showSnackBar(context, content: e.toString(), backgroundColor: bgColor(context));
-            }
+              } else {
+                showSnackBar(context, content: value.message, backgroundColor: bgColor(context));
+              }
+            });
           },
         ),
       ),

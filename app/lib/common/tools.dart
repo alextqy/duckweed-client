@@ -92,11 +92,7 @@ class Tools {
     // rawDgramSocket.send(utf8.encode("hello,world!"), InternetAddress("0.0.0.0"), port);
     await for (RawSocketEvent event in rawDgramSocket) {
       if (event == RawSocketEvent.read) {
-        try {
-          return utf8.decode(rawDgramSocket.receive()!.data);
-        } catch (e) {
-          return "";
-        }
+        return utf8.decode(rawDgramSocket.receive()!.data);
       }
     }
     return "";
@@ -110,14 +106,10 @@ class Tools {
       rawDgramSocket.close();
     })).listen((event) async {
       if (event == RawSocketEvent.read) {
-        try {
-          if (!FileHelper().jsonWrite(key: "server_address", value: utf8.decode(rawDgramSocket.receive()!.data))) {
-            showSnackBar(context, content: Lang().operationFailed, backgroundColor: Colors.black);
-          } else {
-            showSnackBar(context, content: Lang().complete, backgroundColor: Colors.black);
-          }
-        } catch (e) {
-          showSnackBar(context, content: e.toString(), backgroundColor: Colors.black);
+        if (!FileHelper().jsonWrite(key: "server_address", value: utf8.decode(rawDgramSocket.receive()!.data))) {
+          showSnackBar(context, content: Lang().operationFailed, backgroundColor: Colors.black);
+        } else {
+          showSnackBar(context, content: Lang().complete, backgroundColor: Colors.black);
         }
         rawDgramSocket.close();
       }

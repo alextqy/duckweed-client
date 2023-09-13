@@ -55,18 +55,14 @@ class ForgotPasswordState extends State<ForgotPassword> with TickerProviderState
 
   // 发送邮件动效
   void playAnimationEmail() async {
-    try {
-      if (emailController.text.isNotEmpty) {
-        sendMail = false;
-        await animationControllerEmail.forward().orCancel;
-        await animationControllerEmail.reverse().orCancel;
-        Future.delayed(const Duration(milliseconds: 1000)).then((value) async {
-          userNotifier.sendEmail(url: url, email: emailController.text, sendType: 2);
-          sendMail = true;
-        });
-      }
-    } on TickerCanceled {
-      return;
+    if (emailController.text.isNotEmpty) {
+      sendMail = false;
+      await animationControllerEmail.forward().orCancel;
+      await animationControllerEmail.reverse().orCancel;
+      Future.delayed(const Duration(milliseconds: 1000)).then((value) async {
+        userNotifier.sendEmail(url: url, email: emailController.text, sendType: 2);
+        sendMail = true;
+      });
     }
   }
 
