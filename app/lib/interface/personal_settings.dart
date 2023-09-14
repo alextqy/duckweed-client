@@ -1,5 +1,3 @@
-// ignore_for_file: must_be_immutable
-
 import "package:flutter/material.dart";
 import "package:app/common/lang.dart";
 
@@ -219,6 +217,8 @@ class PersonalSettingsState extends State<PersonalSettings> with TickerProviderS
                 color: bgColor(context),
               ),
               child: InkWell(
+                splashColor: Colors.transparent,
+                highlightColor: Colors.transparent,
                 child: Center(
                   child: Text("OK", style: textStyle()),
                 ),

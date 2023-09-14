@@ -86,6 +86,26 @@ class UserNotifier extends BaseNotifier {
     }
   }
 
+  void setRootAccount({
+    required url,
+    required id,
+  }) async {
+    operationStatus.value = OperationStatus.failure;
+    try {
+      await userApi.setRootAccount(url, id).then((value) {
+        if (value.state == true) {
+          operationStatus.value = OperationStatus.success;
+        } else {
+          operationMemo = value.message;
+        }
+      });
+    } catch (e) {
+      operationMemo = e.toString();
+    } finally {
+      notifyListeners();
+    }
+  }
+
   void disableUser({
     required url,
     required id,

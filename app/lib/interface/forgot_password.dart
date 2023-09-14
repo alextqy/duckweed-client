@@ -192,6 +192,8 @@ class ForgotPasswordState extends State<ForgotPassword> with TickerProviderState
                     color: bgColor(context),
                   ),
                   child: InkWell(
+                    splashColor: Colors.transparent,
+                    highlightColor: Colors.transparent,
                     child: Center(
                       child: Text(btnContent, style: textStyle()),
                     ),

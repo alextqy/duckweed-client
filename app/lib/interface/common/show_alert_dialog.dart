@@ -1,6 +1,8 @@
+import "package:app/interface/common/pub_lib.dart";
 import "package:flutter/material.dart";
 import "package:app/common/lang.dart";
 
+// 提示框
 showAlertDialog(BuildContext context, {String memo = ""}) {
   return showDialog(
     context: context,
@@ -9,14 +11,14 @@ showAlertDialog(BuildContext context, {String memo = ""}) {
       return StatefulBuilder(
         builder: (BuildContext context, Function state) {
           return AlertDialog(
-            title: Text(Lang().title),
-            content: Text(memo),
+            title: Text(Lang().title, style: textStyle()),
+            content: Text(memo, style: textStyle()),
             actions: [
               TextButton(
                 onPressed: () async {
                   Navigator.of(context).pop();
                 },
-                child: Text(Lang().cancel),
+                child: Text(Lang().cancel, style: textStyle()),
               ),
             ],
           );
@@ -26,6 +28,7 @@ showAlertDialog(BuildContext context, {String memo = ""}) {
   );
 }
 
+// 控件框
 showAlertWidget(BuildContext context, Widget child) {
   return showDialog(
     context: context,
@@ -57,9 +60,9 @@ ScaffoldFeatureController showSnackBar(BuildContext context, {String content = "
       padding: const EdgeInsets.all(10),
       content: Text(
         content,
-        style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 15),
+        style: textStyle(),
       ),
-      // action: SnackBarAction(label: "Action", onPressed: () {}),
+      // action: SnackBarAction(label: "Action", onPressed: () async {}),
     ),
   );
 }

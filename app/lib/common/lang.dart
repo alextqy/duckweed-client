@@ -35,6 +35,12 @@ class Lang {
   String users = "";
   String announcements = "";
   String systemLog = "";
+  String yes = "";
+  String no = "";
+
+  String root = "";
+  String availableSpace = "";
+  String createtime = "";
 
   Lang() {
     this.type = FileHelper().jsonRead(key: "lang");
@@ -69,6 +75,12 @@ class Lang {
       this.users = "用户";
       this.announcements = "公告";
       this.systemLog = "系统日志";
+      this.yes = "是";
+      this.no = "否";
+
+      this.root = "超级用户";
+      this.availableSpace = "可用空间";
+      this.createtime = "创建时间";
     } else {
       this.theServerAddressIsIncorrect = "The server address is incorrect";
       this.testConnection = "Test connection";
@@ -96,8 +108,14 @@ class Lang {
       this.personalSettings = "Personal settings";
       this.home = "Home";
       this.users = "Users";
-      this.announcements = "Announcements";
-      this.systemLog = "System log";
+      this.announcements = "Notice";
+      this.systemLog = "Log";
+      this.yes = "Yes";
+      this.no = "No";
+
+      this.root = "Root";
+      this.availableSpace = "Available space";
+      this.createtime = "Createtime";
     }
   }
 }

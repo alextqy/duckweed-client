@@ -136,6 +136,22 @@ class UserApi extends ResponseHelper {
     return ResultModel.fromJson(jsonDecode(decoder.convert(response.bodyBytes)));
   }
 
+  Future<ResultModel> setRootAccount([
+    url,
+    id,
+  ]) async {
+    Response response = await post(
+      Uri.http(url, "/set/root/account"),
+      body: {
+        "userToken": FileHelper().readFile("token"),
+        "id": id.toString(),
+      },
+      headers: postHeaders,
+      encoding: postEncoding,
+    ).timeout(Duration(seconds: timeout));
+    return ResultModel.fromJson(jsonDecode(decoder.convert(response.bodyBytes)));
+  }
+
   Future<ResultModel> disableUser([
     url,
     id,

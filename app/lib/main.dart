@@ -19,7 +19,7 @@ void main() {
   runZonedGuarded(() {
     runApp(const RootApp());
   }, (error, stackTrace) {
-    print('Uncaught error: $error');
+    print("Uncaught error: $error");
   });
 }
 
@@ -343,6 +343,8 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                           color: bgColor(context),
                         ),
                         child: InkWell(
+                          splashColor: Colors.transparent,
+                          highlightColor: Colors.transparent,
                           child: Center(
                             child: Text("OK", style: textStyle()),
                           ),
@@ -466,6 +468,8 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                         height: 35,
                         decoration: BoxDecoration(borderRadius: const BorderRadius.all(Radius.circular(8)), color: bgColor(context)),
                         child: InkWell(
+                          splashColor: Colors.transparent,
+                          highlightColor: Colors.transparent,
                           child: Center(child: Text("GO", style: textStyle())),
                           onTap: () async {
                             if (appUrl.isEmpty) {
@@ -663,6 +667,8 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                           color: bgColor(context),
                         ),
                         child: InkWell(
+                          splashColor: Colors.transparent,
+                          highlightColor: Colors.transparent,
                           child: Center(
                             child: Text(btnContent, style: textStyle()),
                           ),

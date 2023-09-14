@@ -31,8 +31,8 @@ Drawer actionMenu(BuildContext context) {
               height: 58,
               width: 58,
               child: InkWell(
-                splashColor: Colors.black12,
-                highlightColor: Colors.black12,
+                splashColor: Colors.transparent,
+                highlightColor: Colors.transparent,
                 child: CircleAvatar(
                   backgroundColor: Colors.white70,
                   child: SizedBox(
@@ -72,7 +72,6 @@ Drawer actionMenu(BuildContext context) {
           ),
           child: Row(
             children: [
-              Text("v 0.1.0", style: textStyle()),
               const Expanded(child: SizedBox()),
               Text(Lang().exit, style: textStyle()),
               const SizedBox(width: 10),
@@ -113,7 +112,7 @@ Drawer actionMenu(BuildContext context) {
   }
 
   return Drawer(
-    width: screenSize(context).width * 0.25,
+    width: screenSize(context).width * 0.4,
     backgroundColor: Colors.black54,
     child: Column(
       children: [
@@ -145,7 +144,7 @@ Drawer actionMenu(BuildContext context) {
                 visible: master ? true : false,
                 child: ListTile(
                   horizontalTitleGap: 20,
-                  leading: const Icon(Icons.announcement_outlined),
+                  leading: const Icon(Icons.messenger_outline),
                   title: Text(Lang().announcements, style: textStyle()),
                   onTap: () async {
                     Navigator.of(context).push(RouteHelper().generate(context, "/announcements"));
@@ -166,7 +165,7 @@ Drawer actionMenu(BuildContext context) {
             ],
           ),
         ),
-        const Expanded(child: SizedBox()),
+        ListTile(horizontalTitleGap: 10, title: Text("v 0.1.0", style: textStyle())),
         menuFooter(context),
       ],
     ),
