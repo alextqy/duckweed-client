@@ -37,6 +37,7 @@ class Lang {
   String systemLog = "";
   String yes = "";
   String no = "";
+  String confirm = "";
 
   String root = "";
   String availableSpace = "";
@@ -77,6 +78,7 @@ class Lang {
       this.systemLog = "系统日志";
       this.yes = "是";
       this.no = "否";
+      this.confirm = "确认";
 
       this.root = "超级用户";
       this.availableSpace = "可用空间";
@@ -112,6 +114,7 @@ class Lang {
       this.systemLog = "Log";
       this.yes = "Yes";
       this.no = "No";
+      this.confirm = "Confirm";
 
       this.root = "Root";
       this.availableSpace = "Available space";

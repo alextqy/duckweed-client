@@ -210,7 +210,28 @@ class UsersState extends State<Users> with TickerProviderStateMixin {
               IconButton(
                 icon: const Icon(Icons.delete, size: 30, color: Colors.white70),
                 onPressed: () async {
-                  userNotifier.userDel(url: appUrl, id: u.id);
+                  showDialog(
+                    context: context,
+                    barrierDismissible: true,
+                    builder: (BuildContext context) {
+                      return StatefulBuilder(
+                        builder: (BuildContext context, Function state) {
+                          return AlertDialog(
+                            content: Text("${Lang().confirm}?", style: textStyle()),
+                            actions: [
+                              TextButton(
+                                onPressed: () async {
+                                  userNotifier.userDel(url: appUrl, id: u.id);
+                                  Navigator.of(context).pop();
+                                },
+                                child: Text("OK", style: textStyle()),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
+                  );
                 },
               ),
             ],

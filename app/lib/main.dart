@@ -690,10 +690,11 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                                   newPasswordController.clear();
                                   newEmailController.clear();
                                   newCaptchaController.clear();
-
-                                  btnContent = "";
-                                  animationController2.forward();
                                 }
+                                btnContent = "";
+                                await animationController2.forward().orCancel;
+                                await animationController2.reverse().orCancel;
+                                btnContent = "OK";
                                 regBtn = true;
                               });
                             }
