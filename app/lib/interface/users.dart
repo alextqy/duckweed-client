@@ -195,14 +195,25 @@ class UsersState extends State<Users> with TickerProviderStateMixin {
             );
           },
 
-          /// 禁用/启用
-          trailing: Switch(
-            onChanged: (bool? value) async {
-              setState(() {
-                userNotifier.disableUser(url: appUrl, id: u.id);
-              });
-            },
-            value: u.status == 1 ? true : false,
+          trailing: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Switch(
+                onChanged: (bool? value) async {
+                  setState(() {
+                    userNotifier.disableUser(url: appUrl, id: u.id);
+                  });
+                },
+                value: u.status == 1 ? true : false,
+              ),
+              const SizedBox(width: 5),
+              IconButton(
+                icon: const Icon(Icons.delete, size: 30, color: Colors.white70),
+                onPressed: () async {
+                  userNotifier.userDel(url: appUrl, id: u.id);
+                },
+              ),
+            ],
           ),
         ),
       );
@@ -213,6 +224,7 @@ class UsersState extends State<Users> with TickerProviderStateMixin {
   basicListener() async {
     showSnackBar(context, content: Lang().loading, backgroundColor: bgColor(context), duration: 1);
     if (userNotifier.operationStatus.value == OperationStatus.success) {
+      fetchData();
       showSnackBar(context, content: Lang().complete, backgroundColor: bgColor(context));
     } else {
       showSnackBar(context, content: userNotifier.operationMemo, backgroundColor: bgColor(context));
@@ -223,6 +235,7 @@ class UsersState extends State<Users> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     userNotifier.addListener(basicListener);
+    fetchData();
   }
 
   @override
@@ -234,8 +247,6 @@ class UsersState extends State<Users> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    fetchData();
-
     return Scaffold(
       endDrawer: actionMenu(context),
       appBar: AppBar(
