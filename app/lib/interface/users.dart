@@ -375,7 +375,7 @@ class UsersState extends State<Users> with TickerProviderStateMixin {
         child: Column(
           children: [
             Expanded(
-              // flex: 7,
+              flex: 8,
               child: ListView(
                 padding: const EdgeInsets.all(0),
                 children: generateList(),
@@ -385,6 +385,7 @@ class UsersState extends State<Users> with TickerProviderStateMixin {
             Row(
               children: [
                 Expanded(
+                  flex: 5,
                   child: TextButton(
                     child: Text(
                       Lang().root,
@@ -403,6 +404,7 @@ class UsersState extends State<Users> with TickerProviderStateMixin {
                   ),
                 ),
                 Expanded(
+                  flex: 5,
                   child: TextButton(
                     child: Text(
                       Lang().disable,
