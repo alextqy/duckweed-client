@@ -54,11 +54,13 @@ class UsersState extends State<Users> with TickerProviderStateMixin {
   List<ListTile> generateList() {
     List<ListTile> dataList = [];
     for (UserModel u in userNotifier.userListModel) {
+      String root = u.level == 2 ? Lang().yes : Lang().no;
+      String disable = u.status == 1 ? Lang().no : Lang().yes;
       String createtime = Tools().timestampToStr(u.createtime).split(" ")[0];
       dataList.add(
         ListTile(
           title: Text("${Lang().account}: ${u.account}", style: textStyle()),
-          subtitle: Text("${Lang().nickName}: ${u.name}\n${Lang().createtime}: $createtime", style: textStyle(fontSize: 12.5)),
+          subtitle: Text("${Lang().createtime}: $createtime", style: textStyle(fontSize: 12.5)),
           enabled: u.status == 1 ? true : false,
           leading: u.level == 2 ? const Icon(Icons.manage_accounts_outlined) : const Icon(Icons.person_outline),
 
@@ -69,147 +71,233 @@ class UsersState extends State<Users> with TickerProviderStateMixin {
             });
           },
 
-          /// 设置可用空间
-          onTap: () async {
-            showDialog(
-              context: context,
-              barrierDismissible: true,
-              builder: (BuildContext context) {
-                int currentSliderValue = u.availableSpace;
-                TextEditingController currentSliderValueController = TextEditingController();
-                currentSliderValueController.text = currentSliderValue.toString();
-                return UnconstrainedBox(
-                  constrainedAxis: Axis.vertical, // 取消原有宽高限制
-                  child: StatefulBuilder(
-                    builder: (BuildContext context, Function state) {
-                      return Dialog(
-                        child: Container(
-                          margin: const EdgeInsets.all(0),
-                          padding: const EdgeInsets.all(0),
-                          height: 100,
-                          width: screenSize(context).width * 0.2,
-                          child: Column(
-                            children: [
-                              // const Expanded(child: SizedBox()),
-                              Container(
-                                margin: const EdgeInsets.all(0),
-                                padding: const EdgeInsets.all(0),
-                                alignment: Alignment.topCenter,
-                                child: Row(
-                                  children: [
-                                    Expanded(
-                                      child: Container(
-                                        margin: const EdgeInsets.all(0),
-                                        padding: const EdgeInsets.all(0),
-                                        height: 50,
-                                        decoration: const BoxDecoration(
-                                          borderRadius: BorderRadius.horizontal(left: Radius.circular(20)),
-                                          color: Colors.transparent,
-                                        ),
-                                        child: InkWell(
-                                          splashColor: Colors.transparent,
-                                          highlightColor: Colors.transparent,
-                                          child: Center(child: Icon(size: iconSize, Icons.arrow_back_ios, color: Colors.white70)),
-                                          onTap: () async {
-                                            state(() {
-                                              currentSliderValue -= 512;
-                                              currentSliderValueController.text = currentSliderValue.toString();
-                                            });
-                                          },
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 50,
-                                      width: 100,
-                                      child: TextField(
-                                        style: textStyle(fontSize: 20),
-                                        controller: currentSliderValueController,
-                                        keyboardType: TextInputType.number,
-                                        inputFormatters: [FilteringTextInputFormatter.allow(RegExp("[0-9]"))],
-                                        decoration: const InputDecoration(border: InputBorder.none),
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    ),
-                                    SizedBox(width: 35, child: Center(child: Text("M", style: textStyle()))),
-                                    Expanded(
-                                      child: Container(
-                                        margin: const EdgeInsets.all(0),
-                                        padding: const EdgeInsets.all(0),
-                                        height: 50,
-                                        decoration: const BoxDecoration(
-                                          borderRadius: BorderRadius.horizontal(right: Radius.circular(20)),
-                                          color: Colors.transparent,
-                                        ),
-                                        child: InkWell(
-                                          splashColor: Colors.transparent,
-                                          highlightColor: Colors.transparent,
-                                          child: Center(child: Icon(size: iconSize, Icons.arrow_forward_ios, color: Colors.white70)),
-                                          onTap: () async {
-                                            state(() {
-                                              currentSliderValue += 512;
-                                              currentSliderValueController.text = currentSliderValue.toString();
-                                            });
-                                          },
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Row(
+          trailing: PopupMenuButton<ListTileTitleAlignment>(
+            tooltip: "",
+            itemBuilder: (BuildContext context) => <PopupMenuEntry<ListTileTitleAlignment>>[
+              PopupMenuItem<ListTileTitleAlignment>(
+                child: Text(Lang().details),
+                onTap: () async {
+                  userNotifier.userGet(url: appUrl, id: u.id).then((value) {
+                    userNotifier.userModel = UserModel.fromJson(value.data);
+                    showAlertWidget(
+                      context,
+                      Container(
+                        height: 200,
+                        width: screenSize(context).width * 0.2,
+                        padding: const EdgeInsets.all(5),
+                        margin: const EdgeInsets.all(0),
+                        child: Column(
+                          children: [
+                            const Expanded(child: SizedBox()),
+                            Expanded(
+                              child: Row(
                                 children: [
-                                  Expanded(
-                                    child: Container(
-                                      margin: const EdgeInsets.all(0),
-                                      padding: const EdgeInsets.all(0),
-                                      height: 50,
-                                      decoration: const BoxDecoration(
-                                        borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
-                                        color: Colors.transparent,
-                                      ),
-                                      child: InkWell(
-                                        splashColor: Colors.transparent,
-                                        highlightColor: Colors.transparent,
-                                        child: Center(child: Text("OK", style: textStyle())),
-                                        onTap: () async {
-                                          state(() {
-                                            userNotifier.setAvailableSpace(url: appUrl, id: u.id, availableSpace: currentSliderValueController.text);
-                                            Navigator.pop(context);
-                                          });
-                                        },
+                                  const SizedBox(width: 20),
+                                  Container(
+                                    width: 250,
+                                    margin: const EdgeInsets.all(0),
+                                    padding: const EdgeInsets.all(0),
+                                    child: Text(
+                                      maxLines: 1,
+                                      softWrap: true,
+                                      overflow: TextOverflow.ellipsis,
+                                      "${Lang().nickName}: ${userNotifier.userModel.name}",
+                                      style: textStyle(),
+                                    ),
+                                  ),
+                                  const Expanded(child: SizedBox()),
+                                ],
+                              ),
+                            ),
+                            Expanded(
+                              child: Row(
+                                children: [
+                                  const SizedBox(width: 20),
+                                  Container(
+                                    width: 250,
+                                    margin: const EdgeInsets.all(0),
+                                    padding: const EdgeInsets.all(0),
+                                    child: Tooltip(
+                                      message: u.email,
+                                      child: Text(
+                                        maxLines: 1,
+                                        softWrap: true,
+                                        overflow: TextOverflow.ellipsis,
+                                        "${Lang().email}: ${userNotifier.userModel.email}",
+                                        style: textStyle(),
                                       ),
                                     ),
                                   ),
+                                  const Expanded(child: SizedBox()),
                                 ],
                               ),
-                              const Expanded(child: SizedBox()),
-                            ],
-                          ),
+                            ),
+                            Expanded(
+                              child: Row(
+                                children: [
+                                  const SizedBox(width: 20),
+                                  Text("${Lang().root}: $root", style: textStyle()),
+                                  const Expanded(child: SizedBox()),
+                                ],
+                              ),
+                            ),
+                            Expanded(
+                              child: Row(
+                                children: [
+                                  const SizedBox(width: 20),
+                                  Text("${Lang().disable}: $disable", style: textStyle()),
+                                  const Expanded(child: SizedBox()),
+                                ],
+                              ),
+                            ),
+                            const Expanded(child: SizedBox()),
+                          ],
+                        ),
+                      ),
+                    );
+                  });
+                },
+              ),
+              PopupMenuItem<ListTileTitleAlignment>(
+                child: Text(Lang().availableSpace),
+                onTap: () async {
+                  showDialog(
+                    context: context,
+                    barrierDismissible: true,
+                    builder: (BuildContext context) {
+                      int currentSliderValue = u.availableSpace;
+                      TextEditingController currentSliderValueController = TextEditingController();
+                      currentSliderValueController.text = currentSliderValue.toString();
+                      return UnconstrainedBox(
+                        constrainedAxis: Axis.vertical, // 取消原有宽高限制
+                        child: StatefulBuilder(
+                          builder: (BuildContext context, Function state) {
+                            return Dialog(
+                              child: Container(
+                                margin: const EdgeInsets.all(0),
+                                padding: const EdgeInsets.all(0),
+                                height: 100,
+                                width: screenSize(context).width * 0.2,
+                                child: Column(
+                                  children: [
+                                    // const Expanded(child: SizedBox()),
+                                    Container(
+                                      margin: const EdgeInsets.all(0),
+                                      padding: const EdgeInsets.all(0),
+                                      alignment: Alignment.topCenter,
+                                      child: Row(
+                                        children: [
+                                          Expanded(
+                                            child: Container(
+                                              margin: const EdgeInsets.all(0),
+                                              padding: const EdgeInsets.all(0),
+                                              height: 50,
+                                              decoration: const BoxDecoration(
+                                                borderRadius: BorderRadius.horizontal(left: Radius.circular(20)),
+                                                color: Colors.transparent,
+                                              ),
+                                              child: InkWell(
+                                                splashColor: Colors.transparent,
+                                                highlightColor: Colors.transparent,
+                                                child: Center(child: Icon(size: iconSize, Icons.arrow_back_ios, color: Colors.white70)),
+                                                onTap: () async {
+                                                  state(() {
+                                                    currentSliderValue -= 512;
+                                                    currentSliderValueController.text = currentSliderValue.toString();
+                                                  });
+                                                },
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 50,
+                                            width: 100,
+                                            child: TextField(
+                                              style: textStyle(fontSize: 20),
+                                              controller: currentSliderValueController,
+                                              keyboardType: TextInputType.number,
+                                              inputFormatters: [FilteringTextInputFormatter.allow(RegExp("[0-9]"))],
+                                              decoration: const InputDecoration(border: InputBorder.none),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ),
+                                          SizedBox(width: 35, child: Center(child: Text("M", style: textStyle()))),
+                                          Expanded(
+                                            child: Container(
+                                              margin: const EdgeInsets.all(0),
+                                              padding: const EdgeInsets.all(0),
+                                              height: 50,
+                                              decoration: const BoxDecoration(
+                                                borderRadius: BorderRadius.horizontal(right: Radius.circular(20)),
+                                                color: Colors.transparent,
+                                              ),
+                                              child: InkWell(
+                                                splashColor: Colors.transparent,
+                                                highlightColor: Colors.transparent,
+                                                child: Center(child: Icon(size: iconSize, Icons.arrow_forward_ios, color: Colors.white70)),
+                                                onTap: () async {
+                                                  state(() {
+                                                    currentSliderValue += 512;
+                                                    currentSliderValueController.text = currentSliderValue.toString();
+                                                  });
+                                                },
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: Container(
+                                            margin: const EdgeInsets.all(0),
+                                            padding: const EdgeInsets.all(0),
+                                            height: 50,
+                                            decoration: const BoxDecoration(
+                                              borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
+                                              color: Colors.transparent,
+                                            ),
+                                            child: InkWell(
+                                              splashColor: Colors.transparent,
+                                              highlightColor: Colors.transparent,
+                                              child: Center(child: Text("OK", style: textStyle())),
+                                              onTap: () async {
+                                                state(() {
+                                                  userNotifier.setAvailableSpace(url: appUrl, id: u.id, availableSpace: currentSliderValueController.text);
+                                                  Navigator.pop(context);
+                                                });
+                                              },
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const Expanded(child: SizedBox()),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
                         ),
                       );
                     },
-                  ),
-                );
-              },
-            );
-          },
-
-          trailing: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Switch(
-                onChanged: (bool? value) async {
+                  );
+                },
+              ),
+              PopupMenuItem<ListTileTitleAlignment>(
+                value: ListTileTitleAlignment.top,
+                child: Text(Lang().disable),
+                onTap: () async {
                   setState(() {
                     userNotifier.disableUser(url: appUrl, id: u.id);
                   });
                 },
-                value: u.status == 1 ? true : false,
               ),
-              const SizedBox(width: 5),
-              IconButton(
-                icon: const Icon(Icons.delete, size: 30, color: Colors.white70),
-                onPressed: () async {
+              PopupMenuItem<ListTileTitleAlignment>(
+                value: ListTileTitleAlignment.top,
+                child: Text(Lang().delete),
+                onTap: () async {
                   showDialog(
                     context: context,
                     barrierDismissible: true,

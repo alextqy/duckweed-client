@@ -42,6 +42,9 @@ class Lang {
   String root = "";
   String availableSpace = "";
   String createtime = "";
+  String details = "";
+  String delete = "";
+  String disable = "";
 
   Lang() {
     this.type = FileHelper().jsonRead(key: "lang");
@@ -83,6 +86,9 @@ class Lang {
       this.root = "超级用户";
       this.availableSpace = "可用空间";
       this.createtime = "创建时间";
+      this.details = "详情";
+      this.delete = "删除";
+      this.disable = "禁用";
     } else {
       this.theServerAddressIsIncorrect = "The server address is incorrect";
       this.testConnection = "Test connection";
@@ -119,6 +125,9 @@ class Lang {
       this.root = "Root";
       this.availableSpace = "Available space";
       this.createtime = "Createtime";
+      this.details = "Details";
+      this.delete = "Delete";
+      this.disable = "Disable";
     }
   }
 }
