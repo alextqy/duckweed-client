@@ -25,10 +25,11 @@ class UsersState extends State<Users> with TickerProviderStateMixin {
   int page = 1;
   int pageSize = 10;
   int order = -1;
-  String accountSearch = "";
-  String nameSearch = "";
+  int totalPage = 0;
   int levelSearch = 0;
   int statusSearch = 0;
+  String accountSearch = "";
+  String nameSearch = "";
 
   UserNotifier userNotifier = UserNotifier();
 
@@ -47,6 +48,9 @@ class UsersState extends State<Users> with TickerProviderStateMixin {
         .then((value) {
       setState(() {
         userNotifier.userListModel = UserModel().fromJsonList(jsonEncode(value.data));
+        page = value.page;
+        pageSize = value.pageSize;
+        totalPage = value.totalPage;
       });
     });
   }
@@ -366,17 +370,111 @@ class UsersState extends State<Users> with TickerProviderStateMixin {
       ),
       body: Container(
         margin: const EdgeInsets.all(0),
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.all(5),
         alignment: Alignment.center,
         child: Column(
           children: [
             Expanded(
+              // flex: 7,
               child: ListView(
                 padding: const EdgeInsets.all(0),
                 children: generateList(),
               ),
             ),
             const Expanded(child: SizedBox()),
+            Row(
+              children: [
+                Expanded(
+                  child: TextButton(
+                    child: Text(
+                      Lang().root,
+                      style: textStyle(color: levelSearch == 0 ? Colors.grey : Colors.white),
+                    ),
+                    onPressed: () async {
+                      setState(() {
+                        if (levelSearch == 0) {
+                          levelSearch = 2;
+                        } else {
+                          levelSearch = 0;
+                        }
+                        fetchData();
+                      });
+                    },
+                  ),
+                ),
+                Expanded(
+                  child: TextButton(
+                    child: Text(
+                      Lang().disable,
+                      style: textStyle(color: statusSearch == 0 ? Colors.grey : Colors.white),
+                    ),
+                    onPressed: () async {
+                      setState(() {
+                        if (statusSearch == 0) {
+                          statusSearch = 2;
+                        } else {
+                          statusSearch = 0;
+                        }
+                        fetchData();
+                      });
+                    },
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Expanded(
+                  flex: 4,
+                  child: IconButton(
+                    icon: const Icon(Icons.arrow_back_ios, size: 25, color: Colors.white70),
+                    onPressed: () async {
+                      setState(() {
+                        page -= 1;
+                        fetchData();
+                      });
+                    },
+                  ),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: IconButton(
+                    icon: order == -1
+                        ? const Icon(
+                            Icons.keyboard_double_arrow_down,
+                            size: 30,
+                          )
+                        : const Icon(
+                            Icons.keyboard_double_arrow_up,
+                            size: 30,
+                          ),
+                    onPressed: () async {
+                      setState(() {
+                        if (order < 0) {
+                          order = 1;
+                        } else {
+                          order = -1;
+                        }
+                        page = 1;
+                        fetchData();
+                      });
+                    },
+                  ),
+                ),
+                Expanded(
+                  flex: 4,
+                  child: IconButton(
+                    icon: const Icon(Icons.arrow_forward_ios, size: 25, color: Colors.white70),
+                    onPressed: () async {
+                      setState(() {
+                        page += 1;
+                        fetchData();
+                      });
+                    },
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
       ),
