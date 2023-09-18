@@ -282,10 +282,7 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                               preferBelow: false,
                               message: Lang().automaticDetection,
                               textStyle: textStyle(color: Colors.white),
-                              decoration: const BoxDecoration(
-                                color: Colors.deepOrangeAccent,
-                                borderRadius: BorderRadius.all(Radius.elliptical(20, 50)),
-                              ),
+                              decoration: tooltipStyle(),
                               child: IconButton(
                                 icon: Icon(Icons.wifi, size: iconSize, color: Colors.white70),
                                 onPressed: () async {
@@ -309,10 +306,7 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                                 preferBelow: false,
                                 message: Lang().testConnection,
                                 textStyle: textStyle(color: Colors.white),
-                                decoration: const BoxDecoration(
-                                  color: Colors.deepOrangeAccent,
-                                  borderRadius: BorderRadius.all(Radius.elliptical(20, 50)),
-                                ),
+                                decoration: tooltipStyle(),
                                 child: IconButton(
                                   icon: Icon(Icons.ads_click, size: animationTest.value, color: Colors.white70),
                                   onPressed: () async {
