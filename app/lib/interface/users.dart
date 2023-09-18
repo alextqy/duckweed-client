@@ -376,14 +376,7 @@ class UsersState extends State<Users> with TickerProviderStateMixin {
         alignment: Alignment.center,
         child: Column(
           children: [
-            Expanded(
-              flex: 7,
-              child: ListView(
-                padding: const EdgeInsets.all(0),
-                children: generateList(),
-              ),
-            ),
-            const Expanded(child: SizedBox()),
+            Container(margin: const EdgeInsets.all(0), height: 5, color: Colors.transparent),
             Row(
               children: [
                 Expanded(
@@ -449,6 +442,17 @@ class UsersState extends State<Users> with TickerProviderStateMixin {
                 ),
               ],
             ),
+            Container(margin: const EdgeInsets.all(0), height: 10, color: Colors.transparent),
+            Container(margin: const EdgeInsets.all(0), height: 1, color: Colors.white70),
+            Container(margin: const EdgeInsets.all(0), height: 10, color: Colors.transparent),
+            Expanded(
+              flex: 7,
+              child: ListView(
+                padding: const EdgeInsets.all(0),
+                children: generateList(),
+              ),
+            ),
+            const Expanded(child: SizedBox()),
             Row(
               children: [
                 Expanded(
