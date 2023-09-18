@@ -33,6 +33,8 @@ class UsersState extends State<Users> with TickerProviderStateMixin {
 
   UserNotifier userNotifier = UserNotifier();
 
+  List<String> pageList = <String>["10", "30", "50"];
+
   void fetchData() {
     userNotifier
         .userList(
@@ -375,7 +377,7 @@ class UsersState extends State<Users> with TickerProviderStateMixin {
         child: Column(
           children: [
             Expanded(
-              flex: 8,
+              flex: 7,
               child: ListView(
                 padding: const EdgeInsets.all(0),
                 children: generateList(),
@@ -385,7 +387,6 @@ class UsersState extends State<Users> with TickerProviderStateMixin {
             Row(
               children: [
                 Expanded(
-                  flex: 5,
                   child: TextButton(
                     child: Text(
                       Lang().root,
@@ -404,7 +405,6 @@ class UsersState extends State<Users> with TickerProviderStateMixin {
                   ),
                 ),
                 Expanded(
-                  flex: 5,
                   child: TextButton(
                     child: Text(
                       Lang().disable,
@@ -422,12 +422,36 @@ class UsersState extends State<Users> with TickerProviderStateMixin {
                     },
                   ),
                 ),
+                Expanded(
+                  child: Container(
+                    margin: const EdgeInsets.all(0),
+                    padding: const EdgeInsets.all(0),
+                    height: 30,
+                    width: double.infinity,
+                    alignment: Alignment.center,
+                    child: DropdownButton<String>(
+                      value: pageSize.toString(),
+                      style: textStyle(),
+                      underline: Container(height: 0),
+                      focusColor: Colors.transparent,
+                      onChanged: (String? value) async {
+                        setState(() {
+                          page = 1;
+                          pageSize = int.parse(value!);
+                          fetchData();
+                        });
+                      },
+                      items: pageList.map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(value: value, child: Text(value));
+                      }).toList(),
+                    ),
+                  ),
+                ),
               ],
             ),
             Row(
               children: [
                 Expanded(
-                  flex: 4,
                   child: IconButton(
                     icon: const Icon(Icons.arrow_back_ios, size: 25, color: Colors.white70),
                     onPressed: () async {
@@ -439,7 +463,6 @@ class UsersState extends State<Users> with TickerProviderStateMixin {
                   ),
                 ),
                 Expanded(
-                  flex: 2,
                   child: IconButton(
                     icon: order == -1
                         ? const Icon(
@@ -464,7 +487,6 @@ class UsersState extends State<Users> with TickerProviderStateMixin {
                   ),
                 ),
                 Expanded(
-                  flex: 4,
                   child: IconButton(
                     icon: const Icon(Icons.arrow_forward_ios, size: 25, color: Colors.white70),
                     onPressed: () async {
