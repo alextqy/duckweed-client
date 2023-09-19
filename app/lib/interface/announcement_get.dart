@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:app/common/lang.dart';
 
 import 'package:app/interface/common/pub_lib.dart';
-import 'package:app/interface/common/menu.dart';
 
 class AnnouncementGet extends StatefulWidget {
   dynamic data;

@@ -1,15 +1,17 @@
 // ignore_for_file: must_be_immutable
 
 import 'dart:async';
-import 'package:app/interface/common/pub_lib.dart';
 import 'package:flutter/material.dart';
+import 'package:app/interface/common/pub_lib.dart';
+import 'package:app/interface/common/routes.dart';
 
 class Marquee extends StatefulWidget {
   late List<String> data;
+  late String url;
   late int interval; // 停留时间
   late int switchingSpeed; // 切换速度
 
-  Marquee({required this.data, this.interval = 3, this.switchingSpeed = 1, super.key});
+  Marquee({required this.data, this.url = "", this.interval = 3, this.switchingSpeed = 1, super.key});
 
   @override
   MarqueeState createState() => MarqueeState();
@@ -24,19 +26,19 @@ class MarqueeState extends State<Marquee> {
       margin: const EdgeInsets.all(0),
       padding: const EdgeInsets.all(0),
       alignment: Alignment.center,
-      child: Tooltip(
-        decoration: tooltipStyle(),
-        textStyle: textStyle(),
-        message: widget.data[index],
+      child: InkWell(
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
         child: Text(widget.data[index], style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
+        onTap: () async {
+          Navigator.of(context).push(RouteHelper().generate(context, widget.url, data: widget.data[index]));
+        },
       ),
     );
   }
 
   @override
   void initState() {
-    super.initState();
-
     controller = PageController();
 
     timer = Timer.periodic(Duration(seconds: widget.interval), (timer) {
@@ -45,6 +47,14 @@ class MarqueeState extends State<Marquee> {
       }
       controller.nextPage(duration: Duration(seconds: widget.switchingSpeed), curve: Curves.linear);
     });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    timer.cancel();
+    controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -61,12 +71,5 @@ class MarqueeState extends State<Marquee> {
       },
       itemCount: widget.data.isNotEmpty ? widget.data.length + 1 : 0,
     );
-  }
-
-  @override
-  void dispose() {
-    controller.dispose();
-    timer.cancel();
-    super.dispose();
   }
 }

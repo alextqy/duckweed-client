@@ -106,7 +106,6 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
 
   @override
   void initState() {
-    super.initState();
     setConf();
     FileHelper().jsonWrite(key: "current_page", value: "");
 
@@ -123,6 +122,15 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
 
     animationController1.forward();
     userNotifier.addListener(basicListener);
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    userNotifier.removeListener(basicListener);
+    userNotifier.dispose();
+    super.dispose();
   }
 
   @override

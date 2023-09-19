@@ -45,13 +45,13 @@ class ForgotPasswordState extends State<ForgotPassword> with TickerProviderState
 
   @override
   void initState() {
-    super.initState();
     userNotifier.addListener(basicListener);
 
     animationControllerBtn = AnimationController(duration: Duration(milliseconds: showSpeed), vsync: this);
     animationControllerEmail = AnimationController(duration: Duration(milliseconds: showSpeed), vsync: this);
     animationBtn = Tween(begin: 150.0, end: 0.0).animate(animationControllerBtn);
     animationEmail = Tween(begin: 20.0, end: 0.0).animate(animationControllerEmail);
+    super.initState();
   }
 
   @override

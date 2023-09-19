@@ -1,9 +1,15 @@
+import "dart:convert";
+
 import "package:flutter/material.dart";
 import "package:app/common/lang.dart";
+
+import "package:app/notifier/announcement_notifier.dart";
 
 import "package:app/interface/common/menu.dart";
 import "package:app/interface/common/pub_lib.dart";
 import "package:app/interface/common/marquee.dart";
+
+import "package:app/model/announcement_model.dart";
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -13,17 +19,26 @@ class HomePage extends StatefulWidget {
 }
 
 class HomePageState extends State<HomePage> with TickerProviderStateMixin {
-  List<String> content = [
-    "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-    "bbbbbbbbbbbbb",
-    "cccccccccccccc",
-    "ddddddddddddddddd",
-  ];
+  List<String> content = [];
+
+  AnnouncementNotifier announcementNotifier = AnnouncementNotifier();
 
   bool showMarquee = true;
 
+  void fetchAnnouncementData() {
+    announcementNotifier.announcements(url: appUrl).then((value) {
+      setState(() {
+        announcementNotifier.announcementListModel = AnnouncementModel().fromJsonList(jsonEncode(value.data));
+        for (AnnouncementModel a in announcementNotifier.announcementListModel) {
+          content.add(a.content);
+        }
+      });
+    });
+  }
+
   @override
   void initState() {
+    fetchAnnouncementData();
     super.initState();
   }
 
@@ -59,7 +74,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 color: Colors.transparent,
                 child: Row(
                   children: [
-                    Expanded(child: Marquee(data: content)),
+                    Expanded(child: Marquee(data: content, url: "/announcement/get")),
                     SizedBox(
                       width: 45,
                       child: Tooltip(
