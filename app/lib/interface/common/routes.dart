@@ -10,10 +10,10 @@ import "package:app/interface/announcements.dart";
 import "package:app/interface/system_log.dart";
 
 import "package:app/interface/announcement_add.dart";
+import "package:app/interface/Announcement_get.dart";
 
 class RouteHelper {
   dynamic generate(BuildContext context, String routeName, {dynamic data}) {
-    // if (routeName != FileHelper().jsonRead(key: "current_page")) {
     FileHelper().jsonWrite(key: "current_page", value: routeName);
     switch (routeName) {
       case "/":
@@ -28,6 +28,8 @@ class RouteHelper {
         return MaterialPageRoute(builder: (context) => const SystemLog());
       case "/announcement/add":
         return MaterialPageRoute(builder: (context) => const AnnouncementAdd());
+      case "/announcement/get":
+        return MaterialPageRoute(builder: (context) => AnnouncementGet(data: data));
       default:
         return MaterialPageRoute(
           builder: (context) => Scaffold(
@@ -40,6 +42,5 @@ class RouteHelper {
           ),
         );
     }
-    // }
   }
 }

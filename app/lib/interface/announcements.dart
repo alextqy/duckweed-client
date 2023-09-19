@@ -72,7 +72,9 @@ class AnnouncementsState extends State<Announcements> with TickerProviderStateMi
               );
             },
           ),
-          onTap: () async {},
+          onTap: () async {
+            Navigator.of(context).push(RouteHelper().generate(context, "/announcement/get", data: a.content));
+          },
         ),
       );
     }
