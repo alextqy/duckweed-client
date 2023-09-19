@@ -1,9 +1,9 @@
 // ignore_for_file: must_be_immutable
 
-import 'package:flutter/material.dart';
-import 'package:app/common/lang.dart';
+import "package:flutter/material.dart";
+import "package:app/common/lang.dart";
 
-import 'package:app/interface/common/pub_lib.dart';
+import "package:app/interface/common/pub_lib.dart";
 
 class AnnouncementGet extends StatefulWidget {
   dynamic data;
@@ -44,6 +44,7 @@ class AnnouncementGetState extends State<AnnouncementGet> with TickerProviderSta
           children: [
             Expanded(
               child: TextFormField(
+                enabled: false,
                 maxLines: null,
                 decoration: const InputDecoration(border: InputBorder.none),
                 keyboardType: TextInputType.multiline,

@@ -1,9 +1,9 @@
 // ignore_for_file: must_be_immutable
 
-import 'dart:async';
-import 'package:flutter/material.dart';
-import 'package:app/interface/common/pub_lib.dart';
-import 'package:app/interface/common/routes.dart';
+import "dart:async";
+import "package:flutter/material.dart";
+import "package:app/interface/common/pub_lib.dart";
+import "package:app/interface/common/routes.dart";
 
 class Marquee extends StatefulWidget {
   late List<String> data;

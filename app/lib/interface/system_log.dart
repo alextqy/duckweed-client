@@ -36,9 +36,19 @@ class SystemLogState extends State<SystemLog> with TickerProviderStateMixin {
         margin: const EdgeInsets.all(0),
         padding: const EdgeInsets.all(10),
         alignment: Alignment.center,
-        child: const Column(
+        child: Column(
           children: [
-            Expanded(child: SizedBox()),
+            const Expanded(child: SizedBox()),
+            Container(
+              height: 35,
+              width: double.infinity,
+              margin: const EdgeInsets.all(0),
+              padding: const EdgeInsets.all(0),
+              child: TextButton(
+                child: Text(Lang().selectDate, style: textStyle()),
+                onPressed: () {},
+              ),
+            ),
           ],
         ),
       ),

@@ -1,11 +1,11 @@
-import 'package:flutter/material.dart';
-import 'package:app/common/lang.dart';
+import "package:flutter/material.dart";
+import "package:app/common/lang.dart";
 
-import 'package:app/notifier/base_notifier.dart';
-import 'package:app/notifier/announcement_notifier.dart';
+import "package:app/notifier/base_notifier.dart";
+import "package:app/notifier/announcement_notifier.dart";
 
-import 'package:app/interface/common/show_alert_dialog.dart';
-import 'package:app/interface/common/pub_lib.dart';
+import "package:app/interface/common/show_alert_dialog.dart";
+import "package:app/interface/common/pub_lib.dart";
 
 class AnnouncementAdd extends StatefulWidget {
   const AnnouncementAdd({super.key});

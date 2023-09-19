@@ -49,6 +49,7 @@ class Lang {
   String hideBulletinBoard = "";
   String addAnnouncement = "";
   String content = "";
+  String selectDate = "";
 
   Lang() {
     this.type = FileHelper().jsonRead(key: "lang");
@@ -97,6 +98,7 @@ class Lang {
       this.hideBulletinBoard = "隐藏公告栏";
       this.addAnnouncement = "添加公告";
       this.content = "内容";
+      this.selectDate = "选择日期";
     } else {
       this.theServerAddressIsIncorrect = "The server address is incorrect";
       this.testConnection = "Test connection";
@@ -140,6 +142,7 @@ class Lang {
       this.hideBulletinBoard = "Hide bulletin board";
       this.addAnnouncement = "New notice";
       this.content = "Content";
+      this.selectDate = "Select date";
     }
   }
 }
