@@ -8,9 +8,10 @@ String appAccount = FileHelper().jsonRead(key: "account");
 
 int showSpeed = 450;
 double iconSize = 20;
+Color iconColor = Colors.white70;
 
 BoxDecoration tooltipStyle() {
-  return const BoxDecoration(borderRadius: BorderRadius.all(Radius.elliptical(10, 10)), color: Colors.grey);
+  return const BoxDecoration(borderRadius: BorderRadius.all(Radius.elliptical(10, 10)), color: Colors.black);
 }
 
 TextStyle textStyle({Color color = Colors.white70, double fontSize = 15}) {

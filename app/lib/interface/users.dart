@@ -65,10 +65,36 @@ class UsersState extends State<Users> with TickerProviderStateMixin {
       String createtime = Tools().timestampToStr(u.createtime).split(" ")[0];
       dataList.add(
         ListTile(
-          title: Text("${Lang().account}: ${u.account}", style: textStyle()),
-          subtitle: Text("${Lang().createtime}: $createtime", style: textStyle(fontSize: 12.5)),
+          title: Tooltip(
+            message: u.account,
+            textStyle: textStyle(),
+            decoration: tooltipStyle(),
+            child: Text(
+              "${Lang().account}: ${u.account}",
+              style: textStyle(color: u.status == 1 ? iconColor : Colors.deepOrange),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          subtitle: Text(
+            "${Lang().createtime}: $createtime",
+            style: textStyle(
+              fontSize: 12.5,
+              color: u.status == 1 ? iconColor : Colors.deepOrange,
+            ),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
           enabled: u.status == 1 ? true : false,
-          leading: u.level == 2 ? const Icon(Icons.manage_accounts_outlined) : const Icon(Icons.person_outline),
+          leading: u.level == 2
+              ? Icon(
+                  Icons.manage_accounts_outlined,
+                  color: u.status == 1 ? iconColor : Colors.deepOrange,
+                )
+              : Icon(
+                  Icons.person_outline,
+                  color: u.status == 1 ? iconColor : Colors.deepOrange,
+                ),
 
           /// 设置为管理员
           onLongPress: () async {
@@ -79,9 +105,11 @@ class UsersState extends State<Users> with TickerProviderStateMixin {
 
           trailing: PopupMenuButton<ListTileTitleAlignment>(
             tooltip: "",
+            color: iconColor,
             itemBuilder: (BuildContext context) => <PopupMenuEntry<ListTileTitleAlignment>>[
               PopupMenuItem<ListTileTitleAlignment>(
-                child: Text(Lang().details),
+                value: ListTileTitleAlignment.center,
+                child: Text(Lang().details, maxLines: 1, overflow: TextOverflow.ellipsis, style: textStyle(color: Colors.black)),
                 onTap: () async {
                   userNotifier.userGet(url: appUrl, id: u.id).then((value) {
                     userNotifier.userModel = UserModel.fromJson(value.data);
@@ -103,12 +131,17 @@ class UsersState extends State<Users> with TickerProviderStateMixin {
                                     width: 250,
                                     margin: const EdgeInsets.all(0),
                                     padding: const EdgeInsets.all(0),
-                                    child: Text(
-                                      maxLines: 1,
-                                      softWrap: true,
-                                      overflow: TextOverflow.ellipsis,
-                                      "${Lang().nickName}: ${userNotifier.userModel.name}",
-                                      style: textStyle(),
+                                    child: Tooltip(
+                                      message: u.name,
+                                      textStyle: textStyle(),
+                                      decoration: tooltipStyle(),
+                                      child: Text(
+                                        maxLines: 1,
+                                        softWrap: true,
+                                        overflow: TextOverflow.ellipsis,
+                                        "${Lang().nickName}: ${userNotifier.userModel.name}",
+                                        style: textStyle(),
+                                      ),
                                     ),
                                   ),
                                   const Expanded(child: SizedBox()),
@@ -125,6 +158,8 @@ class UsersState extends State<Users> with TickerProviderStateMixin {
                                     padding: const EdgeInsets.all(0),
                                     child: Tooltip(
                                       message: u.email,
+                                      textStyle: textStyle(),
+                                      decoration: tooltipStyle(),
                                       child: Text(
                                         maxLines: 1,
                                         softWrap: true,
@@ -142,7 +177,7 @@ class UsersState extends State<Users> with TickerProviderStateMixin {
                               child: Row(
                                 children: [
                                   const SizedBox(width: 20),
-                                  Text("${Lang().root}: $root", style: textStyle()),
+                                  Text("${Lang().root}: $root", style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
                                   const Expanded(child: SizedBox()),
                                 ],
                               ),
@@ -151,7 +186,7 @@ class UsersState extends State<Users> with TickerProviderStateMixin {
                               child: Row(
                                 children: [
                                   const SizedBox(width: 20),
-                                  Text("${Lang().disable}: $disable", style: textStyle()),
+                                  Text("${Lang().disable}: $disable", style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
                                   const Expanded(child: SizedBox()),
                                 ],
                               ),
@@ -165,7 +200,8 @@ class UsersState extends State<Users> with TickerProviderStateMixin {
                 },
               ),
               PopupMenuItem<ListTileTitleAlignment>(
-                child: Text(Lang().availableSpace),
+                value: ListTileTitleAlignment.center,
+                child: Text(Lang().availableSpace, maxLines: 1, overflow: TextOverflow.ellipsis, style: textStyle(color: Colors.black)),
                 onTap: () async {
                   showDialog(
                     context: context,
@@ -205,7 +241,7 @@ class UsersState extends State<Users> with TickerProviderStateMixin {
                                               child: InkWell(
                                                 splashColor: Colors.transparent,
                                                 highlightColor: Colors.transparent,
-                                                child: Center(child: Icon(size: iconSize, Icons.arrow_back_ios, color: Colors.white70)),
+                                                child: Center(child: Icon(size: iconSize, Icons.arrow_back_ios, color: iconColor)),
                                                 onTap: () async {
                                                   state(() {
                                                     currentSliderValue -= 512;
@@ -227,7 +263,17 @@ class UsersState extends State<Users> with TickerProviderStateMixin {
                                               textAlign: TextAlign.center,
                                             ),
                                           ),
-                                          SizedBox(width: 35, child: Center(child: Text("M", style: textStyle()))),
+                                          SizedBox(
+                                            width: 35,
+                                            child: Center(
+                                              child: Text(
+                                                "M",
+                                                style: textStyle(),
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ),
+                                          ),
                                           Expanded(
                                             child: Container(
                                               margin: const EdgeInsets.all(0),
@@ -240,7 +286,7 @@ class UsersState extends State<Users> with TickerProviderStateMixin {
                                               child: InkWell(
                                                 splashColor: Colors.transparent,
                                                 highlightColor: Colors.transparent,
-                                                child: Center(child: Icon(size: iconSize, Icons.arrow_forward_ios, color: Colors.white70)),
+                                                child: Center(child: Icon(size: iconSize, Icons.arrow_forward_ios, color: iconColor)),
                                                 onTap: () async {
                                                   state(() {
                                                     currentSliderValue += 512;
@@ -267,7 +313,7 @@ class UsersState extends State<Users> with TickerProviderStateMixin {
                                             child: InkWell(
                                               splashColor: Colors.transparent,
                                               highlightColor: Colors.transparent,
-                                              child: Center(child: Text("OK", style: textStyle())),
+                                              child: Center(child: Text("OK", style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis)),
                                               onTap: () async {
                                                 state(() {
                                                   userNotifier.setAvailableSpace(url: appUrl, id: u.id, availableSpace: currentSliderValueController.text);
@@ -292,8 +338,13 @@ class UsersState extends State<Users> with TickerProviderStateMixin {
                 },
               ),
               PopupMenuItem<ListTileTitleAlignment>(
-                value: ListTileTitleAlignment.top,
-                child: Text(Lang().disable),
+                value: ListTileTitleAlignment.center,
+                child: Text(
+                  u.status == 1 ? Lang().disable : Lang().enable,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: textStyle(color: Colors.black),
+                ),
                 onTap: () async {
                   setState(() {
                     userNotifier.disableUser(url: appUrl, id: u.id);
@@ -301,8 +352,8 @@ class UsersState extends State<Users> with TickerProviderStateMixin {
                 },
               ),
               PopupMenuItem<ListTileTitleAlignment>(
-                value: ListTileTitleAlignment.top,
-                child: Text(Lang().delete),
+                value: ListTileTitleAlignment.center,
+                child: Text(Lang().delete, maxLines: 1, overflow: TextOverflow.ellipsis, style: textStyle(color: Colors.black)),
                 onTap: () async {
                   showDialog(
                     context: context,
@@ -311,14 +362,14 @@ class UsersState extends State<Users> with TickerProviderStateMixin {
                       return StatefulBuilder(
                         builder: (BuildContext context, Function state) {
                           return AlertDialog(
-                            content: Text("${Lang().confirm}?", style: textStyle()),
+                            content: Text("${Lang().confirm}?", style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
                             actions: [
                               TextButton(
                                 onPressed: () async {
                                   userNotifier.userDel(url: appUrl, id: u.id);
                                   Navigator.of(context).pop();
                                 },
-                                child: Text("OK", style: textStyle()),
+                                child: Text("OK", style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
                               ),
                             ],
                           );
@@ -348,9 +399,9 @@ class UsersState extends State<Users> with TickerProviderStateMixin {
 
   @override
   void initState() {
-    super.initState();
     userNotifier.addListener(basicListener);
     fetchData();
+    super.initState();
   }
 
   @override
@@ -368,7 +419,7 @@ class UsersState extends State<Users> with TickerProviderStateMixin {
         automaticallyImplyLeading: false,
         toolbarHeight: toolbarHeight,
         backgroundColor: bgColor(context),
-        title: Text(Lang().users, style: textStyle()),
+        title: Text(Lang().users, style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
       ),
       body: Container(
         margin: const EdgeInsets.all(0),
@@ -384,6 +435,8 @@ class UsersState extends State<Users> with TickerProviderStateMixin {
                     child: Text(
                       Lang().root,
                       style: textStyle(color: levelSearch == 0 ? Colors.grey : Colors.white),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
                     onPressed: () async {
                       setState(() {
@@ -402,6 +455,8 @@ class UsersState extends State<Users> with TickerProviderStateMixin {
                     child: Text(
                       Lang().disable,
                       style: textStyle(color: statusSearch == 0 ? Colors.grey : Colors.white),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
                     onPressed: () async {
                       setState(() {
@@ -435,7 +490,15 @@ class UsersState extends State<Users> with TickerProviderStateMixin {
                         });
                       },
                       items: pageList.map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(value: value, child: Text(value));
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(
+                            value,
+                            style: textStyle(),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        );
                       }).toList(),
                     ),
                   ),
@@ -457,7 +520,7 @@ class UsersState extends State<Users> with TickerProviderStateMixin {
               children: [
                 Expanded(
                   child: IconButton(
-                    icon: const Icon(Icons.arrow_back_ios, size: 25, color: Colors.white70),
+                    icon: Icon(Icons.arrow_back_ios, size: 25, color: iconColor),
                     onPressed: () async {
                       setState(() {
                         page -= 1;
@@ -469,13 +532,15 @@ class UsersState extends State<Users> with TickerProviderStateMixin {
                 Expanded(
                   child: IconButton(
                     icon: order == -1
-                        ? const Icon(
+                        ? Icon(
                             Icons.keyboard_double_arrow_down,
                             size: 30,
+                            color: iconColor,
                           )
-                        : const Icon(
+                        : Icon(
                             Icons.keyboard_double_arrow_up,
                             size: 30,
+                            color: iconColor,
                           ),
                     onPressed: () async {
                       setState(() {
@@ -492,7 +557,7 @@ class UsersState extends State<Users> with TickerProviderStateMixin {
                 ),
                 Expanded(
                   child: IconButton(
-                    icon: const Icon(Icons.arrow_forward_ios, size: 25, color: Colors.white70),
+                    icon: Icon(Icons.arrow_forward_ios, size: 25, color: iconColor),
                     onPressed: () async {
                       setState(() {
                         page += 1;

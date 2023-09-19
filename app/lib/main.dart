@@ -134,7 +134,7 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
       appBar: AppBar(
         toolbarHeight: toolbarHeight,
         backgroundColor: bgColor(context),
-        title: Text(widget.title, style: textStyle()),
+        title: Text(widget.title, style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
       ),
       body: Container(
         margin: const EdgeInsets.all(0),
@@ -150,8 +150,8 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                   padding: const EdgeInsets.all(0),
                   child: SegmentedButton<LangList>(
                     segments: <ButtonSegment<LangList>>[
-                      ButtonSegment<LangList>(value: LangList.en, label: Text("EN", style: textStyle())),
-                      ButtonSegment<LangList>(value: LangList.cn, label: Text("CN", style: textStyle())),
+                      ButtonSegment<LangList>(value: LangList.en, label: Text("EN", style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis)),
+                      ButtonSegment<LangList>(value: LangList.cn, label: Text("CN", style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis)),
                     ],
                     selected: <LangList>{langListView},
                     onSelectionChanged: (Set<LangList> newSelection) async {
@@ -222,11 +222,11 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
   }
 
   selectedTabFont(String t) {
-    return Text(t, style: textStyle());
+    return Text(t, style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis);
   }
 
   unselectedTabFont(String t) {
-    return Text(t, style: textStyle(color: Colors.black));
+    return Text(t, style: textStyle(color: Colors.black), maxLines: 1, overflow: TextOverflow.ellipsis);
   }
 
   // 发送邮件动效
@@ -281,10 +281,10 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                             suffixIcon: Tooltip(
                               preferBelow: false,
                               message: Lang().automaticDetection,
-                              textStyle: textStyle(color: Colors.white),
+                              textStyle: textStyle(),
                               decoration: tooltipStyle(),
                               child: IconButton(
-                                icon: Icon(Icons.wifi, size: iconSize, color: Colors.white70),
+                                icon: Icon(Icons.wifi, size: iconSize, color: iconColor),
                                 onPressed: () async {
                                   Tools().clentUDP(int.parse(FileHelper().jsonRead(key: "port_listening"))).then((value) {
                                     if (value.isNotEmpty) {
@@ -305,10 +305,10 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                               child: Tooltip(
                                 preferBelow: false,
                                 message: Lang().testConnection,
-                                textStyle: textStyle(color: Colors.white),
+                                textStyle: textStyle(),
                                 decoration: tooltipStyle(),
                                 child: IconButton(
-                                  icon: Icon(Icons.ads_click, size: animationTest.value, color: Colors.white70),
+                                  icon: Icon(Icons.ads_click, size: animationTest.value, color: iconColor),
                                   onPressed: () async {
                                     if (netController.text.isNotEmpty) {
                                       userNotifier.test(url: netController.text);
@@ -340,7 +340,7 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                           splashColor: Colors.transparent,
                           highlightColor: Colors.transparent,
                           child: Center(
-                            child: Text("OK", style: textStyle()),
+                            child: Text("OK", style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
                           ),
                           onTap: () async {
                             if (netController.text.isNotEmpty && netBtn == true) {
@@ -395,10 +395,10 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                       style: textStyle(),
                       decoration: InputDecoration(
                         suffixIcon: IconButton(
-                          icon: Icon(Icons.clear, size: iconSize, color: Colors.white70),
+                          icon: Icon(Icons.clear, size: iconSize, color: iconColor),
                           onPressed: () async => accountController.clear(),
                         ),
-                        icon: Icon(Icons.account_box, size: iconSize, color: Colors.white70),
+                        icon: Icon(Icons.account_box, size: iconSize, color: iconColor),
                         labelText: Lang().account,
                         labelStyle: textStyle(),
                       ),
@@ -418,14 +418,14 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                       style: textStyle(),
                       decoration: InputDecoration(
                         suffixIcon: IconButton(
-                          icon: Icon(obscureText ? Icons.visibility_off : Icons.visibility, size: iconSize, color: Colors.white70),
+                          icon: Icon(obscureText ? Icons.visibility_off : Icons.visibility, size: iconSize, color: iconColor),
                           onPressed: () async {
                             setState(() {
                               obscureText = !obscureText;
                             });
                           },
                         ),
-                        icon: Icon(Icons.lock_open, size: iconSize, color: Colors.white70),
+                        icon: Icon(Icons.lock_open, size: iconSize, color: iconColor),
                         labelText: Lang().password,
                         labelStyle: textStyle(),
                       ),
@@ -442,6 +442,8 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                           child: Text(
                             Lang().forgotPassword,
                             style: textStyle(color: Colors.white60, fontSize: 12),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                           ),
                           onPressed: () async {
                             Navigator.push(context, MaterialPageRoute(builder: (context) {
@@ -464,7 +466,7 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                         child: InkWell(
                           splashColor: Colors.transparent,
                           highlightColor: Colors.transparent,
-                          child: Center(child: Text("GO", style: textStyle())),
+                          child: Center(child: Text("GO", style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis)),
                           onTap: () async {
                             if (appUrl.isEmpty) {
                               showSnackBar(context, content: Lang().theServerAddressIsIncorrect, backgroundColor: bgColor(context));
@@ -544,14 +546,14 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                           style: textStyle(),
                           decoration: InputDecoration(
                             suffixIcon: IconButton(
-                              icon: Icon(Icons.send, size: animationEmail.value, color: Colors.white70),
+                              icon: Icon(Icons.send, size: animationEmail.value, color: iconColor),
                               onPressed: () async {
                                 if (sendMail == true) {
                                   playAnimationEmail();
                                 }
                               },
                             ),
-                            icon: Icon(Icons.mail, size: iconSize, color: Colors.white70),
+                            icon: Icon(Icons.mail, size: iconSize, color: iconColor),
                             hintText: Lang().email,
                             hintStyle: textStyle(),
                           ),
@@ -572,10 +574,10 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                       style: textStyle(),
                       decoration: InputDecoration(
                         suffixIcon: IconButton(
-                          icon: Icon(Icons.clear, size: iconSize, color: Colors.white70),
+                          icon: Icon(Icons.clear, size: iconSize, color: iconColor),
                           onPressed: () async => newCaptchaController.clear(),
                         ),
-                        icon: Icon(Icons.verified, size: iconSize, color: Colors.white70),
+                        icon: Icon(Icons.verified, size: iconSize, color: iconColor),
                         hintText: Lang().captcha,
                         hintStyle: textStyle(),
                       ),
@@ -594,10 +596,10 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                       style: textStyle(),
                       decoration: InputDecoration(
                         suffixIcon: IconButton(
-                          icon: Icon(Icons.clear, size: iconSize, color: Colors.white70),
+                          icon: Icon(Icons.clear, size: iconSize, color: iconColor),
                           onPressed: () async => newAccountController.clear(),
                         ),
-                        icon: Icon(Icons.account_box, size: iconSize, color: Colors.white70),
+                        icon: Icon(Icons.account_box, size: iconSize, color: iconColor),
                         hintText: Lang().account,
                         hintStyle: textStyle(),
                       ),
@@ -616,10 +618,10 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                       style: textStyle(),
                       decoration: InputDecoration(
                         suffixIcon: IconButton(
-                          icon: Icon(Icons.clear, size: iconSize, color: Colors.white70),
+                          icon: Icon(Icons.clear, size: iconSize, color: iconColor),
                           onPressed: () async => newNameController.clear(),
                         ),
-                        icon: Icon(Icons.person, size: iconSize, color: Colors.white70),
+                        icon: Icon(Icons.person, size: iconSize, color: iconColor),
                         hintText: Lang().nickName,
                         hintStyle: textStyle(),
                       ),
@@ -639,10 +641,10 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                       style: textStyle(),
                       decoration: InputDecoration(
                         suffixIcon: IconButton(
-                          icon: Icon(Icons.clear, size: iconSize, color: Colors.white70),
+                          icon: Icon(Icons.clear, size: iconSize, color: iconColor),
                           onPressed: () async => newPasswordController.clear(),
                         ),
-                        icon: Icon(Icons.password, size: iconSize, color: Colors.white70),
+                        icon: Icon(Icons.password, size: iconSize, color: iconColor),
                         hintText: Lang().password,
                         hintStyle: textStyle(),
                       ),
@@ -664,7 +666,7 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                           splashColor: Colors.transparent,
                           highlightColor: Colors.transparent,
                           child: Center(
-                            child: Text(btnContent, style: textStyle()),
+                            child: Text(btnContent, style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
                           ),
                           onTap: () async {
                             if (newEmailController.text != "" && newCaptchaController.text != "" && newAccountController.text != "" && newNameController.text != "" && newPasswordController.text != "" && regBtn == true) {

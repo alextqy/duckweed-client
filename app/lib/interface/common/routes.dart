@@ -30,9 +30,9 @@ class RouteHelper {
             appBar: AppBar(
               toolbarHeight: toolbarHeight,
               backgroundColor: bgColor(context),
-              title: Text("Error", style: textStyle(fontSize: 20)),
+              title: Text("Error", style: textStyle(fontSize: 20), maxLines: 1, overflow: TextOverflow.ellipsis),
             ),
-            body: Center(child: Text(Lang().invalidPage, style: textStyle(fontSize: 30))),
+            body: Center(child: Text(Lang().invalidPage, style: textStyle(fontSize: 30), maxLines: 1, overflow: TextOverflow.ellipsis)),
           ),
         );
     }

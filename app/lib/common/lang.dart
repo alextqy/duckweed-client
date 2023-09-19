@@ -45,6 +45,7 @@ class Lang {
   String details = "";
   String delete = "";
   String disable = "";
+  String enable = "";
   String hideBulletinBoard = "";
 
   Lang() {
@@ -90,6 +91,7 @@ class Lang {
       this.details = "详情";
       this.delete = "删除";
       this.disable = "禁用";
+      this.enable = "启用";
       this.hideBulletinBoard = "隐藏公告栏";
     } else {
       this.theServerAddressIsIncorrect = "The server address is incorrect";
@@ -130,6 +132,7 @@ class Lang {
       this.details = "Details";
       this.delete = "Delete";
       this.disable = "Disable";
+      this.enable = "Enable";
       this.hideBulletinBoard = "Hide bulletin board";
     }
   }

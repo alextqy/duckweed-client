@@ -30,7 +30,7 @@ class SystemLogState extends State<SystemLog> with TickerProviderStateMixin {
         automaticallyImplyLeading: false,
         toolbarHeight: toolbarHeight,
         backgroundColor: bgColor(context),
-        title: Text(Lang().systemLog, style: textStyle()),
+        title: Text(Lang().systemLog, style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
       ),
       body: Container(
         margin: const EdgeInsets.all(0),

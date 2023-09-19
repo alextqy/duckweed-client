@@ -81,10 +81,7 @@ class ForgotPasswordState extends State<ForgotPassword> with TickerProviderState
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text(
-          Lang().forgotPassword,
-          style: textStyle(),
-        ),
+        title: Text(Lang().forgotPassword, style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
       ),
       body: Container(
         margin: const EdgeInsets.all(0),
@@ -112,14 +109,14 @@ class ForgotPasswordState extends State<ForgotPassword> with TickerProviderState
                         style: textStyle(),
                         decoration: InputDecoration(
                           suffixIcon: IconButton(
-                            icon: Icon(Icons.send, size: animationEmail.value, color: Colors.white70),
+                            icon: Icon(Icons.send, size: animationEmail.value, color: iconColor),
                             onPressed: () async {
                               if (sendMail == true) {
                                 playAnimationEmail();
                               }
                             },
                           ),
-                          icon: Icon(Icons.email, size: iconSize, color: Colors.white70),
+                          icon: Icon(Icons.email, size: iconSize, color: iconColor),
                           labelText: Lang().email,
                           labelStyle: textStyle(),
                         ),
@@ -143,10 +140,10 @@ class ForgotPasswordState extends State<ForgotPassword> with TickerProviderState
                 style: textStyle(),
                 decoration: InputDecoration(
                   suffixIcon: IconButton(
-                    icon: Icon(Icons.clear, size: iconSize, color: Colors.white70),
+                    icon: Icon(Icons.clear, size: iconSize, color: iconColor),
                     onPressed: () async => captchaController.clear(),
                   ),
-                  icon: Icon(Icons.verified, size: iconSize, color: Colors.white70),
+                  icon: Icon(Icons.verified, size: iconSize, color: iconColor),
                   labelText: Lang().captcha,
                   labelStyle: textStyle(),
                 ),
@@ -166,14 +163,14 @@ class ForgotPasswordState extends State<ForgotPassword> with TickerProviderState
                 style: textStyle(),
                 decoration: InputDecoration(
                   suffixIcon: IconButton(
-                    icon: Icon(obscureText ? Icons.visibility_off : Icons.visibility, size: iconSize, color: Colors.white70),
+                    icon: Icon(obscureText ? Icons.visibility_off : Icons.visibility, size: iconSize, color: iconColor),
                     onPressed: () async {
                       setState(() {
                         obscureText = !obscureText;
                       });
                     },
                   ),
-                  icon: Icon(Icons.password, size: iconSize, color: Colors.white70),
+                  icon: Icon(Icons.password, size: iconSize, color: iconColor),
                   labelText: Lang().newPassword,
                   labelStyle: textStyle(),
                 ),
@@ -195,7 +192,7 @@ class ForgotPasswordState extends State<ForgotPassword> with TickerProviderState
                     splashColor: Colors.transparent,
                     highlightColor: Colors.transparent,
                     child: Center(
-                      child: Text(btnContent, style: textStyle()),
+                      child: Text(btnContent, style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
                     ),
                     onTap: () async {
                       if (captchaController.text.isNotEmpty && newPasswordController.text.isNotEmpty) {

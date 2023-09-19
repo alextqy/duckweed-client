@@ -28,7 +28,7 @@ class MarqueeState extends State<Marquee> {
         decoration: tooltipStyle(),
         textStyle: textStyle(),
         message: widget.data[index],
-        child: Text(widget.data[index], maxLines: 1, overflow: TextOverflow.ellipsis, style: textStyle()),
+        child: Text(widget.data[index], style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
       ),
     );
   }

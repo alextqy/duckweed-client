@@ -40,7 +40,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
         automaticallyImplyLeading: false,
         toolbarHeight: toolbarHeight,
         backgroundColor: bgColor(context),
-        title: Text(Lang().home, style: textStyle()),
+        title: Text(Lang().home, style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
       ),
       body: Container(
         margin: const EdgeInsets.all(0),
@@ -56,7 +56,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 width: double.infinity,
                 height: 35,
                 alignment: Alignment.center,
-                color: Colors.grey,
+                color: Colors.transparent,
                 child: Row(
                   children: [
                     Expanded(child: Marquee(data: content)),
@@ -67,7 +67,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                         textStyle: textStyle(),
                         decoration: tooltipStyle(),
                         child: IconButton(
-                          icon: const Icon(Icons.disabled_visible_outlined, size: 20, color: Colors.white),
+                          icon: Icon(Icons.disabled_visible_outlined, size: 20, color: iconColor),
                           onPressed: () async {
                             setState(() {
                               showMarquee = false;
@@ -78,6 +78,15 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     ),
                   ],
                 ),
+              ),
+            ),
+            Visibility(
+              visible: showMarquee,
+              child: Container(
+                margin: const EdgeInsets.all(0),
+                padding: const EdgeInsets.all(0),
+                color: Colors.white70,
+                height: 1,
               ),
             ),
             Expanded(

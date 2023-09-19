@@ -11,14 +11,14 @@ showAlertDialog(BuildContext context, {String memo = ""}) {
       return StatefulBuilder(
         builder: (BuildContext context, Function state) {
           return AlertDialog(
-            title: Text(Lang().title, style: textStyle()),
-            content: Text(memo, style: textStyle()),
+            title: Text(Lang().title, style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
+            content: Text(memo, style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
             actions: [
               TextButton(
                 onPressed: () async {
                   Navigator.of(context).pop();
                 },
-                child: Text(Lang().cancel, style: textStyle()),
+                child: Text(Lang().cancel, style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
               ),
             ],
           );
@@ -58,10 +58,7 @@ ScaffoldFeatureController showSnackBar(BuildContext context, {String content = "
       duration: Duration(seconds: duration),
       backgroundColor: backgroundColor,
       padding: const EdgeInsets.all(10),
-      content: Text(
-        content,
-        style: textStyle(),
-      ),
+      content: Text(content, style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
       // action: SnackBarAction(label: "Action", onPressed: () async {}),
     ),
   );

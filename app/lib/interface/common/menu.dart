@@ -40,7 +40,7 @@ Drawer actionMenu(BuildContext context) {
                     width: 53,
                     child: CircleAvatar(
                       backgroundColor: bgColor(context),
-                      child: Text(appAccount.substring(0, 2), style: textStyle(fontSize: 24)),
+                      child: Text(appAccount.substring(0, 2), style: textStyle(fontSize: 24), maxLines: 1, overflow: TextOverflow.ellipsis),
                     ),
                   ),
                 ),
@@ -60,7 +60,7 @@ Drawer actionMenu(BuildContext context) {
     return Tooltip(
       message: Lang().longPressToExit,
       textStyle: textStyle(),
-      decoration: const BoxDecoration(color: Colors.black),
+      decoration: tooltipStyle(),
       child: SizedBox(
         height: 35,
         child: ElevatedButton(
@@ -73,9 +73,9 @@ Drawer actionMenu(BuildContext context) {
           child: Row(
             children: [
               const Expanded(child: SizedBox()),
-              Text(Lang().exit, style: textStyle()),
+              Text(Lang().exit, style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
               const SizedBox(width: 10),
-              Icon(size: iconSize, Icons.exit_to_app),
+              Icon(Icons.exit_to_app, size: iconSize, color: iconColor),
             ],
           ),
           onLongPress: () async {
@@ -123,8 +123,8 @@ Drawer actionMenu(BuildContext context) {
             children: [
               ListTile(
                 horizontalTitleGap: 20,
-                leading: const Icon(Icons.home_outlined),
-                title: Text(Lang().home, style: textStyle()),
+                leading: Icon(Icons.home_outlined, size: iconSize, color: iconColor),
+                title: Text(Lang().home, style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
                 onTap: () async {
                   Navigator.of(context).push(RouteHelper().generate(context, "/"));
                 },
@@ -133,8 +133,8 @@ Drawer actionMenu(BuildContext context) {
                 visible: master ? true : false,
                 child: ListTile(
                   horizontalTitleGap: 20,
-                  leading: const Icon(Icons.people_outlined),
-                  title: Text(Lang().users, style: textStyle()),
+                  leading: Icon(Icons.people_outlined, size: iconSize, color: iconColor),
+                  title: Text(Lang().users, style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
                   onTap: () async {
                     Navigator.of(context).push(RouteHelper().generate(context, "/users"));
                   },
@@ -144,8 +144,8 @@ Drawer actionMenu(BuildContext context) {
                 visible: master ? true : false,
                 child: ListTile(
                   horizontalTitleGap: 20,
-                  leading: const Icon(Icons.messenger_outline),
-                  title: Text(Lang().announcements, style: textStyle()),
+                  leading: Icon(Icons.messenger_outline, size: iconSize, color: iconColor),
+                  title: Text(Lang().announcements, style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
                   onTap: () async {
                     Navigator.of(context).push(RouteHelper().generate(context, "/announcements"));
                   },
@@ -155,8 +155,8 @@ Drawer actionMenu(BuildContext context) {
                 visible: master ? true : false,
                 child: ListTile(
                   horizontalTitleGap: 20,
-                  leading: const Icon(Icons.topic_outlined),
-                  title: Text(Lang().systemLog, style: textStyle()),
+                  leading: Icon(Icons.topic_outlined, size: iconSize, color: iconColor),
+                  title: Text(Lang().systemLog, style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
                   onTap: () async {
                     Navigator.of(context).push(RouteHelper().generate(context, "/system_log"));
                   },
@@ -165,7 +165,7 @@ Drawer actionMenu(BuildContext context) {
             ],
           ),
         ),
-        ListTile(horizontalTitleGap: 10, title: Text("v 0.1.0", style: textStyle())),
+        ListTile(horizontalTitleGap: 10, title: Text("v 0.1.0", style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis)),
         menuFooter(context),
       ],
     ),

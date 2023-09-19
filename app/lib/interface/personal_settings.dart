@@ -43,7 +43,6 @@ class PersonalSettingsState extends State<PersonalSettings> with TickerProviderS
 
   @override
   void initState() {
-    super.initState();
     userNotifier.addListener(basicListener);
 
     emailController.text = "";
@@ -62,6 +61,8 @@ class PersonalSettingsState extends State<PersonalSettings> with TickerProviderS
     animationEmail = Tween(begin: 0.0, end: 20.0).animate(animationControllerEmail);
     animationControllerInput = AnimationController(duration: Duration(milliseconds: showSpeed), vsync: this);
     animationInput = Tween(begin: 0.0, end: 64.5).animate(animationControllerInput);
+
+    super.initState();
   }
 
   @override
@@ -77,7 +78,7 @@ class PersonalSettingsState extends State<PersonalSettings> with TickerProviderS
       appBar: AppBar(
         toolbarHeight: toolbarHeight,
         backgroundColor: bgColor(context),
-        title: Text(Lang().personalSettings, style: textStyle()),
+        title: Text(Lang().personalSettings, style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
       ),
       body: Container(
         margin: const EdgeInsets.all(0),
@@ -99,10 +100,10 @@ class PersonalSettingsState extends State<PersonalSettings> with TickerProviderS
                 style: textStyle(),
                 decoration: InputDecoration(
                   suffixIcon: IconButton(
-                    icon: Icon(Icons.clear, size: iconSize, color: Colors.white70),
+                    icon: Icon(Icons.clear, size: iconSize, color: iconColor),
                     onPressed: () async => nameController.clear(),
                   ),
-                  icon: Icon(Icons.person, size: iconSize, color: Colors.white70),
+                  icon: Icon(Icons.person, size: iconSize, color: iconColor),
                   labelText: Lang().nickName,
                   labelStyle: textStyle(),
                 ),
@@ -122,10 +123,10 @@ class PersonalSettingsState extends State<PersonalSettings> with TickerProviderS
                 style: textStyle(),
                 decoration: InputDecoration(
                   suffixIcon: IconButton(
-                    icon: Icon(Icons.clear, size: iconSize, color: Colors.white70),
+                    icon: Icon(Icons.clear, size: iconSize, color: iconColor),
                     onPressed: () async => passwordController.clear(),
                   ),
-                  icon: Icon(Icons.password, size: iconSize, color: Colors.white70),
+                  icon: Icon(Icons.password, size: iconSize, color: iconColor),
                   labelText: Lang().newPassword,
                   labelStyle: textStyle(),
                 ),
@@ -151,10 +152,10 @@ class PersonalSettingsState extends State<PersonalSettings> with TickerProviderS
                             style: textStyle(),
                             decoration: InputDecoration(
                               suffixIcon: IconButton(
-                                icon: Icon(Icons.clear, size: iconSize, color: Colors.white70),
+                                icon: Icon(Icons.clear, size: iconSize, color: iconColor),
                                 onPressed: () async => captchaController.clear(),
                               ),
-                              icon: Icon(Icons.verified, size: iconSize, color: Colors.white70),
+                              icon: Icon(Icons.verified, size: iconSize, color: iconColor),
                               labelText: Lang().captcha,
                               labelStyle: textStyle(),
                             ),
@@ -193,13 +194,13 @@ class PersonalSettingsState extends State<PersonalSettings> with TickerProviderS
                     decoration: InputDecoration(
                       suffixIcon: sendStatus
                           ? IconButton(
-                              icon: Icon(Icons.send, size: animationEmail.value, color: Colors.white70),
+                              icon: Icon(Icons.send, size: animationEmail.value, color: iconColor),
                               onPressed: () async {
                                 userNotifier.sendEmail(url: appUrl, email: emailController.text, sendType: 3);
                               },
                             )
                           : null,
-                      icon: Icon(Icons.mail, size: iconSize, color: Colors.white70),
+                      icon: Icon(Icons.mail, size: iconSize, color: iconColor),
                       labelText: Lang().email,
                       labelStyle: textStyle(),
                     ),
@@ -220,7 +221,7 @@ class PersonalSettingsState extends State<PersonalSettings> with TickerProviderS
                 splashColor: Colors.transparent,
                 highlightColor: Colors.transparent,
                 child: Center(
-                  child: Text("OK", style: textStyle()),
+                  child: Text("OK", style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
                 ),
                 onTap: () async {
                   userNotifier.modifyPersonalData(
