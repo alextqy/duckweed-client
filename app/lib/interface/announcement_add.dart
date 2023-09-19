@@ -72,10 +72,7 @@ class AnnouncementAddState extends State<AnnouncementAdd> with TickerProviderSta
                     margin: const EdgeInsets.all(0),
                     padding: const EdgeInsets.all(0),
                     height: 30,
-                    decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.all(Radius.circular(10)),
-                      color: bgColor(context),
-                    ),
+                    decoration: const BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(10)), color: Colors.transparent),
                     child: TextButton(
                       child: Text("OK", style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
                       onPressed: () async {
