@@ -7,6 +7,7 @@ import "package:app/common/tools.dart";
 import "package:app/notifier/base_notifier.dart";
 import "package:app/notifier/announcement_notifier.dart";
 
+import "package:app/interface/common/routes.dart";
 import "package:app/interface/common/menu.dart";
 import "package:app/interface/common/pub_lib.dart";
 import "package:app/interface/common/show_alert_dialog.dart";
@@ -42,12 +43,7 @@ class AnnouncementsState extends State<Announcements> with TickerProviderStateMi
       String createtime = Tools().timestampToStr(a.createtime).split(" ")[0];
       dataList.add(
         ListTile(
-          title: Tooltip(
-            message: a.content,
-            textStyle: textStyle(),
-            decoration: tooltipStyle(),
-            child: Text(a.content, style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
-          ),
+          title: Text(a.content, style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
           subtitle: Text("${Lang().createtime}: $createtime", style: textStyle(fontSize: 12.5), maxLines: 1, overflow: TextOverflow.ellipsis),
           trailing: IconButton(
             icon: Icon(Icons.delete_outline, size: 30, color: iconColor),
@@ -95,8 +91,8 @@ class AnnouncementsState extends State<Announcements> with TickerProviderStateMi
 
   @override
   void initState() {
-    announcementNotifier.addListener(basicListener);
     fetchData();
+    announcementNotifier.addListener(basicListener);
     super.initState();
   }
 
@@ -138,7 +134,13 @@ class AnnouncementsState extends State<Announcements> with TickerProviderStateMi
               child: IconButton(
                 padding: const EdgeInsets.all(0),
                 icon: Icon(Icons.add_outlined, size: 35, color: iconColor),
-                onPressed: () async {},
+                onPressed: () async {
+                  Navigator.of(context).push(RouteHelper().generate(context, "/announcement/add")).then((value) {
+                    setState(() {
+                      fetchData();
+                    });
+                  });
+                },
               ),
             ),
           ],

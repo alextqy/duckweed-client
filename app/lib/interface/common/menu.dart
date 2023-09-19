@@ -158,7 +158,7 @@ Drawer actionMenu(BuildContext context) {
                   leading: Icon(Icons.topic_outlined, size: iconSize, color: iconColor),
                   title: Text(Lang().systemLog, style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
                   onTap: () async {
-                    Navigator.of(context).push(RouteHelper().generate(context, "/system_log"));
+                    Navigator.of(context).push(RouteHelper().generate(context, "/system/log"));
                   },
                 ),
               ),

@@ -9,6 +9,8 @@ import "package:app/interface/users.dart";
 import "package:app/interface/announcements.dart";
 import "package:app/interface/system_log.dart";
 
+import "package:app/interface/announcement_add.dart";
+
 class RouteHelper {
   dynamic generate(BuildContext context, String routeName, {dynamic data}) {
     // if (routeName != FileHelper().jsonRead(key: "current_page")) {
@@ -22,8 +24,10 @@ class RouteHelper {
         return MaterialPageRoute(builder: (context) => const Users());
       case "/announcements":
         return MaterialPageRoute(builder: (context) => const Announcements());
-      case "/system_log":
+      case "/system/log":
         return MaterialPageRoute(builder: (context) => const SystemLog());
+      case "/announcement/add":
+        return MaterialPageRoute(builder: (context) => const AnnouncementAdd());
       default:
         return MaterialPageRoute(
           builder: (context) => Scaffold(

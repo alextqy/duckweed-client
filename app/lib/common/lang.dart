@@ -47,6 +47,7 @@ class Lang {
   String disable = "";
   String enable = "";
   String hideBulletinBoard = "";
+  String addAnnouncement = "";
 
   Lang() {
     this.type = FileHelper().jsonRead(key: "lang");
@@ -93,6 +94,7 @@ class Lang {
       this.disable = "禁用";
       this.enable = "启用";
       this.hideBulletinBoard = "隐藏公告栏";
+      this.addAnnouncement = "添加公告";
     } else {
       this.theServerAddressIsIncorrect = "The server address is incorrect";
       this.testConnection = "Test connection";
@@ -134,6 +136,7 @@ class Lang {
       this.disable = "Disable";
       this.enable = "Enable";
       this.hideBulletinBoard = "Hide bulletin board";
+      this.addAnnouncement = "New notice";
     }
   }
 }

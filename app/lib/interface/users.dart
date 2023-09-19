@@ -254,7 +254,7 @@ class UsersState extends State<Users> with TickerProviderStateMixin {
                                           SizedBox(
                                             height: 50,
                                             width: 100,
-                                            child: TextField(
+                                            child: TextFormField(
                                               style: textStyle(fontSize: 20),
                                               controller: currentSliderValueController,
                                               keyboardType: TextInputType.number,
