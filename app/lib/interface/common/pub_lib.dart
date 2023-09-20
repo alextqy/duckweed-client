@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import "package:app/common/file.dart";
+import "package:flutter/services.dart";
 
 String appUrl = FileHelper().setUrl();
 double toolbarHeight = 37;
@@ -24,4 +25,12 @@ Color bgColor(BuildContext context) {
 
 Size screenSize(BuildContext context) {
   return MediaQuery.of(context).size;
+}
+
+void copy(String param) {
+  Clipboard.setData(ClipboardData(text: param));
+}
+
+Future<ClipboardData?> paste() {
+  return Clipboard.getData(Clipboard.kTextPlain);
 }

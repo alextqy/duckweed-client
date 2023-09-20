@@ -1,5 +1,4 @@
 import "dart:convert";
-import "dart:ffi";
 
 import "package:flutter/material.dart";
 import "package:app/common/lang.dart";
@@ -110,9 +109,14 @@ class UsersState extends State<Users> with TickerProviderStateMixin {
             itemBuilder: (BuildContext context) => <PopupMenuEntry<ListTileTitleAlignment>>[
               PopupMenuItem<ListTileTitleAlignment>(
                 value: ListTileTitleAlignment.center,
-                child: Text("${Lang().copy} ${Lang().account}", maxLines: 1, overflow: TextOverflow.ellipsis, style: textStyle(color: Colors.black)),
+                child: Text(
+                  "${Lang().copy} ${Lang().account}",
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: textStyle(color: Colors.black),
+                ),
                 onTap: () async {
-                  Clipboard.setData(ClipboardData(text: u.account));
+                  copy(u.account);
                   showSnackBar(context, content: Lang().complete, backgroundColor: bgColor(context));
                 },
               ),
@@ -239,6 +243,7 @@ class UsersState extends State<Users> with TickerProviderStateMixin {
                                       child: Row(
                                         children: [
                                           Expanded(
+                                            flex: 3,
                                             child: Container(
                                               margin: const EdgeInsets.all(0),
                                               padding: const EdgeInsets.all(0),
@@ -250,7 +255,13 @@ class UsersState extends State<Users> with TickerProviderStateMixin {
                                               child: InkWell(
                                                 splashColor: Colors.transparent,
                                                 highlightColor: Colors.transparent,
-                                                child: Center(child: Icon(size: iconSize, Icons.arrow_back_ios, color: iconColor)),
+                                                child: Tooltip(
+                                                  preferBelow: false,
+                                                  message: "512",
+                                                  textStyle: textStyle(),
+                                                  decoration: tooltipStyle(),
+                                                  child: Center(child: Icon(size: iconSize, Icons.remove, color: iconColor)),
+                                                ),
                                                 onTap: () async {
                                                   state(() {
                                                     currentSliderValue -= 512;
@@ -284,6 +295,7 @@ class UsersState extends State<Users> with TickerProviderStateMixin {
                                             ),
                                           ),
                                           Expanded(
+                                            flex: 3,
                                             child: Container(
                                               margin: const EdgeInsets.all(0),
                                               padding: const EdgeInsets.all(0),
@@ -295,7 +307,13 @@ class UsersState extends State<Users> with TickerProviderStateMixin {
                                               child: InkWell(
                                                 splashColor: Colors.transparent,
                                                 highlightColor: Colors.transparent,
-                                                child: Center(child: Icon(size: iconSize, Icons.arrow_forward_ios, color: iconColor)),
+                                                child: Tooltip(
+                                                  preferBelow: false,
+                                                  message: "512",
+                                                  textStyle: textStyle(),
+                                                  decoration: tooltipStyle(),
+                                                  child: Center(child: Icon(size: iconSize, Icons.add, color: iconColor)),
+                                                ),
                                                 onTap: () async {
                                                   state(() {
                                                     currentSliderValue += 512;
