@@ -51,6 +51,8 @@ class Lang {
   String content = "";
   String selectDate = "";
   String copy = "";
+  String newFolder = "";
+  String uploadFiles = "";
 
   Lang() {
     this.type = FileHelper().jsonRead(key: "lang");
@@ -101,6 +103,8 @@ class Lang {
       this.content = "内容";
       this.selectDate = "选择日期";
       this.copy = "复制";
+      this.newFolder = "新建文件夹";
+      this.uploadFiles = "上传文件";
     } else {
       this.theServerAddressIsIncorrect = "The server address is incorrect";
       this.testConnection = "Test connection";
@@ -146,6 +150,8 @@ class Lang {
       this.content = "Content";
       this.selectDate = "Select date";
       this.copy = "Copy";
+      this.newFolder = "New folder";
+      this.uploadFiles = "Upload files";
     }
   }
 }

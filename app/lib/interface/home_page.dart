@@ -1,6 +1,7 @@
 import "dart:convert";
 
 import "package:flutter/material.dart";
+import "package:flutter/cupertino.dart";
 import "package:app/common/lang.dart";
 
 import "package:app/notifier/announcement_notifier.dart";
@@ -45,6 +46,29 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
   @override
   void dispose() {
     super.dispose();
+  }
+
+  void showActionSheet(BuildContext context) {
+    showCupertinoModalPopup<void>(
+      barrierColor: Colors.transparent,
+      context: context,
+      builder: (BuildContext context) => CupertinoActionSheet(
+        actions: <CupertinoActionSheetAction>[
+          CupertinoActionSheetAction(
+            child: Text(Lang().newFolder, style: textStyle(fontSize: 18)),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+          CupertinoActionSheetAction(
+            child: Text(Lang().uploadFiles, style: textStyle(fontSize: 18)),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -111,6 +135,22 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 height: double.infinity,
                 width: double.infinity,
               ),
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    margin: const EdgeInsets.all(10),
+                    padding: const EdgeInsets.all(0),
+                    width: double.infinity,
+                    child: IconButton(
+                      padding: const EdgeInsets.all(0),
+                      icon: Icon(Icons.menu_rounded, size: 30, color: iconColor),
+                      onPressed: () => showActionSheet(context),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ],
         ),
