@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import "package:app/common/file.dart";
 import "package:flutter/services.dart";
+import "package:file_selector/file_selector.dart";
 
 String appUrl = FileHelper().setUrl();
 double toolbarHeight = 37;
@@ -33,4 +34,9 @@ void copy(String param) {
 
 Future<ClipboardData?> paste() {
   return Clipboard.getData(Clipboard.kTextPlain);
+}
+
+Future<List<XFile>> fileSelector(List<String> xFType) async {
+  XTypeGroup xType = XTypeGroup(label: "", extensions: xFType);
+  return await openFiles(acceptedTypeGroups: [xType]);
 }

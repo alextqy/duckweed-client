@@ -3,8 +3,10 @@ import "dart:convert";
 import "package:flutter/material.dart";
 import "package:flutter/cupertino.dart";
 import "package:app/common/lang.dart";
+import "package:file_selector/file_selector.dart";
 
 import "package:app/notifier/announcement_notifier.dart";
+import "package:app/notifier/dir_notifier.dart";
 
 import "package:app/interface/common/menu.dart";
 import "package:app/interface/common/pub_lib.dart";
@@ -23,6 +25,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
   List<String> content = [];
 
   AnnouncementNotifier announcementNotifier = AnnouncementNotifier();
+  DirNotifier dirNotifier = DirNotifier();
 
   bool showMarquee = true;
 
@@ -56,13 +59,20 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
         actions: <CupertinoActionSheetAction>[
           CupertinoActionSheetAction(
             child: Text(Lang().newFolder, style: textStyle(fontSize: 18)),
-            onPressed: () {
+            onPressed: () async {
               Navigator.pop(context);
             },
           ),
           CupertinoActionSheetAction(
             child: Text(Lang().uploadFiles, style: textStyle(fontSize: 18)),
-            onPressed: () {
+            onPressed: () async {
+              fileSelector(["*"]).then((value) {
+                if (value.isNotEmpty) {
+                  for (XFile f in value) {
+                    print(f.path);
+                  }
+                }
+              });
               Navigator.pop(context);
             },
           ),
@@ -146,7 +156,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     child: IconButton(
                       padding: const EdgeInsets.all(0),
                       icon: Icon(Icons.menu_rounded, size: 30, color: iconColor),
-                      onPressed: () => showActionSheet(context),
+                      onPressed: () async => showActionSheet(context),
                     ),
                   ),
                 ),
