@@ -59,7 +59,11 @@ class AnnouncementAddState extends State<AnnouncementAdd> with TickerProviderSta
             Expanded(
               child: TextFormField(
                 maxLines: null,
-                decoration: const InputDecoration(border: InputBorder.none),
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  hintText: Lang().content,
+                  hintStyle: textStyle(),
+                ),
                 keyboardType: TextInputType.multiline,
                 controller: controller,
                 style: textStyle(),

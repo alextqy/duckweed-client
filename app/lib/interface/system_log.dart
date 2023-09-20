@@ -1,3 +1,4 @@
+import "package:app/notifier/log_notifier.dart";
 import "package:flutter/material.dart";
 import "package:app/common/lang.dart";
 
@@ -12,6 +13,14 @@ class SystemLog extends StatefulWidget {
 }
 
 class SystemLogState extends State<SystemLog> with TickerProviderStateMixin {
+  DateTime setDate = DateTime.now();
+  String ymd = "";
+
+  LogNotifier logNotifier = LogNotifier();
+
+  TextEditingController controller = TextEditingController();
+  TextEditingController accountController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -38,7 +47,43 @@ class SystemLogState extends State<SystemLog> with TickerProviderStateMixin {
         alignment: Alignment.center,
         child: Column(
           children: [
-            const Expanded(child: SizedBox()),
+            Expanded(
+              child: TextFormField(
+                readOnly: true,
+                maxLines: null,
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  hintStyle: textStyle(),
+                ),
+                keyboardType: TextInputType.multiline,
+                controller: controller,
+                style: textStyle(),
+              ),
+            ),
+            Container(
+              height: 35,
+              width: double.infinity,
+              margin: const EdgeInsets.all(0),
+              padding: const EdgeInsets.all(0),
+              child: TextFormField(
+                textAlign: TextAlign.center,
+                maxLines: 1,
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  hintText: Lang().account,
+                  hintStyle: textStyle(),
+                  suffixIcon: IconButton(
+                    icon: Icon(Icons.clear, size: iconSize, color: iconColor),
+                    onPressed: () async {
+                      controller.clear();
+                      accountController.clear();
+                    },
+                  ),
+                ),
+                controller: accountController,
+                style: textStyle(),
+              ),
+            ),
             Container(
               height: 35,
               width: double.infinity,
@@ -46,7 +91,32 @@ class SystemLogState extends State<SystemLog> with TickerProviderStateMixin {
               padding: const EdgeInsets.all(0),
               child: TextButton(
                 child: Text(Lang().selectDate, style: textStyle()),
-                onPressed: () {},
+                onPressed: () async {
+                  setState(() {
+                    showDatePicker(
+                      context: context,
+                      initialEntryMode: DatePickerEntryMode.calendarOnly,
+                      initialDate: setDate,
+                      firstDate: DateTime(2023),
+                      lastDate: DateTime(2099),
+                    ).then((value) {
+                      if (value != null) {
+                        setState(() {
+                          setDate = value;
+                          controller.clear();
+                          ymd = value.toString().split(" ")[0];
+                          if (ymd.isNotEmpty && accountController.text.isNotEmpty) {
+                            logNotifier.viewLog(url: appUrl, date: ymd, account: accountController.text).then((value) {
+                              if (value.data != null) {
+                                controller.text = value.data;
+                              }
+                            });
+                          }
+                        });
+                      }
+                    });
+                  });
+                },
               ),
             ),
           ],

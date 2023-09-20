@@ -44,7 +44,7 @@ class AnnouncementGetState extends State<AnnouncementGet> with TickerProviderSta
           children: [
             Expanded(
               child: TextFormField(
-                enabled: false,
+                readOnly: true,
                 maxLines: null,
                 decoration: const InputDecoration(border: InputBorder.none),
                 keyboardType: TextInputType.multiline,

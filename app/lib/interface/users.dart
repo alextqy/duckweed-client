@@ -485,7 +485,9 @@ class UsersState extends State<Users> with TickerProviderStateMixin {
                       onChanged: (String? value) async {
                         setState(() {
                           page = 1;
-                          pageSize = int.parse(value!);
+                          if (value != null) {
+                            pageSize = int.parse(value);
+                          }
                           fetchData();
                         });
                       },
