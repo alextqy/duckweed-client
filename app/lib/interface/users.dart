@@ -549,7 +549,7 @@ class UsersState extends State<Users> with TickerProviderStateMixin {
               children: [
                 Expanded(
                   child: IconButton(
-                    icon: Icon(Icons.arrow_back_ios, size: 25, color: iconColor),
+                    icon: Icon(Icons.arrow_back_ios, size: iconSize, color: iconColor),
                     onPressed: () async {
                       setState(() {
                         page -= 1;
@@ -563,12 +563,12 @@ class UsersState extends State<Users> with TickerProviderStateMixin {
                     icon: order == -1
                         ? Icon(
                             Icons.keyboard_double_arrow_down,
-                            size: 30,
+                            size: 25,
                             color: iconColor,
                           )
                         : Icon(
                             Icons.keyboard_double_arrow_up,
-                            size: 30,
+                            size: 25,
                             color: iconColor,
                           ),
                     onPressed: () async {
@@ -586,7 +586,7 @@ class UsersState extends State<Users> with TickerProviderStateMixin {
                 ),
                 Expanded(
                   child: IconButton(
-                    icon: Icon(Icons.arrow_forward_ios, size: 25, color: iconColor),
+                    icon: Icon(Icons.arrow_forward_ios, size: iconSize, color: iconColor),
                     onPressed: () async {
                       setState(() {
                         page += 1;

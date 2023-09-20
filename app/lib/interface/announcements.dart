@@ -127,23 +127,27 @@ class AnnouncementsState extends State<Announcements> with TickerProviderStateMi
                 children: generateList(),
               ),
             ),
-            Container(margin: const EdgeInsets.all(0), height: 1, color: Colors.white70),
-            Container(margin: const EdgeInsets.all(0), height: 10, color: Colors.transparent),
-            Container(
-              margin: const EdgeInsets.all(0),
-              padding: const EdgeInsets.all(0),
-              alignment: Alignment.center,
-              child: IconButton(
-                padding: const EdgeInsets.all(0),
-                icon: Icon(Icons.add_outlined, size: 35, color: iconColor),
-                onPressed: () async {
-                  Navigator.of(context).push(RouteHelper().generate(context, "/announcement/add")).then((value) {
-                    setState(() {
-                      fetchData();
-                    });
-                  });
-                },
-              ),
+            Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    margin: const EdgeInsets.all(0),
+                    padding: const EdgeInsets.all(0),
+                    height: 35,
+                    child: IconButton(
+                      padding: const EdgeInsets.all(0),
+                      icon: Icon(Icons.add_outlined, size: 30, color: iconColor),
+                      onPressed: () async {
+                        Navigator.of(context).push(RouteHelper().generate(context, "/announcement/add")).then((value) {
+                          setState(() {
+                            fetchData();
+                          });
+                        });
+                      },
+                    ),
+                  ),
+                ),
+              ],
             ),
           ],
         ),
