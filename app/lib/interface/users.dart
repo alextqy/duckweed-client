@@ -1,4 +1,5 @@
 import "dart:convert";
+import "dart:ffi";
 
 import "package:flutter/material.dart";
 import "package:app/common/lang.dart";
@@ -107,6 +108,14 @@ class UsersState extends State<Users> with TickerProviderStateMixin {
             tooltip: "",
             color: iconColor,
             itemBuilder: (BuildContext context) => <PopupMenuEntry<ListTileTitleAlignment>>[
+              PopupMenuItem<ListTileTitleAlignment>(
+                value: ListTileTitleAlignment.center,
+                child: Text("${Lang().copy} ${Lang().account}", maxLines: 1, overflow: TextOverflow.ellipsis, style: textStyle(color: Colors.black)),
+                onTap: () async {
+                  Clipboard.setData(ClipboardData(text: u.account));
+                  showSnackBar(context, content: Lang().complete, backgroundColor: bgColor(context));
+                },
+              ),
               PopupMenuItem<ListTileTitleAlignment>(
                 value: ListTileTitleAlignment.center,
                 child: Text(Lang().details, maxLines: 1, overflow: TextOverflow.ellipsis, style: textStyle(color: Colors.black)),

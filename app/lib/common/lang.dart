@@ -50,6 +50,7 @@ class Lang {
   String addAnnouncement = "";
   String content = "";
   String selectDate = "";
+  String copy = "";
 
   Lang() {
     this.type = FileHelper().jsonRead(key: "lang");
@@ -99,6 +100,7 @@ class Lang {
       this.addAnnouncement = "添加公告";
       this.content = "内容";
       this.selectDate = "选择日期";
+      this.copy = "复制";
     } else {
       this.theServerAddressIsIncorrect = "The server address is incorrect";
       this.testConnection = "Test connection";
@@ -143,6 +145,7 @@ class Lang {
       this.addAnnouncement = "New notice";
       this.content = "Content";
       this.selectDate = "Select date";
+      this.copy = "Copy";
     }
   }
 }
