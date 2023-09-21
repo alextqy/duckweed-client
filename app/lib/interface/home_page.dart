@@ -26,6 +26,12 @@ class HomePage extends StatefulWidget {
 class HomePageState extends State<HomePage> with TickerProviderStateMixin {
   List<String> content = [];
 
+  bool isSelectionMode = false;
+  final int listLength = 30;
+  late List<bool> _selected;
+  bool _selectAll = false;
+  bool _isGridMode = false;
+
   AnnouncementNotifier announcementNotifier = AnnouncementNotifier();
   DirNotifier dirNotifier = DirNotifier();
 
@@ -57,6 +63,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
   void initState() {
     fetchAnnouncementData();
     dirNotifier.addListener(basicListener);
+    initializeSelection();
     super.initState();
   }
 
@@ -64,6 +71,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
   void dispose() {
     dirNotifier.removeListener(basicListener);
     dirNotifier.dispose();
+    _selected.clear();
     super.dispose();
   }
 
@@ -108,7 +116,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                 const Expanded(child: SizedBox()),
                                 TextButton(
                                   child: Text("OK", style: textStyle()),
-                                  onPressed: () {
+                                  onPressed: () async {
                                     if (textController.text.isNotEmpty) {
                                       dirNotifier.dirAction(url: appUrl, dirName: textController.text, parentID: parentID, id: 0);
                                       Navigator.pop(context);
@@ -142,6 +150,10 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
         ],
       ),
     );
+  }
+
+  void initializeSelection() {
+    _selected = List<bool>.generate(listLength, (_) => false);
   }
 
   @override
@@ -201,24 +213,57 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 height: 1,
               ),
             ),
-            Expanded(
-              child: Container(
-                margin: const EdgeInsets.all(10),
-                padding: const EdgeInsets.all(0),
-                height: double.infinity,
-                width: double.infinity,
+            Container(
+              margin: const EdgeInsets.all(0),
+              padding: const EdgeInsets.all(0),
+              height: 45,
+              width: double.infinity,
+              alignment: Alignment.center,
+              // color: Colors.grey,
+              child: Row(
+                children: [
+                  const Expanded(child: SizedBox()),
+                  if (_isGridMode)
+                    IconButton(
+                      icon: Icon(Icons.grid_view_rounded, size: 25, color: iconColor),
+                      onPressed: () async {
+                        setState(() {
+                          _isGridMode = false;
+                        });
+                      },
+                    )
+                  else
+                    IconButton(
+                      icon: Icon(Icons.table_rows_rounded, size: 25, color: iconColor),
+                      onPressed: () async {
+                        setState(() {
+                          _isGridMode = true;
+                        });
+                      },
+                    ),
+                  IconButton(
+                    icon: Icon(Icons.check_box_outlined, size: 25, color: iconColor),
+                    onPressed: () async {
+                      _selectAll = !_selectAll;
+                      setState(() {
+                        _selected = List<bool>.generate(listLength, (_) => _selectAll);
+                      });
+                    },
+                  ),
+                ],
               ),
             ),
+            const Expanded(child: SizedBox()),
             Row(
               children: [
                 Expanded(
                   child: Container(
-                    margin: const EdgeInsets.all(10),
+                    margin: const EdgeInsets.all(0),
                     padding: const EdgeInsets.all(0),
                     width: double.infinity,
                     child: IconButton(
                       padding: const EdgeInsets.all(0),
-                      icon: Icon(Icons.menu_rounded, size: 30, color: iconColor),
+                      icon: Icon(Icons.menu_open_outlined, size: 30, color: iconColor),
                       onPressed: () async => showActionSheet(context),
                     ),
                   ),
@@ -229,5 +274,106 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
         ),
       ),
     );
+  }
+}
+
+class GridBuilder extends StatefulWidget {
+  const GridBuilder({
+    super.key,
+    required this.selectedList,
+    required this.isSelectionMode,
+    required this.onSelectionChange,
+  });
+
+  final bool isSelectionMode;
+  final Function(bool)? onSelectionChange;
+  final List<bool> selectedList;
+
+  @override
+  GridBuilderState createState() => GridBuilderState();
+}
+
+class GridBuilderState extends State<GridBuilder> {
+  void _toggle(int index) {
+    if (widget.isSelectionMode) {
+      setState(() {
+        widget.selectedList[index] = !widget.selectedList[index];
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GridView.builder(
+        itemCount: widget.selectedList.length,
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+        itemBuilder: (_, int index) {
+          return InkWell(
+            onTap: () => _toggle(index),
+            onLongPress: () {
+              if (!widget.isSelectionMode) {
+                setState(() {
+                  widget.selectedList[index] = true;
+                });
+                widget.onSelectionChange!(true);
+              }
+            },
+            child: GridTile(
+                child: Container(
+              child: widget.isSelectionMode ? Checkbox(onChanged: (bool? x) => _toggle(index), value: widget.selectedList[index]) : const Icon(Icons.image),
+            )),
+          );
+        });
+  }
+}
+
+class ListBuilder extends StatefulWidget {
+  const ListBuilder({
+    super.key,
+    required this.selectedList,
+    required this.isSelectionMode,
+    required this.onSelectionChange,
+  });
+
+  final bool isSelectionMode;
+  final List<bool> selectedList;
+  final Function(bool)? onSelectionChange;
+
+  @override
+  State<ListBuilder> createState() => _ListBuilderState();
+}
+
+class _ListBuilderState extends State<ListBuilder> {
+  void _toggle(int index) {
+    if (widget.isSelectionMode) {
+      setState(() {
+        widget.selectedList[index] = !widget.selectedList[index];
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+        itemCount: widget.selectedList.length,
+        itemBuilder: (_, int index) {
+          return ListTile(
+              onTap: () => _toggle(index),
+              onLongPress: () {
+                if (!widget.isSelectionMode) {
+                  setState(() {
+                    widget.selectedList[index] = true;
+                  });
+                  widget.onSelectionChange!(true);
+                }
+              },
+              trailing: widget.isSelectionMode
+                  ? Checkbox(
+                      value: widget.selectedList[index],
+                      onChanged: (bool? x) => _toggle(index),
+                    )
+                  : const SizedBox.shrink(),
+              title: Text('item $index'));
+        });
   }
 }
