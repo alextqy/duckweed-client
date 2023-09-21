@@ -158,7 +158,6 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    print(selected);
     return Scaffold(
       endDrawer: actionMenu(context),
       appBar: AppBar(
@@ -322,26 +321,28 @@ class _ListBuilderState extends State<ListBuilder> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-        itemCount: widget.selectedList.length,
-        itemBuilder: (_, int index) {
-          return ListTile(
-              onTap: () => _toggle(index),
-              onLongPress: () {
-                if (!widget.isSelectionMode) {
-                  setState(() {
-                    widget.selectedList[index] = true;
-                  });
-                  widget.onSelectionChange!(true);
-                }
-              },
-              trailing: widget.isSelectionMode
-                  ? Checkbox(
-                      value: widget.selectedList[index],
-                      onChanged: (bool? x) => _toggle(index),
-                    )
-                  : const SizedBox.shrink(),
-              title: Text('item $index'));
-        });
+      itemCount: widget.selectedList.length,
+      itemBuilder: (_, int index) {
+        return ListTile(
+          onTap: () => _toggle(index),
+          onLongPress: () {
+            if (!widget.isSelectionMode) {
+              setState(() {
+                widget.selectedList[index] = true;
+              });
+              widget.onSelectionChange!(true);
+            }
+          },
+          trailing: widget.isSelectionMode
+              ? Checkbox(
+                  value: widget.selectedList[index],
+                  onChanged: (bool? x) => _toggle(index),
+                )
+              : const SizedBox.shrink(),
+          title: Text('item $index'),
+        );
+      },
+    );
   }
 }
 
@@ -373,24 +374,26 @@ class GridBuilderState extends State<GridBuilder> {
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
-        itemCount: widget.selectedList.length,
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-        itemBuilder: (_, int index) {
-          return InkWell(
-            onTap: () => _toggle(index),
-            onLongPress: () {
-              if (!widget.isSelectionMode) {
-                setState(() {
-                  widget.selectedList[index] = true;
-                });
-                widget.onSelectionChange!(true);
-              }
-            },
-            child: GridTile(
-                child: Container(
+      itemCount: widget.selectedList.length,
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+      itemBuilder: (_, int index) {
+        return InkWell(
+          onTap: () => _toggle(index),
+          onLongPress: () {
+            if (!widget.isSelectionMode) {
+              setState(() {
+                widget.selectedList[index] = true;
+              });
+              widget.onSelectionChange!(true);
+            }
+          },
+          child: GridTile(
+            child: Container(
               child: widget.isSelectionMode ? Checkbox(onChanged: (bool? x) => _toggle(index), value: widget.selectedList[index]) : const Icon(Icons.image),
-            )),
-          );
-        });
+            ),
+          ),
+        );
+      },
+    );
   }
 }
