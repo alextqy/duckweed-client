@@ -353,7 +353,7 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                           onTap: () async {
                             if (netController.text.isNotEmpty && netBtn == true) {
                               netBtn = false;
-                              Future.delayed(const Duration(milliseconds: 1000)).then((_) async {
+                              Future.delayed(const Duration(milliseconds: 1000)).then((context) async {
                                 if (FileHelper().jsonWrite(key: "server_address", value: netController.text)) {
                                   setState(() {
                                     appUrl = netController.text;
