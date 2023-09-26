@@ -254,7 +254,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
             child: Row(
               children: [
                 const Expanded(child: SizedBox()),
-                Icon(Icons.arrow_circle_down_rounded, color: iconColor, size: 35),
+                Icon(Icons.close_rounded, color: iconColor, size: 25),
                 const Expanded(child: SizedBox()),
               ],
             ),
