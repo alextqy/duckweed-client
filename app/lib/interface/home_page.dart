@@ -10,6 +10,7 @@ import "package:app/notifier/announcement_notifier.dart";
 import "package:app/notifier/dir_notifier.dart";
 import "package:app/notifier/file_notifier.dart";
 
+import "package:app/interface/common/routes.dart";
 import "package:app/interface/common/show_alert_dialog.dart";
 import "package:app/interface/common/menu.dart";
 import "package:app/interface/common/pub_lib.dart";
@@ -57,6 +58,9 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
   }
 
   void fetchData() {
+    itemList.clear();
+    itemSelected.clear();
+
     dirNotifier.dirs(url: appUrl, order: order, parentID: parentID, dirName: searchDirName).then((value) {
       setState(() {
         itemList.addAll(DirModel().fromJsonList(jsonEncode(value.data)));
@@ -70,7 +74,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
     });
   }
 
-  basicListener() async {
+  basicListenerDir() async {
     showSnackBar(context, content: Lang().loading, backgroundColor: bgColor(context), duration: 1);
 
     if (dirNotifier.operationStatus.value == OperationStatus.success) {
@@ -78,6 +82,10 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
     } else {
       showSnackBar(context, content: dirNotifier.operationMemo, backgroundColor: bgColor(context));
     }
+  }
+
+  basicListenerFile() async {
+    showSnackBar(context, content: Lang().loading, backgroundColor: bgColor(context), duration: 1);
 
     if (fileNotifier.operationStatus.value == OperationStatus.success) {
       showSnackBar(context, content: Lang().complete, backgroundColor: bgColor(context));
@@ -94,15 +102,20 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
   void initState() {
     fetchAnnouncementData();
     fetchData();
-    dirNotifier.addListener(basicListener);
+    dirNotifier.addListener(basicListenerDir);
+    fileNotifier.addListener(basicListenerFile);
     super.initState();
   }
 
   @override
   void dispose() {
-    dirNotifier.removeListener(basicListener);
+    dirNotifier.removeListener(basicListenerDir);
+    fileNotifier.removeListener(basicListenerFile);
     dirNotifier.dispose();
+    fileNotifier.dispose();
+    announcementNotifier.dispose();
     itemList.clear();
+    itemSelected.clear();
     super.dispose();
   }
 
@@ -158,6 +171,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                   onPressed: () async {
                                     if (textController.text.isNotEmpty) {
                                       dirNotifier.dirAction(url: appUrl, dirName: textController.text, parentID: parentID, id: 0);
+                                      fetchData();
                                       Navigator.pop(context);
                                     }
                                   },
@@ -254,7 +268,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
             child: Row(
               children: [
                 const Expanded(child: SizedBox()),
-                Icon(Icons.close_rounded, color: iconColor, size: 25),
+                Icon(Icons.filter_list_rounded, color: iconColor, size: 30),
                 const Expanded(child: SizedBox()),
               ],
             ),
@@ -334,6 +348,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 alignment: Alignment.topCenter,
                 child: isGridMode
                     ? GridBuilder(
+                        parentWidget: this,
                         dataList: itemList,
                         isSelectionMode: isSelectionMode,
                         selectedList: itemSelected,
@@ -483,9 +498,9 @@ class ListBuilderState extends State<ListBuilder> {
                       )
                     : const SizedBox.shrink(),
                 widget.isSelectionMode
-                    ? itemActions(
-                        widget.dataList[index],
-                        Icon(Icons.more_vert, size: iconSize, color: iconColor),
+                    ? IconButton(
+                        icon: Icon(Icons.more_horiz, size: iconSize, color: iconColor),
+                        onPressed: () {},
                       )
                     : const SizedBox.shrink(),
               ],
@@ -498,6 +513,7 @@ class ListBuilderState extends State<ListBuilder> {
 }
 
 class GridBuilder extends StatefulWidget {
+  final HomePageState parentWidget;
   final List<dynamic> dataList;
   final List<bool> selectedList;
   final bool isSelectionMode;
@@ -505,6 +521,7 @@ class GridBuilder extends StatefulWidget {
 
   const GridBuilder({
     super.key,
+    required this.parentWidget,
     required this.dataList,
     required this.selectedList,
     required this.isSelectionMode,
@@ -565,7 +582,22 @@ class GridBuilderState extends State<GridBuilder> {
                         ? Row(
                             children: [
                               const Expanded(child: SizedBox()),
-                              itemActions(widget.dataList[index], Icon(Icons.more_horiz, size: iconSize, color: iconColor)),
+                              IconButton(
+                                icon: Icon(Icons.more_horiz, size: iconSize, color: iconColor),
+                                onPressed: () {
+                                  if (widget.dataList[index] is DirModel) {
+                                    Navigator.of(context)
+                                        .push(
+                                      RouteHelper().generate(context, "/dir/details", data: widget.dataList[index]),
+                                    )
+                                        .then((value) {
+                                      setState(() {
+                                        widget.parentWidget.fetchData();
+                                      });
+                                    });
+                                  }
+                                },
+                              ),
                             ],
                           )
                         : const Row(children: []),
@@ -626,52 +658,4 @@ Widget checkFileType(dynamic data) {
     return Text(fileObj.fileName, style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis);
   }
   return Text("null", style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis);
-}
-
-Widget itemActions(dynamic dataList, Icon icon) {
-  return PopupMenuButton<void>(
-    padding: const EdgeInsets.all(0),
-    tooltip: "",
-    color: iconColor,
-    icon: icon,
-    initialValue: null,
-    itemBuilder: (context) {
-      return <PopupMenuEntry<dynamic>>[
-        PopupMenuItem(
-          child: Text(
-            Lang().rename,
-            style: textStyle(color: Colors.black),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-          onTap: () async {
-            var data = dataList;
-            if (data is DirModel) {
-              print(data.dirName);
-            }
-            if (data is FileModel) {
-              print(data.fileName);
-            }
-          },
-        ),
-        PopupMenuItem(
-          child: Text(
-            Lang().details,
-            style: textStyle(color: Colors.black),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-          onTap: () async {
-            var data = dataList;
-            if (data is DirModel) {
-              print(data.dirName);
-            }
-            if (data is FileModel) {
-              print(data.fileName);
-            }
-          },
-        ),
-      ];
-    },
-  );
 }

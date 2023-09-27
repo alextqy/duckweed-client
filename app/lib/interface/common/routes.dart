@@ -12,6 +12,8 @@ import "package:app/interface/system_log.dart";
 import "package:app/interface/announcement_add.dart";
 import "package:app/interface/Announcement_get.dart";
 
+import "package:app/interface/dir_details.dart";
+
 class RouteHelper {
   dynamic generate(BuildContext context, String routeName, {dynamic data}) {
     FileHelper().jsonWrite(key: "current_page", value: routeName);
@@ -30,6 +32,8 @@ class RouteHelper {
         return MaterialPageRoute(builder: (context) => const AnnouncementAdd());
       case "/announcement/get":
         return MaterialPageRoute(builder: (context) => AnnouncementGet(data: data));
+      case "/dir/details":
+        return MaterialPageRoute(builder: (context) => DirDetails(data: data));
       default:
         return MaterialPageRoute(
           builder: (context) => Scaffold(
