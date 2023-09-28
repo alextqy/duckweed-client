@@ -359,6 +359,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                         },
                       )
                     : ListBuilder(
+                        parentWidget: this,
                         dataList: itemList,
                         isSelectionMode: isSelectionMode,
                         selectedList: itemSelected,
@@ -425,6 +426,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
 }
 
 class ListBuilder extends StatefulWidget {
+  final HomePageState parentWidget;
   final List<dynamic> dataList;
   final List<bool> selectedList;
   final bool isSelectionMode;
@@ -432,6 +434,7 @@ class ListBuilder extends StatefulWidget {
 
   const ListBuilder({
     super.key,
+    required this.parentWidget,
     required this.dataList,
     required this.selectedList,
     required this.isSelectionMode,
@@ -500,7 +503,22 @@ class ListBuilderState extends State<ListBuilder> {
                 widget.isSelectionMode
                     ? IconButton(
                         icon: Icon(Icons.more_horiz, size: iconSize, color: iconColor),
-                        onPressed: () {},
+                        onPressed: () {
+                          if (widget.dataList[index] is DirModel) {
+                            Navigator.of(context).push(RouteHelper().generate(context, "/dir/details", data: widget.dataList[index])).then((value) {
+                              setState(() {
+                                widget.parentWidget.fetchData();
+                              });
+                            });
+                          }
+                          if (widget.dataList[index] is FileModel) {
+                            Navigator.of(context).push(RouteHelper().generate(context, "/file/details", data: widget.dataList[index])).then((value) {
+                              setState(() {
+                                widget.parentWidget.fetchData();
+                              });
+                            });
+                          }
+                        },
                       )
                     : const SizedBox.shrink(),
               ],
@@ -586,11 +604,14 @@ class GridBuilderState extends State<GridBuilder> {
                                 icon: Icon(Icons.more_horiz, size: iconSize, color: iconColor),
                                 onPressed: () {
                                   if (widget.dataList[index] is DirModel) {
-                                    Navigator.of(context)
-                                        .push(
-                                      RouteHelper().generate(context, "/dir/details", data: widget.dataList[index]),
-                                    )
-                                        .then((value) {
+                                    Navigator.of(context).push(RouteHelper().generate(context, "/dir/details", data: widget.dataList[index])).then((value) {
+                                      setState(() {
+                                        widget.parentWidget.fetchData();
+                                      });
+                                    });
+                                  }
+                                  if (widget.dataList[index] is FileModel) {
+                                    Navigator.of(context).push(RouteHelper().generate(context, "/file/details", data: widget.dataList[index])).then((value) {
                                       setState(() {
                                         widget.parentWidget.fetchData();
                                       });
@@ -618,23 +639,26 @@ class GridBuilderState extends State<GridBuilder> {
                       const Expanded(child: SizedBox()),
                       Visibility(
                         visible: widget.isSelectionMode,
-                        child: widget.isSelectionMode
-                            ? Container(
-                                margin: const EdgeInsets.all(10),
-                                padding: const EdgeInsets.all(0),
-                                height: 5,
-                                width: 5,
-                                child: Checkbox(onChanged: (bool? x) => toggle(index), value: widget.selectedList[index]),
-                              )
-                            : const Icon(null),
+                        child: Expanded(
+                          child: widget.isSelectionMode
+                              ? Container(
+                                  margin: const EdgeInsets.all(10),
+                                  padding: const EdgeInsets.all(0),
+                                  height: 5,
+                                  width: 5,
+                                  child: Checkbox(onChanged: (bool? x) => toggle(index), value: widget.selectedList[index]),
+                                )
+                              : const Icon(null),
+                        ),
                       ),
-                      Container(
-                        margin: const EdgeInsets.all(0),
-                        padding: const EdgeInsets.all(0),
-                        width: 70,
-                        child: checkFileType(widget.dataList[index]),
+                      Expanded(
+                        child: Container(
+                          margin: const EdgeInsets.all(0),
+                          padding: const EdgeInsets.all(0),
+                          child: checkFileType(widget.dataList[index]),
+                        ),
                       ),
-                      const SizedBox(width: 10),
+                      const Expanded(child: SizedBox()),
                     ],
                   ),
                   const Expanded(child: SizedBox()),
@@ -651,11 +675,21 @@ class GridBuilderState extends State<GridBuilder> {
 Widget checkFileType(dynamic data) {
   if (data is DirModel) {
     DirModel dirObj = data;
-    return Text(dirObj.dirName, style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis);
+    return Tooltip(
+      textStyle: textStyle(),
+      decoration: tooltipStyle(),
+      message: dirObj.dirName,
+      child: Text(dirObj.dirName, style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
+    );
   }
   if (data is FileModel) {
     FileModel fileObj = data;
-    return Text(fileObj.fileName, style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis);
+    return Tooltip(
+      textStyle: textStyle(),
+      decoration: tooltipStyle(),
+      message: fileObj.fileName,
+      child: Text(fileObj.fileName, style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
+    );
   }
   return Text("null", style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis);
 }
