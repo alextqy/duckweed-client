@@ -72,13 +72,13 @@ class SystemLogState extends State<SystemLog> with TickerProviderStateMixin {
                   border: InputBorder.none,
                   hintText: Lang().account,
                   hintStyle: textStyle(),
-                  suffixIcon: IconButton(
-                    icon: Icon(Icons.clear, size: iconSize, color: iconColor),
-                    onPressed: () async {
-                      controller.clear();
-                      accountController.clear();
-                    },
-                  ),
+                  // suffixIcon: IconButton(
+                  //   icon: Icon(Icons.clear, size: iconSize, color: iconColor),
+                  //   onPressed: () async {
+                  //     controller.clear();
+                  //     accountController.clear();
+                  //   },
+                  // ),
                 ),
                 controller: accountController,
                 style: textStyle(),
