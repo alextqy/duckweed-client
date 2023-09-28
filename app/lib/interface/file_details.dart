@@ -76,6 +76,7 @@ class FileDetailsState extends State<FileDetails> with TickerProviderStateMixin 
                 controller: textController,
                 textAlign: TextAlign.center,
                 decoration: InputDecoration(
+                  icon: Icon(Icons.library_books, size: iconSize, color: Colors.grey),
                   suffixIcon: IconButton(
                     icon: Icon(Icons.clear, size: iconSize, color: iconColor),
                     onPressed: () async => textController.clear(),
@@ -86,19 +87,43 @@ class FileDetailsState extends State<FileDetails> with TickerProviderStateMixin 
             Container(
               margin: const EdgeInsets.all(5),
               padding: const EdgeInsets.all(0),
-              width: 200,
+              width: 300,
               child: Row(
                 children: [
-                  Expanded(
-                    child: Text("ID:", style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
+                  const Expanded(child: SizedBox()),
+                  Container(
+                    margin: const EdgeInsets.all(0),
+                    padding: const EdgeInsets.all(0),
+                    width: 200,
+                    child: TextButton(
+                      child: Text("${Lang().copy} ID", style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
+                      onPressed: () {
+                        copy(widget.data.outreachID);
+                        showSnackBar(context, content: Lang().complete, backgroundColor: bgColor(context));
+                      },
+                    ),
                   ),
-                  Expanded(
-                    child: TextFormField(
-                      readOnly: true,
-                      style: textStyle(),
-                      controller: outreachIDController,
-                      textAlign: TextAlign.left,
-                      decoration: const InputDecoration(border: InputBorder.none),
+                  const Expanded(child: SizedBox()),
+                ],
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.all(5),
+              padding: const EdgeInsets.all(0),
+              width: 300,
+              child: Row(
+                children: [
+                  const Expanded(child: SizedBox()),
+                  Container(
+                    margin: const EdgeInsets.all(0),
+                    padding: const EdgeInsets.all(0),
+                    width: 200,
+                    child: TextButton(
+                      child: Text("${Lang().copy} MD5", style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
+                      onPressed: () {
+                        copy(widget.data.md5);
+                        showSnackBar(context, content: Lang().complete, backgroundColor: bgColor(context));
+                      },
                     ),
                   ),
                   const Expanded(child: SizedBox()),

@@ -74,6 +74,7 @@ class DirDetailsState extends State<DirDetails> with TickerProviderStateMixin {
                 controller: textController,
                 textAlign: TextAlign.center,
                 decoration: InputDecoration(
+                  icon: Icon(Icons.folder, size: iconSize, color: Colors.yellow),
                   suffixIcon: IconButton(
                     icon: Icon(Icons.clear, size: iconSize, color: iconColor),
                     onPressed: () async => textController.clear(),

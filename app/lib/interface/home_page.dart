@@ -1,7 +1,6 @@
 import "dart:convert";
 
 import "package:flutter/material.dart";
-import "package:flutter/cupertino.dart";
 import "package:app/common/lang.dart";
 import "package:file_selector/file_selector.dart";
 
