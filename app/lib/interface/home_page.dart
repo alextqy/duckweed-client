@@ -121,17 +121,19 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   void showActionSheet(BuildContext context) {
     showModalBottomSheet<void>(
+      backgroundColor: Colors.black54,
       context: context,
       builder: (BuildContext context) {
         return SizedBox(
-          height: 250,
+          height: 230,
           child: Column(
             children: <Widget>[
               Container(
+                color: bgColor(context),
                 margin: const EdgeInsets.all(0),
                 padding: const EdgeInsets.all(0),
                 alignment: Alignment.center,
-                height: 35,
+                height: 15,
                 child: InkWell(
                   hoverColor: Colors.transparent,
                   splashColor: Colors.transparent,
@@ -143,7 +145,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     ],
                   ),
                   onTap: () async {
-                    Navigator.pop(context);
+                    // Navigator.pop(context);
                   },
                 ),
               ),
@@ -151,8 +153,8 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 children: [
                   Expanded(
                     child: InkWell(
-                      hoverColor: bgColor(context),
-                      splashColor: bgColor(context),
+                      // hoverColor: bgColor(context),
+                      // splashColor: bgColor(context),
                       child: Container(
                         margin: const EdgeInsets.all(0),
                         padding: const EdgeInsets.all(0),
@@ -227,8 +229,8 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 children: [
                   Expanded(
                     child: InkWell(
-                      hoverColor: bgColor(context),
-                      splashColor: bgColor(context),
+                      // hoverColor: bgColor(context),
+                      // splashColor: bgColor(context),
                       child: Container(
                         margin: const EdgeInsets.all(0),
                         padding: const EdgeInsets.all(0),
@@ -262,8 +264,8 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 children: [
                   Expanded(
                     child: InkWell(
-                      hoverColor: bgColor(context),
-                      splashColor: bgColor(context),
+                      // hoverColor: bgColor(context),
+                      // splashColor: bgColor(context),
                       child: Container(
                         margin: const EdgeInsets.all(0),
                         padding: const EdgeInsets.all(0),
@@ -304,8 +306,8 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 children: [
                   Expanded(
                     child: InkWell(
-                      hoverColor: bgColor(context),
-                      splashColor: bgColor(context),
+                      // hoverColor: bgColor(context),
+                      // splashColor: bgColor(context),
                       child: Container(
                         margin: const EdgeInsets.all(0),
                         padding: const EdgeInsets.all(0),
@@ -346,8 +348,8 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 children: [
                   Expanded(
                     child: InkWell(
-                      hoverColor: bgColor(context),
-                      splashColor: bgColor(context),
+                      // hoverColor: bgColor(context),
+                      // splashColor: bgColor(context),
                       child: Container(
                         margin: const EdgeInsets.all(0),
                         padding: const EdgeInsets.all(0),
