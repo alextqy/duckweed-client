@@ -120,164 +120,258 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
   }
 
   void showActionSheet(BuildContext context) {
-    showCupertinoModalPopup<void>(
-      barrierColor: Colors.transparent,
+    showModalBottomSheet<void>(
       context: context,
-      builder: (BuildContext context) => CupertinoActionSheet(
-        actions: <CupertinoActionSheetAction>[
-          CupertinoActionSheetAction(
-            child: Row(
-              children: [
-                const Expanded(child: SizedBox()),
-                Icon(Icons.folder_rounded, color: iconColor, size: iconSize),
-                const SizedBox(width: 10),
-                Text(Lang().newFolder, style: textStyle(fontSize: 18), maxLines: 1, overflow: TextOverflow.ellipsis),
-                const Expanded(child: SizedBox()),
-              ],
-            ),
-            onPressed: () async {
-              Navigator.pop(context);
-              showDialog(
-                context: context,
-                barrierDismissible: true,
-                builder: (BuildContext context) {
-                  TextEditingController textController = TextEditingController();
-                  return UnconstrainedBox(
-                    constrainedAxis: Axis.vertical, // 取消原有宽高限制
-                    child: StatefulBuilder(
-                      builder: (BuildContext context, Function state) {
-                        return Dialog(
-                          child: Container(
-                            margin: const EdgeInsets.all(0),
-                            padding: const EdgeInsets.all(20),
-                            height: screenSize(context).height * 0.2,
-                            width: 200,
-                            child: Column(
-                              children: [
-                                TextFormField(
-                                  style: textStyle(),
-                                  controller: textController,
-                                  textAlign: TextAlign.center,
-                                  decoration: InputDecoration(
-                                    suffixIcon: IconButton(
-                                      icon: Icon(Icons.clear, size: iconSize, color: iconColor),
-                                      onPressed: () async => textController.clear(),
+      builder: (BuildContext context) {
+        return SizedBox(
+          height: 250,
+          child: Column(
+            children: <Widget>[
+              Container(
+                margin: const EdgeInsets.all(0),
+                padding: const EdgeInsets.all(0),
+                alignment: Alignment.center,
+                height: 35,
+                child: InkWell(
+                  hoverColor: Colors.transparent,
+                  splashColor: Colors.transparent,
+                  child: const Row(
+                    children: [
+                      Expanded(child: SizedBox()),
+                      Icon(null),
+                      Expanded(child: SizedBox()),
+                    ],
+                  ),
+                  onTap: () async {
+                    Navigator.pop(context);
+                  },
+                ),
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: InkWell(
+                      hoverColor: bgColor(context),
+                      splashColor: bgColor(context),
+                      child: Container(
+                        margin: const EdgeInsets.all(0),
+                        padding: const EdgeInsets.all(0),
+                        alignment: Alignment.center,
+                        height: 45,
+                        child: Row(
+                          children: [
+                            const Expanded(child: SizedBox()),
+                            Icon(Icons.folder_rounded, color: iconColor, size: iconSize),
+                            const SizedBox(width: 10),
+                            Text(Lang().newFolder, style: textStyle(fontSize: 18), maxLines: 1, overflow: TextOverflow.ellipsis),
+                            const Expanded(child: SizedBox()),
+                          ],
+                        ),
+                      ),
+                      onTap: () async {
+                        Navigator.pop(context);
+                        showDialog(
+                          context: context,
+                          barrierDismissible: true,
+                          builder: (BuildContext context) {
+                            TextEditingController textController = TextEditingController();
+                            return UnconstrainedBox(
+                              constrainedAxis: Axis.vertical, // 取消原有宽高限制
+                              child: StatefulBuilder(
+                                builder: (BuildContext context, Function state) {
+                                  return Dialog(
+                                    child: Container(
+                                      margin: const EdgeInsets.all(0),
+                                      padding: const EdgeInsets.all(20),
+                                      height: screenSize(context).height * 0.2,
+                                      width: 200,
+                                      child: Column(
+                                        children: [
+                                          TextFormField(
+                                            style: textStyle(),
+                                            controller: textController,
+                                            textAlign: TextAlign.center,
+                                            decoration: InputDecoration(
+                                              suffixIcon: IconButton(
+                                                icon: Icon(Icons.clear, size: iconSize, color: iconColor),
+                                                onPressed: () async => textController.clear(),
+                                              ),
+                                            ),
+                                          ),
+                                          const Expanded(child: SizedBox()),
+                                          TextButton(
+                                            child: Text("OK", style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
+                                            onPressed: () async {
+                                              if (textController.text.isNotEmpty) {
+                                                dirNotifier.dirAction(url: appUrl, dirName: textController.text, parentID: parentID, id: 0);
+                                                fetchData();
+                                                Navigator.pop(context);
+                                              }
+                                            },
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                ),
-                                const Expanded(child: SizedBox()),
-                                TextButton(
-                                  child: Text("OK", style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
-                                  onPressed: () async {
-                                    if (textController.text.isNotEmpty) {
-                                      dirNotifier.dirAction(url: appUrl, dirName: textController.text, parentID: parentID, id: 0);
-                                      fetchData();
-                                      Navigator.pop(context);
-                                    }
-                                  },
-                                ),
-                              ],
-                            ),
-                          ),
+                                  );
+                                },
+                              ),
+                            );
+                          },
                         );
                       },
                     ),
-                  );
-                },
-              );
-            },
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: InkWell(
+                      hoverColor: bgColor(context),
+                      splashColor: bgColor(context),
+                      child: Container(
+                        margin: const EdgeInsets.all(0),
+                        padding: const EdgeInsets.all(0),
+                        alignment: Alignment.center,
+                        height: 45,
+                        child: Row(
+                          children: [
+                            const Expanded(child: SizedBox()),
+                            Icon(Icons.upload_rounded, color: iconColor, size: iconSize),
+                            const SizedBox(width: 10),
+                            Text(Lang().uploadFiles, style: textStyle(fontSize: 18), maxLines: 1, overflow: TextOverflow.ellipsis),
+                            const Expanded(child: SizedBox()),
+                          ],
+                        ),
+                      ),
+                      onTap: () async {
+                        Navigator.pop(context);
+                        fileSelector(["*"]).then((value) {
+                          if (value.isNotEmpty) {
+                            for (XFile f in value) {
+                              print(f.path);
+                            }
+                          }
+                        });
+                      },
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: InkWell(
+                      hoverColor: bgColor(context),
+                      splashColor: bgColor(context),
+                      child: Container(
+                        margin: const EdgeInsets.all(0),
+                        padding: const EdgeInsets.all(0),
+                        alignment: Alignment.center,
+                        height: 45,
+                        child: Row(
+                          children: [
+                            const Expanded(child: SizedBox()),
+                            Icon(Icons.download_rounded, color: iconColor, size: iconSize),
+                            const SizedBox(width: 10),
+                            Text(Lang().downloadFiles, style: textStyle(fontSize: 18), maxLines: 1, overflow: TextOverflow.ellipsis),
+                            const Expanded(child: SizedBox()),
+                          ],
+                        ),
+                      ),
+                      onTap: () {
+                        Navigator.pop(context);
+                        int i = 0;
+                        for (bool element in itemSelected) {
+                          if (element) {
+                            if (itemList[i] is DirModel) {
+                              DirModel dirObj = itemList[i];
+                              print(dirObj.dirName);
+                            }
+                            if (itemList[i] is FileModel) {
+                              FileModel fileObj = itemList[i];
+                              print(fileObj.fileName);
+                            }
+                          }
+                          i++;
+                        }
+                      },
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: InkWell(
+                      hoverColor: bgColor(context),
+                      splashColor: bgColor(context),
+                      child: Container(
+                        margin: const EdgeInsets.all(0),
+                        padding: const EdgeInsets.all(0),
+                        alignment: Alignment.center,
+                        height: 45,
+                        child: Row(
+                          children: [
+                            const Expanded(child: SizedBox()),
+                            Icon(Icons.delete_rounded, color: Colors.red, size: iconSize),
+                            const SizedBox(width: 10),
+                            Text(Lang().delete, style: textStyle(fontSize: 18, color: Colors.red), maxLines: 1, overflow: TextOverflow.ellipsis),
+                            const Expanded(child: SizedBox()),
+                          ],
+                        ),
+                      ),
+                      onTap: () {
+                        Navigator.pop(context);
+                        int i = 0;
+                        for (bool element in itemSelected) {
+                          if (element) {
+                            if (itemList[i] is DirModel) {
+                              DirModel dirObj = itemList[i];
+                              print(dirObj.dirName);
+                            }
+                            if (itemList[i] is FileModel) {
+                              FileModel fileObj = itemList[i];
+                              print(fileObj.fileName);
+                            }
+                          }
+                          i++;
+                        }
+                      },
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: InkWell(
+                      hoverColor: bgColor(context),
+                      splashColor: bgColor(context),
+                      child: Container(
+                        margin: const EdgeInsets.all(0),
+                        padding: const EdgeInsets.all(0),
+                        alignment: Alignment.center,
+                        height: 35,
+                        child: Row(
+                          children: [
+                            const Expanded(child: SizedBox()),
+                            Icon(Icons.filter_list_rounded, color: iconColor, size: 30),
+                            const Expanded(child: SizedBox()),
+                          ],
+                        ),
+                      ),
+                      onTap: () async {
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ],
           ),
-          CupertinoActionSheetAction(
-            child: Row(
-              children: [
-                const Expanded(child: SizedBox()),
-                Icon(Icons.upload_rounded, color: iconColor, size: iconSize),
-                const SizedBox(width: 10),
-                Text(Lang().uploadFiles, style: textStyle(fontSize: 18), maxLines: 1, overflow: TextOverflow.ellipsis),
-                const Expanded(child: SizedBox()),
-              ],
-            ),
-            onPressed: () async {
-              Navigator.pop(context);
-              fileSelector(["*"]).then((value) {
-                if (value.isNotEmpty) {
-                  for (XFile f in value) {
-                    print(f.path);
-                  }
-                }
-              });
-            },
-          ),
-          CupertinoActionSheetAction(
-            child: Row(
-              children: [
-                const Expanded(child: SizedBox()),
-                Icon(Icons.download_rounded, color: iconColor, size: iconSize),
-                const SizedBox(width: 10),
-                Text(Lang().downloadFiles, style: textStyle(fontSize: 18), maxLines: 1, overflow: TextOverflow.ellipsis),
-                const Expanded(child: SizedBox()),
-              ],
-            ),
-            onPressed: () {
-              Navigator.pop(context);
-              int i = 0;
-              for (bool element in itemSelected) {
-                if (element) {
-                  if (itemList[i] is DirModel) {
-                    DirModel dirObj = itemList[i];
-                    print(dirObj.dirName);
-                  }
-                  if (itemList[i] is FileModel) {
-                    FileModel fileObj = itemList[i];
-                    print(fileObj.fileName);
-                  }
-                }
-                i++;
-              }
-            },
-          ),
-          CupertinoActionSheetAction(
-            child: Row(
-              children: [
-                const Expanded(child: SizedBox()),
-                Icon(Icons.delete_rounded, color: Colors.red, size: iconSize),
-                const SizedBox(width: 10),
-                Text(Lang().delete, style: textStyle(fontSize: 18, color: Colors.red), maxLines: 1, overflow: TextOverflow.ellipsis),
-                const Expanded(child: SizedBox()),
-              ],
-            ),
-            onPressed: () {
-              Navigator.pop(context);
-              int i = 0;
-              for (bool element in itemSelected) {
-                if (element) {
-                  if (itemList[i] is DirModel) {
-                    DirModel dirObj = itemList[i];
-                    print(dirObj.dirName);
-                  }
-                  if (itemList[i] is FileModel) {
-                    FileModel fileObj = itemList[i];
-                    print(fileObj.fileName);
-                  }
-                }
-                i++;
-              }
-            },
-          ),
-          CupertinoActionSheetAction(
-            child: Row(
-              children: [
-                const Expanded(child: SizedBox()),
-                Icon(Icons.filter_list_rounded, color: iconColor, size: 30),
-                const Expanded(child: SizedBox()),
-              ],
-            ),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 
