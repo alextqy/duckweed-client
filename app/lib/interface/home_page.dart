@@ -136,15 +136,15 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 child: InkWell(
                   hoverColor: Colors.transparent,
                   splashColor: Colors.transparent,
-                  child: const Row(
+                  child: Row(
                     children: [
-                      Expanded(child: SizedBox()),
-                      Icon(null),
-                      Expanded(child: SizedBox()),
+                      const Expanded(child: SizedBox()),
+                      Icon(Icons.dehaze, color: iconColor, size: 15),
+                      const Expanded(child: SizedBox()),
                     ],
                   ),
                   onTap: () async {
-                    // Navigator.pop(context);
+                    Navigator.pop(context);
                   },
                 ),
               ),
@@ -325,18 +325,27 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                       onTap: () {
                         Navigator.pop(context);
                         int i = 0;
+                        List<int> dirIDArr = [];
+                        List<int> fileIDArr = [];
                         for (bool element in itemSelected) {
                           if (element) {
                             if (itemList[i] is DirModel) {
                               DirModel dirObj = itemList[i];
-                              print(dirObj.dirName);
+                              dirIDArr.add(dirObj.id);
                             }
                             if (itemList[i] is FileModel) {
                               FileModel fileObj = itemList[i];
-                              print(fileObj.fileName);
+                              fileIDArr.add(fileObj.id);
                             }
                           }
                           i++;
+                        }
+                        if (dirIDArr.isNotEmpty) {
+                          print(dirIDArr);
+                        }
+                        if (fileIDArr.isNotEmpty) {
+                          fileNotifier.fileDel(url: appUrl, id: fileIDArr.join(","));
+                          fetchData();
                         }
                       },
                     ),
@@ -467,6 +476,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
               ),
             ),
             Container(
+              color: Colors.black,
               margin: const EdgeInsets.all(0),
               padding: const EdgeInsets.all(0),
               height: 40,
