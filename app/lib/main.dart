@@ -120,6 +120,7 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
     animationEmail = Tween(begin: 20.0, end: 0.0).animate(animationControllerEmail);
     animationTest = Tween(begin: 0.0, end: 20.0).animate(animationControllerTest);
 
+    animationController0.forward();
     animationController1.forward();
     userNotifier.addListener(basicListener);
 
@@ -206,11 +207,11 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                   opacityShow1 = groupValue == 1 ? true : false;
                   opacityShow2 = groupValue == 2 ? true : false;
 
-                  if (groupValue == 0) {
-                    animationController0.forward();
-                  } else {
-                    animationController0.reset();
-                  }
+                  // if (groupValue == 0) {
+                  //   animationController0.forward();
+                  // } else {
+                  //   animationController0.reset();
+                  // }
                   if (groupValue == 1) {
                     animationController1.forward();
                   } else {
@@ -679,7 +680,7 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                           onTap: () async {
                             if (newEmailController.text != "" && newCaptchaController.text != "" && newAccountController.text != "" && newNameController.text != "" && newPasswordController.text != "" && regBtn == true) {
                               regBtn = false;
-                              Future.delayed(const Duration(milliseconds: 1000)).then((value) async {
+                              Future.delayed(const Duration(milliseconds: 1500)).then((value) async {
                                 userNotifier.signUp(
                                   url: appUrl,
                                   account: newAccountController.text,
@@ -688,13 +689,6 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                                   email: newEmailController.text,
                                   captcha: newCaptchaController.text,
                                 );
-                                if (userNotifier.result.state == true) {
-                                  newAccountController.clear();
-                                  newNameController.clear();
-                                  newPasswordController.clear();
-                                  newEmailController.clear();
-                                  newCaptchaController.clear();
-                                }
                                 btnContent = "";
                                 await animationController2.forward().orCancel;
                                 await animationController2.reverse().orCancel;
