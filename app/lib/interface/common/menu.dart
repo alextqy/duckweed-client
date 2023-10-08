@@ -144,7 +144,7 @@ Drawer actionMenu(BuildContext context) {
                 visible: master ? true : false,
                 child: ListTile(
                   horizontalTitleGap: 20,
-                  leading: Icon(Icons.messenger_outline, size: iconSize, color: iconColor),
+                  leading: Icon(Icons.chat_outlined, size: iconSize, color: iconColor),
                   title: Text(Lang().announcements, style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
                   onTap: () async {
                     Navigator.of(context).push(RouteHelper().generate(context, "/announcements"));
@@ -155,7 +155,7 @@ Drawer actionMenu(BuildContext context) {
                 visible: master ? true : false,
                 child: ListTile(
                   horizontalTitleGap: 20,
-                  leading: Icon(Icons.topic_outlined, size: iconSize, color: iconColor),
+                  leading: Icon(Icons.collections_bookmark_outlined, size: iconSize, color: iconColor),
                   title: Text(Lang().systemLog, style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
                   onTap: () async {
                     Navigator.of(context).push(RouteHelper().generate(context, "/system/log"));

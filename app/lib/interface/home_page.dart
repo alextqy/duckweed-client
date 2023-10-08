@@ -421,12 +421,13 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     SizedBox(
                       width: 45,
                       child: Tooltip(
-                        // message: Lang().hideBulletinBoard,
-                        message: "",
+                        waitDuration: const Duration(milliseconds: 0),
+                        showDuration: const Duration(milliseconds: 0),
+                        message: Lang().hideBulletinBoard,
                         textStyle: textStyle(),
                         decoration: tooltipStyle(),
                         child: IconButton(
-                          icon: Icon(Icons.disabled_visible_outlined, size: 20, color: iconColor),
+                          icon: Icon(Icons.close_rounded, size: 20, color: iconColor),
                           onPressed: () async {
                             setState(() {
                               showMarquee = false;
@@ -809,6 +810,8 @@ Widget checkFileType(dynamic data) {
   if (data is DirModel) {
     DirModel dirObj = data;
     return Tooltip(
+      waitDuration: const Duration(milliseconds: 1000),
+      showDuration: const Duration(milliseconds: 0),
       textStyle: textStyle(),
       decoration: tooltipStyle(),
       message: dirObj.dirName,
@@ -818,6 +821,8 @@ Widget checkFileType(dynamic data) {
   if (data is FileModel) {
     FileModel fileObj = data;
     return Tooltip(
+      waitDuration: const Duration(milliseconds: 1000),
+      showDuration: const Duration(milliseconds: 0),
       textStyle: textStyle(),
       decoration: tooltipStyle(),
       message: fileObj.fileName,
