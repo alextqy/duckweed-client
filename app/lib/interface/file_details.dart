@@ -66,7 +66,7 @@ class FileDetailsState extends State<FileDetails> with TickerProviderStateMixin 
         alignment: Alignment.center,
         child: Column(
           children: [
-            const Expanded(child: SizedBox()),
+            const Expanded(child: SizedBox.shrink()),
             Container(
               margin: const EdgeInsets.all(5),
               padding: const EdgeInsets.all(0),
@@ -90,7 +90,7 @@ class FileDetailsState extends State<FileDetails> with TickerProviderStateMixin 
               width: 300,
               child: Row(
                 children: [
-                  const Expanded(child: SizedBox()),
+                  const Expanded(child: SizedBox.shrink()),
                   Container(
                     margin: const EdgeInsets.all(0),
                     padding: const EdgeInsets.all(0),
@@ -103,7 +103,7 @@ class FileDetailsState extends State<FileDetails> with TickerProviderStateMixin 
                       },
                     ),
                   ),
-                  const Expanded(child: SizedBox()),
+                  const Expanded(child: SizedBox.shrink()),
                 ],
               ),
             ),
@@ -113,7 +113,7 @@ class FileDetailsState extends State<FileDetails> with TickerProviderStateMixin 
               width: 300,
               child: Row(
                 children: [
-                  const Expanded(child: SizedBox()),
+                  const Expanded(child: SizedBox.shrink()),
                   Container(
                     margin: const EdgeInsets.all(0),
                     padding: const EdgeInsets.all(0),
@@ -126,7 +126,7 @@ class FileDetailsState extends State<FileDetails> with TickerProviderStateMixin 
                       },
                     ),
                   ),
-                  const Expanded(child: SizedBox()),
+                  const Expanded(child: SizedBox.shrink()),
                 ],
               ),
             ),
@@ -140,7 +140,7 @@ class FileDetailsState extends State<FileDetails> with TickerProviderStateMixin 
                 decoration: tooltipStyle(),
                 child: Row(
                   children: [
-                    Icon(Icons.picture_in_picture_rounded, size: iconSize, color: iconColor),
+                    Icon(Icons.picture_in_picture, size: iconSize, color: iconColor),
                     const SizedBox(width: 15),
                     Text(widget.data.fileSize, style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
                   ],
@@ -157,7 +157,7 @@ class FileDetailsState extends State<FileDetails> with TickerProviderStateMixin 
                 decoration: tooltipStyle(),
                 child: Row(
                   children: [
-                    Icon(Icons.type_specimen_rounded, size: iconSize, color: iconColor),
+                    Icon(Icons.type_specimen, size: iconSize, color: iconColor),
                     const SizedBox(width: 15),
                     Text(widget.data.fileType, style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
                   ],
@@ -174,7 +174,7 @@ class FileDetailsState extends State<FileDetails> with TickerProviderStateMixin 
                 decoration: tooltipStyle(),
                 child: Row(
                   children: [
-                    Icon(Icons.access_time_rounded, size: iconSize, color: iconColor),
+                    Icon(Icons.access_time, size: iconSize, color: iconColor),
                     const SizedBox(width: 15),
                     Text(Tools().timestampToStr(widget.data.createtime), style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
                   ],
@@ -203,7 +203,7 @@ class FileDetailsState extends State<FileDetails> with TickerProviderStateMixin 
                 },
               ),
             ),
-            const Expanded(child: SizedBox()),
+            const Expanded(child: SizedBox.shrink()),
           ],
         ),
       ),

@@ -153,7 +153,7 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
           children: [
             Row(
               children: [
-                const Expanded(child: SizedBox()),
+                const Expanded(child: SizedBox.shrink()),
                 Container(
                   margin: const EdgeInsets.all(5),
                   padding: const EdgeInsets.all(0),
@@ -177,11 +177,11 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                 ),
               ],
             ),
-            const Expanded(child: SizedBox()),
+            const Expanded(child: SizedBox.shrink()),
             networkWidget(),
             signInWidget(),
             signUpWidget(),
-            const Expanded(child: SizedBox()),
+            const Expanded(child: SizedBox.shrink()),
             CupertinoSlidingSegmentedControl<int>(
               backgroundColor: Colors.white70,
               thumbColor: Colors.black38,
@@ -446,7 +446,7 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                     width: 300,
                     child: Row(
                       children: [
-                        const Expanded(child: SizedBox()),
+                        const Expanded(child: SizedBox.shrink()),
                         TextButton(
                           child: Text(
                             Lang().forgotPassword,

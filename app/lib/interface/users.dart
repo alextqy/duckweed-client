@@ -135,7 +135,7 @@ class UsersState extends State<Users> with TickerProviderStateMixin {
                         margin: const EdgeInsets.all(0),
                         child: Column(
                           children: [
-                            const Expanded(child: SizedBox()),
+                            const Expanded(child: SizedBox.shrink()),
                             Expanded(
                               child: Row(
                                 children: [
@@ -157,7 +157,7 @@ class UsersState extends State<Users> with TickerProviderStateMixin {
                                       ),
                                     ),
                                   ),
-                                  const Expanded(child: SizedBox()),
+                                  const Expanded(child: SizedBox.shrink()),
                                 ],
                               ),
                             ),
@@ -182,7 +182,7 @@ class UsersState extends State<Users> with TickerProviderStateMixin {
                                       ),
                                     ),
                                   ),
-                                  const Expanded(child: SizedBox()),
+                                  const Expanded(child: SizedBox.shrink()),
                                 ],
                               ),
                             ),
@@ -191,7 +191,7 @@ class UsersState extends State<Users> with TickerProviderStateMixin {
                                 children: [
                                   const SizedBox(width: 20),
                                   Text("${Lang().root}: $root", style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
-                                  const Expanded(child: SizedBox()),
+                                  const Expanded(child: SizedBox.shrink()),
                                 ],
                               ),
                             ),
@@ -200,11 +200,11 @@ class UsersState extends State<Users> with TickerProviderStateMixin {
                                 children: [
                                   const SizedBox(width: 20),
                                   Text("${Lang().disable}: $disable", style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
-                                  const Expanded(child: SizedBox()),
+                                  const Expanded(child: SizedBox.shrink()),
                                 ],
                               ),
                             ),
-                            const Expanded(child: SizedBox()),
+                            const Expanded(child: SizedBox.shrink()),
                           ],
                         ),
                       ),
@@ -235,7 +235,7 @@ class UsersState extends State<Users> with TickerProviderStateMixin {
                                 width: screenSize(context).width * 0.2,
                                 child: Column(
                                   children: [
-                                    // const Expanded(child: SizedBox()),
+                                    // const Expanded(child: SizedBox.shrink()),
                                     Container(
                                       margin: const EdgeInsets.all(0),
                                       padding: const EdgeInsets.all(0),
@@ -352,7 +352,7 @@ class UsersState extends State<Users> with TickerProviderStateMixin {
                                         ),
                                       ],
                                     ),
-                                    const Expanded(child: SizedBox()),
+                                    const Expanded(child: SizedBox.shrink()),
                                   ],
                                 ),
                               ),
@@ -544,7 +544,7 @@ class UsersState extends State<Users> with TickerProviderStateMixin {
                 children: generateList(),
               ),
             ),
-            const Expanded(child: SizedBox()),
+            const Expanded(child: SizedBox.shrink()),
             Row(
               children: [
                 Expanded(

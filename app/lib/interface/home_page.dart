@@ -143,9 +143,9 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   splashColor: Colors.transparent,
                   child: Row(
                     children: [
-                      const Expanded(child: SizedBox()),
+                      const Expanded(child: SizedBox.shrink()),
                       Icon(Icons.dehaze, color: iconColor, size: 15),
-                      const Expanded(child: SizedBox()),
+                      const Expanded(child: SizedBox.shrink()),
                     ],
                   ),
                   onTap: () async {
@@ -166,11 +166,11 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                         height: 45,
                         child: Row(
                           children: [
-                            const Expanded(child: SizedBox()),
-                            Icon(Icons.folder_rounded, color: iconColor, size: iconSize),
+                            const Expanded(child: SizedBox.shrink()),
+                            Icon(Icons.folder, color: iconColor, size: iconSize),
                             const SizedBox(width: 10),
                             Text(Lang().newFolder, style: textStyle(fontSize: 18), maxLines: 1, overflow: TextOverflow.ellipsis),
-                            const Expanded(child: SizedBox()),
+                            const Expanded(child: SizedBox.shrink()),
                           ],
                         ),
                       ),
@@ -204,7 +204,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                               ),
                                             ),
                                           ),
-                                          const Expanded(child: SizedBox()),
+                                          const Expanded(child: SizedBox.shrink()),
                                           TextButton(
                                             child: Text("OK", style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
                                             onPressed: () async {
@@ -242,11 +242,11 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                         height: 45,
                         child: Row(
                           children: [
-                            const Expanded(child: SizedBox()),
-                            Icon(Icons.upload_rounded, color: iconColor, size: iconSize),
+                            const Expanded(child: SizedBox.shrink()),
+                            Icon(Icons.upload, color: iconColor, size: iconSize),
                             const SizedBox(width: 10),
                             Text(Lang().uploadFiles, style: textStyle(fontSize: 18), maxLines: 1, overflow: TextOverflow.ellipsis),
-                            const Expanded(child: SizedBox()),
+                            const Expanded(child: SizedBox.shrink()),
                           ],
                         ),
                       ),
@@ -277,11 +277,11 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                         height: 45,
                         child: Row(
                           children: [
-                            const Expanded(child: SizedBox()),
-                            Icon(Icons.download_rounded, color: iconColor, size: iconSize),
+                            const Expanded(child: SizedBox.shrink()),
+                            Icon(Icons.download, color: iconColor, size: iconSize),
                             const SizedBox(width: 10),
                             Text(Lang().downloadFiles, style: textStyle(fontSize: 18), maxLines: 1, overflow: TextOverflow.ellipsis),
-                            const Expanded(child: SizedBox()),
+                            const Expanded(child: SizedBox.shrink()),
                           ],
                         ),
                       ),
@@ -319,11 +319,11 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                         height: 45,
                         child: Row(
                           children: [
-                            const Expanded(child: SizedBox()),
-                            Icon(Icons.delete_rounded, color: Colors.red, size: iconSize),
+                            const Expanded(child: SizedBox.shrink()),
+                            Icon(Icons.delete, color: Colors.red, size: iconSize),
                             const SizedBox(width: 10),
                             Text(Lang().delete, style: textStyle(fontSize: 18, color: Colors.red), maxLines: 1, overflow: TextOverflow.ellipsis),
-                            const Expanded(child: SizedBox()),
+                            const Expanded(child: SizedBox.shrink()),
                           ],
                         ),
                       ),
@@ -370,9 +370,9 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                         height: 35,
                         child: Row(
                           children: [
-                            const Expanded(child: SizedBox()),
+                            const Expanded(child: SizedBox.shrink()),
                             Icon(Icons.keyboard_arrow_down, color: iconColor, size: 35),
-                            const Expanded(child: SizedBox()),
+                            const Expanded(child: SizedBox.shrink()),
                           ],
                         ),
                       ),
@@ -427,7 +427,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                         textStyle: textStyle(),
                         decoration: tooltipStyle(),
                         child: IconButton(
-                          icon: Icon(Icons.close_rounded, size: 20, color: iconColor),
+                          icon: Icon(Icons.close, size: 20, color: iconColor),
                           onPressed: () async {
                             setState(() {
                               showMarquee = false;
@@ -490,7 +490,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
               alignment: Alignment.center,
               child: Row(
                 children: [
-                  const Expanded(child: SizedBox()),
+                  const Expanded(child: SizedBox.shrink()),
                   IconButton(
                     padding: const EdgeInsets.all(0),
                     icon: Icon(Icons.menu_open_outlined, size: 30, color: iconColor),
@@ -498,7 +498,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   ),
                   if (isGridMode)
                     IconButton(
-                      icon: Icon(Icons.grid_view_rounded, size: 25, color: iconColor),
+                      icon: Icon(Icons.grid_view, size: 25, color: iconColor),
                       onPressed: () async {
                         setState(() {
                           isGridMode = false;
@@ -507,7 +507,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     )
                   else
                     IconButton(
-                      icon: Icon(Icons.table_rows_rounded, size: 25, color: iconColor),
+                      icon: Icon(Icons.table_rows, size: 25, color: iconColor),
                       onPressed: () async {
                         setState(() {
                           isGridMode = true;
@@ -516,7 +516,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     ),
                   parentID > 0
                       ? IconButton(
-                          icon: Icon(Icons.reply_rounded, size: 25, color: iconColor),
+                          icon: Icon(Icons.reply, size: 25, color: iconColor),
                           onPressed: () {
                             dirNotifier.dirInfo(url: appUrl, id: parentID).then((value) {
                               dirNotifier.dirModel = DirModel.fromJson(value.data);
@@ -538,7 +538,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                           },
                         )
                       : const SizedBox.shrink(),
-                  const Expanded(child: SizedBox()),
+                  const Expanded(child: SizedBox.shrink()),
                 ],
               ),
             ),
@@ -729,13 +729,13 @@ class GridBuilderState extends State<GridBuilder> {
               padding: const EdgeInsets.all(0),
               child: Column(
                 children: [
-                  const Expanded(child: SizedBox()),
+                  const Expanded(child: SizedBox.shrink()),
                   Visibility(
                     visible: widget.isSelectionMode,
                     child: widget.isSelectionMode
                         ? Row(
                             children: [
-                              const Expanded(child: SizedBox()),
+                              const Expanded(child: SizedBox.shrink()),
                               IconButton(
                                 icon: Icon(Icons.more_horiz, size: iconSize, color: iconColor),
                                 onPressed: () {
@@ -772,7 +772,7 @@ class GridBuilderState extends State<GridBuilder> {
                         ),
                   Row(
                     children: [
-                      const Expanded(child: SizedBox()),
+                      const Expanded(child: SizedBox.shrink()),
                       Visibility(
                         visible: widget.isSelectionMode,
                         child: Expanded(
@@ -792,10 +792,10 @@ class GridBuilderState extends State<GridBuilder> {
                           child: checkFileType(widget.dataList[index]),
                         ),
                       ),
-                      const Expanded(child: SizedBox()),
+                      const Expanded(child: SizedBox.shrink()),
                     ],
                   ),
-                  const Expanded(child: SizedBox()),
+                  const Expanded(child: SizedBox.shrink()),
                 ],
               ),
             ),

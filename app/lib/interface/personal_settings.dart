@@ -86,7 +86,7 @@ class PersonalSettingsState extends State<PersonalSettings> with TickerProviderS
         alignment: Alignment.center,
         child: Column(
           children: [
-            const Expanded(child: SizedBox()),
+            const Expanded(child: SizedBox.shrink()),
             Container(
               margin: const EdgeInsets.all(5),
               padding: const EdgeInsets.all(0),
@@ -234,7 +234,7 @@ class PersonalSettingsState extends State<PersonalSettings> with TickerProviderS
                 },
               ),
             ),
-            const Expanded(child: SizedBox()),
+            const Expanded(child: SizedBox.shrink()),
           ],
         ),
       ),

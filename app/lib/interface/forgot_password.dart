@@ -89,10 +89,10 @@ class ForgotPasswordState extends State<ForgotPassword> with TickerProviderState
         alignment: Alignment.center,
         child: Column(
           children: [
-            const Expanded(child: SizedBox()),
+            const Expanded(child: SizedBox.shrink()),
             Row(
               children: [
-                const Expanded(child: SizedBox()),
+                const Expanded(child: SizedBox.shrink()),
                 AnimatedBuilder(
                   animation: animationEmail,
                   builder: (context, child) {
@@ -124,7 +124,7 @@ class ForgotPasswordState extends State<ForgotPassword> with TickerProviderState
                     );
                   },
                 ),
-                const Expanded(child: SizedBox()),
+                const Expanded(child: SizedBox.shrink()),
               ],
             ),
             Container(
@@ -211,7 +211,7 @@ class ForgotPasswordState extends State<ForgotPassword> with TickerProviderState
                 );
               },
             ),
-            const Expanded(child: SizedBox()),
+            const Expanded(child: SizedBox.shrink()),
           ],
         ),
       ),

@@ -26,7 +26,7 @@ Drawer actionMenu(BuildContext context) {
         // decoration: const BoxDecoration(color: Colors.black12),
         child: Column(
           children: [
-            const Expanded(child: SizedBox()),
+            const Expanded(child: SizedBox.shrink()),
             SizedBox(
               height: 58,
               width: 58,
@@ -49,7 +49,7 @@ Drawer actionMenu(BuildContext context) {
                 },
               ),
             ),
-            const Expanded(child: SizedBox()),
+            const Expanded(child: SizedBox.shrink()),
           ],
         ),
       ),
@@ -72,7 +72,7 @@ Drawer actionMenu(BuildContext context) {
           ),
           child: Row(
             children: [
-              const Expanded(child: SizedBox()),
+              const Expanded(child: SizedBox.shrink()),
               Text(Lang().exit, style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
               const SizedBox(width: 10),
               Icon(Icons.exit_to_app, size: iconSize, color: iconColor),
