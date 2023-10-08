@@ -66,7 +66,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
         fileNotifier.files(url: appUrl, order: order, dirID: parentID, fileName: searchFileName).then((value) {
           setState(() {
             itemList.addAll(FileModel().fromJsonList(jsonEncode(value.data)));
-            initializeSelection(context);
+            initializeSelection();
           });
         });
       });
@@ -98,7 +98,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
     }
   }
 
-  void initializeSelection(BuildContext context) {
+  void initializeSelection() {
     itemSelected = List<bool>.generate(itemList.length, (context) => false);
   }
 
@@ -603,6 +603,7 @@ class ListBuilderState extends State<ListBuilder> {
               });
               widget.onSelectionChange!(false);
             }
+            widget.parentWidget.initializeSelection();
           },
           child: SizedBox(
             height: 50,
@@ -721,6 +722,7 @@ class GridBuilderState extends State<GridBuilder> {
               });
               widget.onSelectionChange!(false);
             }
+            widget.parentWidget.initializeSelection();
           },
           child: GridTile(
             child: Container(
