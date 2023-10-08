@@ -88,7 +88,7 @@ class UsersState extends State<Users> with TickerProviderStateMixin {
           enabled: u.status == 1 ? true : false,
           leading: u.level == 2
               ? Icon(
-                  Icons.manage_accounts_outlined,
+                  Icons.manage_accounts,
                   color: u.status == 1 ? iconColor : Colors.deepOrange,
                 )
               : Icon(

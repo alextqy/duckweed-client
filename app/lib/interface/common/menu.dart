@@ -123,7 +123,7 @@ Drawer actionMenu(BuildContext context) {
             children: [
               ListTile(
                 horizontalTitleGap: 20,
-                leading: Icon(Icons.home_outlined, size: iconSize, color: iconColor),
+                leading: Icon(Icons.home, size: iconSize, color: iconColor),
                 title: Text(Lang().home, style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
                 onTap: () async {
                   Navigator.of(context).push(RouteHelper().generate(context, "/"));
@@ -133,7 +133,7 @@ Drawer actionMenu(BuildContext context) {
                 visible: master ? true : false,
                 child: ListTile(
                   horizontalTitleGap: 20,
-                  leading: Icon(Icons.people_outlined, size: iconSize, color: iconColor),
+                  leading: Icon(Icons.people, size: iconSize, color: iconColor),
                   title: Text(Lang().users, style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
                   onTap: () async {
                     Navigator.of(context).push(RouteHelper().generate(context, "/users"));
@@ -144,7 +144,7 @@ Drawer actionMenu(BuildContext context) {
                 visible: master ? true : false,
                 child: ListTile(
                   horizontalTitleGap: 20,
-                  leading: Icon(Icons.chat_outlined, size: iconSize, color: iconColor),
+                  leading: Icon(Icons.chat, size: iconSize, color: iconColor),
                   title: Text(Lang().announcements, style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
                   onTap: () async {
                     Navigator.of(context).push(RouteHelper().generate(context, "/announcements"));
@@ -155,7 +155,7 @@ Drawer actionMenu(BuildContext context) {
                 visible: master ? true : false,
                 child: ListTile(
                   horizontalTitleGap: 20,
-                  leading: Icon(Icons.collections_bookmark_outlined, size: iconSize, color: iconColor),
+                  leading: Icon(Icons.collections_bookmark, size: iconSize, color: iconColor),
                   title: Text(Lang().systemLog, style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
                   onTap: () async {
                     Navigator.of(context).push(RouteHelper().generate(context, "/system/log"));

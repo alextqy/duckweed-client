@@ -493,12 +493,12 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   const Expanded(child: SizedBox.shrink()),
                   IconButton(
                     padding: const EdgeInsets.all(0),
-                    icon: Icon(Icons.menu_open_outlined, size: 30, color: iconColor),
+                    icon: Icon(Icons.menu_open, size: 30, color: iconColor),
                     onPressed: () async => showActionSheet(context),
                   ),
                   if (isGridMode)
                     IconButton(
-                      icon: Icon(Icons.grid_view, size: 25, color: iconColor),
+                      icon: Icon(Icons.widgets, size: 25, color: iconColor),
                       onPressed: () async {
                         setState(() {
                           isGridMode = false;
@@ -507,7 +507,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     )
                   else
                     IconButton(
-                      icon: Icon(Icons.table_rows, size: 25, color: iconColor),
+                      icon: Icon(Icons.view_agenda, size: 25, color: iconColor),
                       onPressed: () async {
                         setState(() {
                           isGridMode = true;
@@ -594,12 +594,12 @@ class ListBuilderState extends State<ListBuilder> {
           onLongPress: () async {
             if (!widget.isSelectionMode) {
               setState(() {
-                widget.selectedList[index] = true;
+                // widget.selectedList[index] = true;
               });
               widget.onSelectionChange!(true);
             } else {
               setState(() {
-                widget.selectedList[index] = false;
+                // widget.selectedList[index] = false;
               });
               widget.onSelectionChange!(false);
             }
@@ -631,7 +631,7 @@ class ListBuilderState extends State<ListBuilder> {
                     : const SizedBox.shrink(),
                 widget.isSelectionMode
                     ? IconButton(
-                        icon: Icon(Icons.more_horiz, size: iconSize, color: iconColor),
+                        icon: Icon(Icons.more_vert, size: iconSize, color: iconColor),
                         onPressed: () {
                           if (widget.dataList[index] is DirModel) {
                             Navigator.of(context).push(RouteHelper().generate(context, "/dir/details", data: widget.dataList[index])).then((value) {
@@ -712,12 +712,12 @@ class GridBuilderState extends State<GridBuilder> {
           onLongPress: () async {
             if (!widget.isSelectionMode) {
               setState(() {
-                widget.selectedList[index] = true;
+                // widget.selectedList[index] = true;
               });
               widget.onSelectionChange!(true);
             } else {
               setState(() {
-                widget.selectedList[index] = false;
+                // widget.selectedList[index] = false;
               });
               widget.onSelectionChange!(false);
             }

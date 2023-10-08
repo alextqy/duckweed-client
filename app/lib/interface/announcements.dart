@@ -136,7 +136,7 @@ class AnnouncementsState extends State<Announcements> with TickerProviderStateMi
                     height: 35,
                     child: IconButton(
                       padding: const EdgeInsets.all(0),
-                      icon: Icon(Icons.add_outlined, size: 30, color: iconColor),
+                      icon: Icon(Icons.add, size: 30, color: iconColor),
                       onPressed: () async {
                         Navigator.of(context).push(RouteHelper().generate(context, "/announcement/add")).then((value) {
                           setState(() {
