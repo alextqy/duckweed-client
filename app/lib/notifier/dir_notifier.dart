@@ -32,4 +32,11 @@ class DirNotifier extends BaseNotifier {
       notifyListeners();
     }
   }
+
+  Future<ResultModel> dirInfo({
+    required url,
+    required id,
+  }) async {
+    return await dirApi.dirInfo(url, id);
+  }
 }

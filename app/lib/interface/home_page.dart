@@ -73,6 +73,11 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
     });
   }
 
+  void setParentID(int setParentID) {
+    parentID = setParentID;
+    fetchData();
+  }
+
   basicListenerDir() async {
     showSnackBar(context, content: Lang().loading, backgroundColor: bgColor(context), duration: 1);
 
@@ -508,17 +513,30 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                         });
                       },
                     ),
-                  IconButton(
-                    icon: Icon(Icons.check_box_outlined, size: 25, color: iconColor),
-                    onPressed: () async {
-                      setState(() {
-                        if (isSelectionMode) {
-                          selectAll = !selectAll;
-                          itemSelected = List<bool>.generate(itemList.length, (context) => selectAll);
-                        }
-                      });
-                    },
-                  ),
+                  parentID > 0
+                      ? IconButton(
+                          icon: Icon(Icons.reply_rounded, size: 25, color: iconColor),
+                          onPressed: () {
+                            dirNotifier.dirInfo(url: appUrl, id: parentID).then((value) {
+                              dirNotifier.dirModel = DirModel.fromJson(value.data);
+                              setParentID(dirNotifier.dirModel.parentID);
+                            });
+                          },
+                        )
+                      : const SizedBox.shrink(),
+                  isSelectionMode
+                      ? IconButton(
+                          icon: Icon(Icons.check_box_outlined, size: 25, color: iconColor),
+                          onPressed: () async {
+                            setState(() {
+                              if (isSelectionMode) {
+                                selectAll = !selectAll;
+                                itemSelected = List<bool>.generate(itemList.length, (context) => selectAll);
+                              }
+                            });
+                          },
+                        )
+                      : const SizedBox.shrink(),
                   const Expanded(child: SizedBox()),
                 ],
               ),
@@ -564,21 +582,14 @@ class ListBuilderState extends State<ListBuilder> {
     return ListView.builder(
       itemCount: widget.selectedList.length,
       itemBuilder: (context, int index) {
-        return ListTile(
-          // leading: const Icon(Icons.abc),
-          leading: widget.dataList[index] is DirModel
-              ? Icon(
-                  Icons.folder,
-                  size: iconSize,
-                  color: Colors.yellow,
-                )
-              : Icon(
-                  Icons.library_books,
-                  size: iconSize,
-                  color: Colors.grey,
-                ),
-          title: checkFileType(widget.dataList[index]),
-          onTap: () async => toggle(index),
+        return InkWell(
+          // onTap: () async => toggle(index),
+          onTap: () {
+            if (widget.dataList[index] is DirModel) {
+              DirModel obj = widget.dataList[index];
+              widget.parentWidget.setParentID(obj.id);
+            }
+          },
           onLongPress: () async {
             if (!widget.isSelectionMode) {
               setState(() {
@@ -592,13 +603,25 @@ class ListBuilderState extends State<ListBuilder> {
               widget.onSelectionChange!(false);
             }
           },
-          trailing: Container(
-            margin: const EdgeInsets.all(0),
-            padding: const EdgeInsets.all(0),
-            width: 80,
+          child: SizedBox(
+            height: 50,
             child: Row(
               children: [
-                const Expanded(child: SizedBox()),
+                const SizedBox(width: 15),
+                widget.dataList[index] is DirModel
+                    ? Icon(
+                        Icons.folder,
+                        size: iconSize,
+                        color: Colors.yellow,
+                      )
+                    : Icon(
+                        Icons.library_books,
+                        size: iconSize,
+                        color: Colors.grey,
+                      ),
+                const SizedBox(width: 10),
+                SizedBox(width: screenSize(context).width * 0.6, child: checkFileType(widget.dataList[index])),
+                const Expanded(child: SizedBox.shrink()),
                 widget.isSelectionMode
                     ? Checkbox(
                         value: widget.selectedList[index],
@@ -626,6 +649,7 @@ class ListBuilderState extends State<ListBuilder> {
                         },
                       )
                     : const SizedBox.shrink(),
+                const SizedBox(width: 15),
               ],
             ),
           ),
@@ -677,7 +701,13 @@ class GridBuilderState extends State<GridBuilder> {
       ),
       itemBuilder: (context, int index) {
         return InkWell(
-          onTap: () async => toggle(index),
+          // onTap: () async => toggle(index),
+          onTap: () {
+            if (widget.dataList[index] is DirModel) {
+              DirModel obj = widget.dataList[index];
+              widget.parentWidget.setParentID(obj.id);
+            }
+          },
           onLongPress: () async {
             if (!widget.isSelectionMode) {
               setState(() {
@@ -746,11 +776,9 @@ class GridBuilderState extends State<GridBuilder> {
                         visible: widget.isSelectionMode,
                         child: Expanded(
                           child: widget.isSelectionMode
-                              ? Container(
-                                  margin: const EdgeInsets.all(10),
-                                  padding: const EdgeInsets.all(0),
-                                  height: 5,
-                                  width: 5,
+                              ? SizedBox(
+                                  height: 18,
+                                  width: 18,
                                   child: Checkbox(onChanged: (bool? x) => toggle(index), value: widget.selectedList[index]),
                                 )
                               : const Icon(null),
