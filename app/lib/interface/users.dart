@@ -125,90 +125,94 @@ class UsersState extends State<Users> with TickerProviderStateMixin {
                 child: Text(Lang().details, maxLines: 1, overflow: TextOverflow.ellipsis, style: textStyle(color: Colors.black)),
                 onTap: () async {
                   userNotifier.userGet(url: appUrl, id: u.id).then((value) {
-                    userNotifier.userModel = UserModel.fromJson(value.data);
-                    showAlertWidget(
-                      context,
-                      Container(
-                        height: 200,
-                        width: screenSize(context).width * 0.2,
-                        padding: const EdgeInsets.all(5),
-                        margin: const EdgeInsets.all(0),
-                        child: Column(
-                          children: [
-                            const Expanded(child: SizedBox.shrink()),
-                            Expanded(
-                              child: Row(
-                                children: [
-                                  const SizedBox(width: 20),
-                                  Container(
-                                    width: 250,
-                                    margin: const EdgeInsets.all(0),
-                                    padding: const EdgeInsets.all(0),
-                                    child: Tooltip(
-                                      message: u.name,
-                                      textStyle: textStyle(),
-                                      decoration: tooltipStyle(),
-                                      child: Text(
-                                        maxLines: 1,
-                                        softWrap: true,
-                                        overflow: TextOverflow.ellipsis,
-                                        "${Lang().nickName}: ${userNotifier.userModel.name}",
-                                        style: textStyle(),
+                    if (value.state) {
+                      userNotifier.userModel = UserModel.fromJson(value.data);
+                      showAlertWidget(
+                        context,
+                        Container(
+                          height: 200,
+                          width: screenSize(context).width * 0.2,
+                          padding: const EdgeInsets.all(5),
+                          margin: const EdgeInsets.all(0),
+                          child: Column(
+                            children: [
+                              const Expanded(child: SizedBox.shrink()),
+                              Expanded(
+                                child: Row(
+                                  children: [
+                                    const SizedBox(width: 20),
+                                    Container(
+                                      width: 250,
+                                      margin: const EdgeInsets.all(0),
+                                      padding: const EdgeInsets.all(0),
+                                      child: Tooltip(
+                                        message: u.name,
+                                        textStyle: textStyle(),
+                                        decoration: tooltipStyle(),
+                                        child: Text(
+                                          maxLines: 1,
+                                          softWrap: true,
+                                          overflow: TextOverflow.ellipsis,
+                                          "${Lang().nickName}: ${userNotifier.userModel.name}",
+                                          style: textStyle(),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  const Expanded(child: SizedBox.shrink()),
-                                ],
+                                    const Expanded(child: SizedBox.shrink()),
+                                  ],
+                                ),
                               ),
-                            ),
-                            Expanded(
-                              child: Row(
-                                children: [
-                                  const SizedBox(width: 20),
-                                  Container(
-                                    width: 250,
-                                    margin: const EdgeInsets.all(0),
-                                    padding: const EdgeInsets.all(0),
-                                    child: Tooltip(
-                                      message: u.email,
-                                      textStyle: textStyle(),
-                                      decoration: tooltipStyle(),
-                                      child: Text(
-                                        maxLines: 1,
-                                        softWrap: true,
-                                        overflow: TextOverflow.ellipsis,
-                                        "${Lang().email}: ${userNotifier.userModel.email}",
-                                        style: textStyle(),
+                              Expanded(
+                                child: Row(
+                                  children: [
+                                    const SizedBox(width: 20),
+                                    Container(
+                                      width: 250,
+                                      margin: const EdgeInsets.all(0),
+                                      padding: const EdgeInsets.all(0),
+                                      child: Tooltip(
+                                        message: u.email,
+                                        textStyle: textStyle(),
+                                        decoration: tooltipStyle(),
+                                        child: Text(
+                                          maxLines: 1,
+                                          softWrap: true,
+                                          overflow: TextOverflow.ellipsis,
+                                          "${Lang().email}: ${userNotifier.userModel.email}",
+                                          style: textStyle(),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  const Expanded(child: SizedBox.shrink()),
-                                ],
+                                    const Expanded(child: SizedBox.shrink()),
+                                  ],
+                                ),
                               ),
-                            ),
-                            Expanded(
-                              child: Row(
-                                children: [
-                                  const SizedBox(width: 20),
-                                  Text("${Lang().root}: $root", style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
-                                  const Expanded(child: SizedBox.shrink()),
-                                ],
+                              Expanded(
+                                child: Row(
+                                  children: [
+                                    const SizedBox(width: 20),
+                                    Text("${Lang().root}: $root", style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
+                                    const Expanded(child: SizedBox.shrink()),
+                                  ],
+                                ),
                               ),
-                            ),
-                            Expanded(
-                              child: Row(
-                                children: [
-                                  const SizedBox(width: 20),
-                                  Text("${Lang().disable}: $disable", style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
-                                  const Expanded(child: SizedBox.shrink()),
-                                ],
+                              Expanded(
+                                child: Row(
+                                  children: [
+                                    const SizedBox(width: 20),
+                                    Text("${Lang().disable}: $disable", style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
+                                    const Expanded(child: SizedBox.shrink()),
+                                  ],
+                                ),
                               ),
-                            ),
-                            const Expanded(child: SizedBox.shrink()),
-                          ],
+                              const Expanded(child: SizedBox.shrink()),
+                            ],
+                          ),
                         ),
-                      ),
-                    );
+                      );
+                    } else {
+                      showSnackBar(context, content: Lang().noData, backgroundColor: bgColor(context));
+                    }
                   });
                 },
               ),

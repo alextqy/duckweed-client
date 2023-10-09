@@ -38,6 +38,7 @@ class Lang {
   String yes = "";
   String no = "";
   String confirm = "";
+  String noData = "";
 
   String root = "";
   String availableSpace = "";
@@ -94,6 +95,7 @@ class Lang {
       this.yes = "是";
       this.no = "否";
       this.confirm = "确认";
+      this.noData = "无数据";
 
       this.root = "超级用户";
       this.availableSpace = "可用空间";
@@ -145,6 +147,7 @@ class Lang {
       this.yes = "Yes";
       this.no = "No";
       this.confirm = "Confirm";
+      this.noData = "No data";
 
       this.root = "Root";
       this.availableSpace = "Available space";
