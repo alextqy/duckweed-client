@@ -11,26 +11,13 @@ class DirNotifier extends BaseNotifier {
     return await dirApi.dirs(url, order, parentID, dirName);
   }
 
-  void dirAction({
+  Future<ResultModel> dirAction({
     required url,
     required dirName,
     required parentID,
     required id,
   }) async {
-    operationStatus.value = OperationStatus.failure;
-    try {
-      await dirApi.dirAction(url, dirName, parentID, id).then((value) {
-        if (value.state == true) {
-          operationStatus.value = OperationStatus.success;
-        } else {
-          operationMemo = value.message;
-        }
-      });
-    } catch (e) {
-      operationMemo = e.toString();
-    } finally {
-      notifyListeners();
-    }
+    return await dirApi.dirAction(url, dirName, parentID, id);
   }
 
   Future<ResultModel> dirInfo({
@@ -38,5 +25,12 @@ class DirNotifier extends BaseNotifier {
     required id,
   }) async {
     return await dirApi.dirInfo(url, id);
+  }
+
+  Future<ResultModel> dirDel({
+    required url,
+    required id,
+  }) async {
+    return await dirApi.dirDel(url, id);
   }
 }

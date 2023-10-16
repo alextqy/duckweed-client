@@ -1,14 +1,14 @@
-import 'package:flutter/material.dart';
-import 'package:app/common/lang.dart';
-import 'package:app/common/tools.dart';
+import "package:flutter/material.dart";
+import "package:app/common/lang.dart";
+import "package:app/common/tools.dart";
 
-import 'package:app/notifier/base_notifier.dart';
-import 'package:app/notifier/dir_notifier.dart';
+import "package:app/notifier/base_notifier.dart";
+import "package:app/notifier/dir_notifier.dart";
 
-import 'package:app/interface/common/show_alert_dialog.dart';
-import 'package:app/interface/common/pub_lib.dart';
+import "package:app/interface/common/show_alert_dialog.dart";
+import "package:app/interface/common/pub_lib.dart";
 
-import 'package:app/model/dir_model.dart';
+import "package:app/model/dir_model.dart";
 
 class DirDetails extends StatefulWidget {
   final DirModel data;

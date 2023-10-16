@@ -207,10 +207,15 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                           const Expanded(child: SizedBox.shrink()),
                                           TextButton(
                                             child: Text("OK", style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
-                                            onPressed: () async {
+                                            onPressed: () {
                                               if (textController.text.isNotEmpty) {
-                                                dirNotifier.dirAction(url: appUrl, dirName: textController.text, parentID: parentID, id: 0);
-                                                fetchData();
+                                                dirNotifier.dirAction(url: appUrl, dirName: textController.text, parentID: parentID, id: 0).then((value) {
+                                                  if (!value.state) {
+                                                    showSnackBar(context, content: Lang().operationFailed, backgroundColor: bgColor(context), duration: 1);
+                                                  } else {
+                                                    fetchData();
+                                                  }
+                                                });
                                                 Navigator.pop(context);
                                               }
                                             },
@@ -329,29 +334,52 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                       ),
                       onTap: () {
                         Navigator.pop(context);
-                        int i = 0;
-                        List<int> dirIDArr = [];
-                        List<int> fileIDArr = [];
-                        for (bool element in itemSelected) {
-                          if (element) {
-                            if (itemList[i] is DirModel) {
-                              DirModel dirObj = itemList[i];
-                              dirIDArr.add(dirObj.id);
-                            }
-                            if (itemList[i] is FileModel) {
-                              FileModel fileObj = itemList[i];
-                              fileIDArr.add(fileObj.id);
-                            }
-                          }
-                          i++;
-                        }
-                        if (dirIDArr.isNotEmpty) {
-                          print(dirIDArr);
-                        }
-                        if (fileIDArr.isNotEmpty) {
-                          fileNotifier.fileDel(url: appUrl, id: fileIDArr.join(","));
-                          fetchData();
-                        }
+                        showDialog(
+                          context: context,
+                          barrierDismissible: true,
+                          builder: (BuildContext context) {
+                            return StatefulBuilder(
+                              builder: (BuildContext context, Function state) {
+                                return AlertDialog(
+                                  content: Text("${Lang().confirm}?", style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () async {
+                                        Navigator.pop(context);
+                                        int i = 0;
+                                        List<int> dirIDArr = [];
+                                        List<int> fileIDArr = [];
+                                        for (bool element in itemSelected) {
+                                          if (element) {
+                                            if (itemList[i] is DirModel) {
+                                              DirModel dirObj = itemList[i];
+                                              dirIDArr.add(dirObj.id);
+                                            }
+                                            if (itemList[i] is FileModel) {
+                                              FileModel fileObj = itemList[i];
+                                              fileIDArr.add(fileObj.id);
+                                            }
+                                          }
+                                          i++;
+                                        }
+                                        if (dirIDArr.isNotEmpty) {
+                                          for (int id in dirIDArr) {
+                                            dirNotifier.dirDel(url: appUrl, id: id).then((_) => fetchData());
+                                          }
+                                        }
+                                        if (fileIDArr.isNotEmpty) {
+                                          fileNotifier.fileDel(url: appUrl, id: fileIDArr.join(","));
+                                          fetchData();
+                                        }
+                                      },
+                                      child: Text("OK", style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          },
+                        );
                       },
                     ),
                   ),

@@ -16,7 +16,7 @@ showAlertDialog(BuildContext context, {String memo = ""}) {
             actions: [
               TextButton(
                 onPressed: () async {
-                  Navigator.of(context).pop();
+                  Navigator.pop(context);
                 },
                 child: Text(Lang().cancel, style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
               ),

@@ -60,7 +60,7 @@ class AnnouncementsState extends State<Announcements> with TickerProviderStateMi
                           TextButton(
                             onPressed: () async {
                               announcementNotifier.announcementDel(url: appUrl, id: a.id);
-                              Navigator.of(context).pop();
+                              Navigator.pop(context);
                             },
                             child: Text("OK", style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
                           ),

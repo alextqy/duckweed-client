@@ -398,7 +398,7 @@ class UsersState extends State<Users> with TickerProviderStateMixin {
                               TextButton(
                                 onPressed: () async {
                                   userNotifier.userDel(url: appUrl, id: u.id);
-                                  Navigator.of(context).pop();
+                                  Navigator.pop(context);
                                 },
                                 child: Text("OK", style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
                               ),

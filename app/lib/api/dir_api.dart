@@ -61,4 +61,26 @@ class DirApi extends ResponseHelper {
     ).timeout(Duration(seconds: timeout));
     return ResultModel.fromJson(jsonDecode(decoder.convert(response.bodyBytes)));
   }
+
+  Future<ResultModel> dirDel([
+    url,
+    id,
+  ]) async {
+    ResultModel r = ResultModel(
+      state: false,
+      code: 0,
+      message: "",
+      data: "",
+    );
+    Response response = await post(
+      Uri.http(url, "/dir/del"),
+      body: {
+        "userToken": FileHelper().readFile("token"),
+        "id": id.toString(),
+      },
+      headers: postHeaders,
+      encoding: postEncoding,
+    ).timeout(Duration(seconds: timeout));
+    return ResultModel.fromJson(jsonDecode(decoder.convert(response.bodyBytes)));
+  }
 }
