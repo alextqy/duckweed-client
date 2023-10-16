@@ -66,12 +66,6 @@ class DirApi extends ResponseHelper {
     url,
     id,
   ]) async {
-    ResultModel r = ResultModel(
-      state: false,
-      code: 0,
-      message: "",
-      data: "",
-    );
     Response response = await post(
       Uri.http(url, "/dir/del"),
       body: {
