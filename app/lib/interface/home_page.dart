@@ -141,11 +141,11 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 child: InkWell(
                   hoverColor: Colors.transparent,
                   splashColor: Colors.transparent,
-                  child: Row(
+                  child: const Row(
                     children: [
-                      const Expanded(child: SizedBox.shrink()),
-                      Icon(Icons.dehaze, color: iconColor, size: 15),
-                      const Expanded(child: SizedBox.shrink()),
+                      Expanded(child: SizedBox.shrink()),
+                      // Icon(Icons.dehaze, color: iconColor, size: 15),
+                      Expanded(child: SizedBox.shrink()),
                     ],
                   ),
                   onTap: () async {
