@@ -207,7 +207,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                           const Expanded(child: SizedBox.shrink()),
                                           TextButton(
                                             child: Text("OK", style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
-                                            onPressed: () {
+                                            onPressed: () async {
                                               if (textController.text.isNotEmpty) {
                                                 dirNotifier.dirAction(url: appUrl, dirName: textController.text, parentID: parentID, id: 0).then((value) {
                                                   if (!value.state) {
@@ -290,7 +290,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                           ],
                         ),
                       ),
-                      onTap: () {
+                      onTap: () async {
                         Navigator.pop(context);
                         int i = 0;
                         for (bool element in itemSelected) {
@@ -332,7 +332,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                           ],
                         ),
                       ),
-                      onTap: () {
+                      onTap: () async {
                         Navigator.pop(context);
                         showDialog(
                           context: context,
@@ -545,7 +545,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   parentID > 0
                       ? IconButton(
                           icon: Icon(Icons.reply, size: 25, color: iconColor),
-                          onPressed: () {
+                          onPressed: () async {
                             dirNotifier.dirInfo(url: appUrl, id: parentID).then((value) {
                               dirNotifier.dirModel = DirModel.fromJson(value.data);
                               setParentID(dirNotifier.dirModel.parentID);
@@ -613,7 +613,7 @@ class ListBuilderState extends State<ListBuilder> {
       itemBuilder: (context, int index) {
         return InkWell(
           // onTap: () async => toggle(index),
-          onTap: () {
+          onTap: () async {
             if (widget.dataList[index] is DirModel) {
               DirModel obj = widget.dataList[index];
               widget.parentWidget.setParentID(obj.id);
@@ -661,7 +661,7 @@ class ListBuilderState extends State<ListBuilder> {
                 widget.isSelectionMode
                     ? IconButton(
                         icon: Icon(Icons.more_vert, size: iconSize, color: iconColor),
-                        onPressed: () {
+                        onPressed: () async {
                           if (widget.dataList[index] is DirModel) {
                             Navigator.of(context).push(RouteHelper().generate(context, "/dir/details", data: widget.dataList[index])).then((value) {
                               setState(() {
@@ -732,7 +732,7 @@ class GridBuilderState extends State<GridBuilder> {
       itemBuilder: (context, int index) {
         return InkWell(
           // onTap: () async => toggle(index),
-          onTap: () {
+          onTap: () async {
             if (widget.dataList[index] is DirModel) {
               DirModel obj = widget.dataList[index];
               widget.parentWidget.setParentID(obj.id);
@@ -768,7 +768,7 @@ class GridBuilderState extends State<GridBuilder> {
                               const Expanded(child: SizedBox.shrink()),
                               IconButton(
                                 icon: Icon(Icons.more_horiz, size: iconSize, color: iconColor),
-                                onPressed: () {
+                                onPressed: () async {
                                   if (widget.dataList[index] is DirModel) {
                                     Navigator.of(context).push(RouteHelper().generate(context, "/dir/details", data: widget.dataList[index])).then((value) {
                                       setState(() {

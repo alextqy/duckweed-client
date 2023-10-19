@@ -97,7 +97,7 @@ class FileDetailsState extends State<FileDetails> with TickerProviderStateMixin 
                     width: 200,
                     child: TextButton(
                       child: Text("${Lang().copy} ID", style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
-                      onPressed: () {
+                      onPressed: () async {
                         copy(widget.data.outreachID);
                         showSnackBar(context, content: Lang().complete, backgroundColor: bgColor(context));
                       },
@@ -120,7 +120,7 @@ class FileDetailsState extends State<FileDetails> with TickerProviderStateMixin 
                     width: 200,
                     child: TextButton(
                       child: Text("${Lang().copy} MD5", style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
-                      onPressed: () {
+                      onPressed: () async {
                         copy(widget.data.md5);
                         showSnackBar(context, content: Lang().complete, backgroundColor: bgColor(context));
                       },
