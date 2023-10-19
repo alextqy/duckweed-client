@@ -685,6 +685,7 @@ class ListBuilderState extends State<ListBuilder> {
             return Draggable(
               axis: Axis.vertical,
               feedback: Material(
+                color: Colors.transparent,
                 child: SizedBox(
                   height: 50,
                   width: screenSize(context).width,
@@ -857,6 +858,7 @@ class GridBuilderState extends State<GridBuilder> {
           itemBuilder: (context, int index) {
             return Draggable(
               feedback: Material(
+                color: Colors.transparent,
                 child: SizedBox(
                   height: 120,
                   width: 120,
