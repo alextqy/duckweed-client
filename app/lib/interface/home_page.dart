@@ -618,84 +618,110 @@ class ListBuilderState extends State<ListBuilder> {
     }
   }
 
+  Widget checkItem(int index) {
+    return SizedBox(
+      height: 50,
+      child: Row(
+        children: [
+          const SizedBox(width: 15),
+          widget.dataList[index] is DirModel
+              ? Icon(
+                  Icons.folder,
+                  size: iconSize,
+                  color: Colors.yellow,
+                )
+              : Icon(
+                  Icons.library_books,
+                  size: iconSize,
+                  color: Colors.grey,
+                ),
+          const SizedBox(width: 10),
+          SizedBox(width: screenSize(context).width * 0.6, child: checkFileType(widget.dataList[index])),
+          const Expanded(child: SizedBox.shrink()),
+          widget.isSelectionMode
+              ? Checkbox(
+                  value: widget.selectedList[index],
+                  onChanged: (bool? x) => toggle(index),
+                )
+              : const SizedBox.shrink(),
+          widget.isSelectionMode
+              ? IconButton(
+                  icon: Icon(Icons.more_vert, size: iconSize, color: iconColor),
+                  onPressed: () async {
+                    if (widget.dataList[index] is DirModel) {
+                      Navigator.of(context).push(RouteHelper().generate(context, "/dir/details", data: widget.dataList[index])).then((value) {
+                        setState(() {
+                          widget.parentWidget.fetchData();
+                        });
+                      });
+                    }
+                    if (widget.dataList[index] is FileModel) {
+                      Navigator.of(context).push(RouteHelper().generate(context, "/file/details", data: widget.dataList[index])).then((value) {
+                        setState(() {
+                          widget.parentWidget.fetchData();
+                        });
+                      });
+                    }
+                  },
+                )
+              : const SizedBox.shrink(),
+          const SizedBox(width: 15),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: widget.selectedList.length,
-      itemBuilder: (context, int index) {
-        return InkWell(
-          // onTap: () async => toggle(index),
-          onTap: () async {
-            if (widget.dataList[index] is DirModel) {
-              DirModel obj = widget.dataList[index];
-              widget.parentWidget.setParentID(obj.id);
-            }
+    return DragTarget(
+      builder: (
+        BuildContext context,
+        List<dynamic> accepted,
+        List<dynamic> rejected,
+      ) {
+        return ListView.builder(
+          itemCount: widget.selectedList.length,
+          itemBuilder: (context, int index) {
+            return Draggable(
+              axis: Axis.vertical,
+              feedback: Material(
+                child: SizedBox(
+                  height: 50,
+                  width: screenSize(context).width,
+                  child: checkItem(index),
+                ),
+              ),
+              data: widget.parentWidget.checkItemSelected().isEmpty ? widget.dataList[index] : widget.parentWidget.checkItemSelected(),
+              child: InkWell(
+                // onTap: () async => toggle(index),
+                onTap: () async {
+                  if (widget.dataList[index] is DirModel) {
+                    DirModel obj = widget.dataList[index];
+                    widget.parentWidget.setParentID(obj.id);
+                  }
+                },
+                onLongPress: () async {
+                  if (!widget.isSelectionMode) {
+                    setState(() {
+                      // widget.selectedList[index] = true;
+                    });
+                    widget.onSelectionChange!(true);
+                  } else {
+                    setState(() {
+                      // widget.selectedList[index] = false;
+                    });
+                    widget.onSelectionChange!(false);
+                  }
+                  widget.parentWidget.initializeSelection();
+                },
+                child: checkItem(index),
+              ),
+            );
           },
-          onLongPress: () async {
-            if (!widget.isSelectionMode) {
-              setState(() {
-                // widget.selectedList[index] = true;
-              });
-              widget.onSelectionChange!(true);
-            } else {
-              setState(() {
-                // widget.selectedList[index] = false;
-              });
-              widget.onSelectionChange!(false);
-            }
-            widget.parentWidget.initializeSelection();
-          },
-          child: SizedBox(
-            height: 50,
-            child: Row(
-              children: [
-                const SizedBox(width: 15),
-                widget.dataList[index] is DirModel
-                    ? Icon(
-                        Icons.folder,
-                        size: iconSize,
-                        color: Colors.yellow,
-                      )
-                    : Icon(
-                        Icons.library_books,
-                        size: iconSize,
-                        color: Colors.grey,
-                      ),
-                const SizedBox(width: 10),
-                SizedBox(width: screenSize(context).width * 0.6, child: checkFileType(widget.dataList[index])),
-                const Expanded(child: SizedBox.shrink()),
-                widget.isSelectionMode
-                    ? Checkbox(
-                        value: widget.selectedList[index],
-                        onChanged: (bool? x) => toggle(index),
-                      )
-                    : const SizedBox.shrink(),
-                widget.isSelectionMode
-                    ? IconButton(
-                        icon: Icon(Icons.more_vert, size: iconSize, color: iconColor),
-                        onPressed: () async {
-                          if (widget.dataList[index] is DirModel) {
-                            Navigator.of(context).push(RouteHelper().generate(context, "/dir/details", data: widget.dataList[index])).then((value) {
-                              setState(() {
-                                widget.parentWidget.fetchData();
-                              });
-                            });
-                          }
-                          if (widget.dataList[index] is FileModel) {
-                            Navigator.of(context).push(RouteHelper().generate(context, "/file/details", data: widget.dataList[index])).then((value) {
-                              setState(() {
-                                widget.parentWidget.fetchData();
-                              });
-                            });
-                          }
-                        },
-                      )
-                    : const SizedBox.shrink(),
-                const SizedBox(width: 15),
-              ],
-            ),
-          ),
         );
+      },
+      onAccept: (data) {
+        print(data);
       },
     );
   }
@@ -730,119 +756,144 @@ class GridBuilderState extends State<GridBuilder> {
     }
   }
 
+  Widget checkItem(int index) {
+    return GridTile(
+      child: Container(
+        alignment: Alignment.center,
+        margin: const EdgeInsets.all(0),
+        padding: const EdgeInsets.all(0),
+        child: Column(
+          children: [
+            const Expanded(child: SizedBox.shrink()),
+            Visibility(
+              visible: widget.isSelectionMode,
+              child: widget.isSelectionMode
+                  ? Row(
+                      children: [
+                        const Expanded(child: SizedBox.shrink()),
+                        IconButton(
+                          icon: Icon(Icons.more_horiz, size: iconSize, color: iconColor),
+                          onPressed: () async {
+                            if (widget.dataList[index] is DirModel) {
+                              Navigator.of(context).push(RouteHelper().generate(context, "/dir/details", data: widget.dataList[index])).then((value) {
+                                setState(() {
+                                  widget.parentWidget.fetchData();
+                                });
+                              });
+                            }
+                            if (widget.dataList[index] is FileModel) {
+                              Navigator.of(context).push(RouteHelper().generate(context, "/file/details", data: widget.dataList[index])).then((value) {
+                                setState(() {
+                                  widget.parentWidget.fetchData();
+                                });
+                              });
+                            }
+                          },
+                        ),
+                      ],
+                    )
+                  : const Row(children: []),
+            ),
+            widget.dataList[index] is DirModel
+                ? const Icon(
+                    Icons.folder,
+                    size: 50,
+                    color: Colors.yellow,
+                  )
+                : const Icon(
+                    Icons.library_books,
+                    size: 50,
+                    color: Colors.grey,
+                  ),
+            Row(
+              children: [
+                const Expanded(child: SizedBox.shrink()),
+                Visibility(
+                  visible: widget.isSelectionMode,
+                  child: Expanded(
+                    child: widget.isSelectionMode
+                        ? SizedBox(
+                            height: 18,
+                            width: 18,
+                            child: Checkbox(onChanged: (bool? x) => toggle(index), value: widget.selectedList[index]),
+                          )
+                        : const Icon(null),
+                  ),
+                ),
+                Expanded(
+                  child: Container(
+                    margin: const EdgeInsets.all(0),
+                    padding: const EdgeInsets.all(0),
+                    child: checkFileType(widget.dataList[index]),
+                  ),
+                ),
+                const Expanded(child: SizedBox.shrink()),
+              ],
+            ),
+            const Expanded(child: SizedBox.shrink()),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return GridView.builder(
-      shrinkWrap: true,
-      itemCount: widget.selectedList.length,
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        mainAxisSpacing: 5.0, // 纵轴间距
-        crossAxisSpacing: 5.0, // 横轴间距
-        childAspectRatio: 1 / 1, // 宽高比
-        crossAxisCount: int.parse((screenSize(context).width / 150).toStringAsFixed(0)), // 横轴元素个数
-      ),
-      itemBuilder: (context, int index) {
-        return InkWell(
-          // onTap: () async => toggle(index),
-          onTap: () async {
-            if (widget.dataList[index] is DirModel) {
-              DirModel obj = widget.dataList[index];
-              widget.parentWidget.setParentID(obj.id);
-            }
-          },
-          onLongPress: () async {
-            if (!widget.isSelectionMode) {
-              setState(() {
-                // widget.selectedList[index] = true;
-              });
-              widget.onSelectionChange!(true);
-            } else {
-              setState(() {
-                // widget.selectedList[index] = false;
-              });
-              widget.onSelectionChange!(false);
-            }
-            widget.parentWidget.initializeSelection();
-          },
-          child: GridTile(
-            child: Container(
-              alignment: Alignment.center,
-              margin: const EdgeInsets.all(0),
-              padding: const EdgeInsets.all(0),
-              child: Column(
-                children: [
-                  const Expanded(child: SizedBox.shrink()),
-                  Visibility(
-                    visible: widget.isSelectionMode,
-                    child: widget.isSelectionMode
-                        ? Row(
-                            children: [
-                              const Expanded(child: SizedBox.shrink()),
-                              IconButton(
-                                icon: Icon(Icons.more_horiz, size: iconSize, color: iconColor),
-                                onPressed: () async {
-                                  if (widget.dataList[index] is DirModel) {
-                                    Navigator.of(context).push(RouteHelper().generate(context, "/dir/details", data: widget.dataList[index])).then((value) {
-                                      setState(() {
-                                        widget.parentWidget.fetchData();
-                                      });
-                                    });
-                                  }
-                                  if (widget.dataList[index] is FileModel) {
-                                    Navigator.of(context).push(RouteHelper().generate(context, "/file/details", data: widget.dataList[index])).then((value) {
-                                      setState(() {
-                                        widget.parentWidget.fetchData();
-                                      });
-                                    });
-                                  }
-                                },
-                              ),
-                            ],
-                          )
-                        : const Row(children: []),
-                  ),
-                  widget.dataList[index] is DirModel
-                      ? const Icon(
-                          Icons.folder,
-                          size: 50,
-                          color: Colors.yellow,
-                        )
-                      : const Icon(
-                          Icons.library_books,
-                          size: 50,
-                          color: Colors.grey,
-                        ),
-                  Row(
-                    children: [
-                      const Expanded(child: SizedBox.shrink()),
-                      Visibility(
-                        visible: widget.isSelectionMode,
-                        child: Expanded(
-                          child: widget.isSelectionMode
-                              ? SizedBox(
-                                  height: 18,
-                                  width: 18,
-                                  child: Checkbox(onChanged: (bool? x) => toggle(index), value: widget.selectedList[index]),
-                                )
-                              : const Icon(null),
-                        ),
-                      ),
-                      Expanded(
-                        child: Container(
-                          margin: const EdgeInsets.all(0),
-                          padding: const EdgeInsets.all(0),
-                          child: checkFileType(widget.dataList[index]),
-                        ),
-                      ),
-                      const Expanded(child: SizedBox.shrink()),
-                    ],
-                  ),
-                  const Expanded(child: SizedBox.shrink()),
-                ],
-              ),
-            ),
+    return DragTarget(
+      builder: (
+        BuildContext context,
+        List<dynamic> accepted,
+        List<dynamic> rejected,
+      ) {
+        return GridView.builder(
+          shrinkWrap: true,
+          itemCount: widget.selectedList.length,
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            mainAxisSpacing: 5.0, // 纵轴间距
+            crossAxisSpacing: 5.0, // 横轴间距
+            childAspectRatio: 1 / 1, // 宽高比
+            crossAxisCount: int.parse((screenSize(context).width / 150).toStringAsFixed(0)), // 横轴元素个数
           ),
+          itemBuilder: (context, int index) {
+            return Draggable(
+              feedback: Material(
+                child: SizedBox(
+                  height: 120,
+                  width: 120,
+                  child: checkItem(index),
+                ),
+              ),
+              data: widget.parentWidget.checkItemSelected().isEmpty ? widget.dataList[index] : widget.parentWidget.checkItemSelected(),
+              child: InkWell(
+                // onTap: () async => toggle(index),
+                onTap: () async {
+                  if (widget.dataList[index] is DirModel) {
+                    DirModel obj = widget.dataList[index];
+                    widget.parentWidget.setParentID(obj.id);
+                  }
+                },
+                onLongPress: () async {
+                  if (!widget.isSelectionMode) {
+                    setState(() {
+                      // widget.selectedList[index] = true;
+                    });
+                    widget.onSelectionChange!(true);
+                  } else {
+                    setState(() {
+                      // widget.selectedList[index] = false;
+                    });
+                    widget.onSelectionChange!(false);
+                  }
+                  widget.parentWidget.initializeSelection();
+                },
+                child: checkItem(index),
+              ),
+            );
+          },
         );
+      },
+      onAccept: (data) {
+        print(data);
       },
     );
   }
