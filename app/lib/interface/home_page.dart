@@ -102,6 +102,18 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
     itemSelected = List<bool>.generate(itemList.length, (context) => false);
   }
 
+  List<dynamic> checkItemSelected() {
+    List<dynamic> dynamicList = [];
+    int i = 0;
+    for (bool element in itemSelected) {
+      if (element) {
+        dynamicList.add(itemList[i]);
+      }
+      i++;
+    }
+    return dynamicList;
+  }
+
   @override
   void initState() {
     fetchAnnouncementData();
@@ -334,6 +346,9 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                       ),
                       onTap: () async {
                         Navigator.pop(context);
+                        if (checkItemSelected().isEmpty) {
+                          return;
+                        }
                         showDialog(
                           context: context,
                           barrierDismissible: true,
@@ -347,29 +362,26 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                       onPressed: () async {
                                         Navigator.pop(context);
                                         int i = 0;
-                                        List<int> dirIDArr = [];
-                                        List<int> fileIDArr = [];
                                         for (bool element in itemSelected) {
                                           if (element) {
                                             if (itemList[i] is DirModel) {
-                                              DirModel dirObj = itemList[i];
-                                              dirIDArr.add(dirObj.id);
+                                              DirModel obj = itemList[i];
+                                              dirNotifier.dirDel(url: appUrl, id: obj.id).then((value) {
+                                                if (value.state) {
+                                                  fetchData();
+                                                }
+                                              });
                                             }
                                             if (itemList[i] is FileModel) {
-                                              FileModel fileObj = itemList[i];
-                                              fileIDArr.add(fileObj.id);
+                                              FileModel obj = itemList[i];
+                                              fileNotifier.fileDel(url: appUrl, id: obj.id).then((value) {
+                                                if (value.state) {
+                                                  fetchData();
+                                                }
+                                              });
                                             }
                                           }
                                           i++;
-                                        }
-                                        if (dirIDArr.isNotEmpty) {
-                                          for (int id in dirIDArr) {
-                                            dirNotifier.dirDel(url: appUrl, id: id).then((_) => fetchData());
-                                          }
-                                        }
-                                        if (fileIDArr.isNotEmpty) {
-                                          fileNotifier.fileDel(url: appUrl, id: fileIDArr.join(","));
-                                          fetchData();
                                         }
                                       },
                                       child: Text("OK", style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),

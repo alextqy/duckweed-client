@@ -57,23 +57,10 @@ class FileNotifier extends BaseNotifier {
     return await fileApi.files(url, order, fileName, dirID);
   }
 
-  void fileDel({
+  Future<ResultModel> fileDel({
     required url,
     required id,
   }) async {
-    operationStatus.value = OperationStatus.failure;
-    try {
-      await fileApi.fileDel(url, id).then((value) {
-        if (value.state == true) {
-          operationStatus.value = OperationStatus.success;
-        } else {
-          operationMemo = value.message;
-        }
-      });
-    } catch (e) {
-      operationMemo = e.toString();
-    } finally {
-      notifyListeners();
-    }
+    return await fileApi.fileDel(url, id);
   }
 }
