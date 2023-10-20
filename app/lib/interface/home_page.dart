@@ -673,15 +673,15 @@ class ListBuilderState extends State<ListBuilder> {
 
   @override
   Widget build(BuildContext context) {
-    return DragTarget(
-      builder: (
-        BuildContext context,
-        List<dynamic> accepted,
-        List<dynamic> rejected,
-      ) {
-        return ListView.builder(
-          itemCount: widget.selectedList.length,
-          itemBuilder: (context, int index) {
+    return ListView.builder(
+      itemCount: widget.selectedList.length,
+      itemBuilder: (context, int index) {
+        return DragTarget(
+          builder: (
+            BuildContext context,
+            List<dynamic> accepted,
+            List<dynamic> rejected,
+          ) {
             return Draggable(
               axis: Axis.vertical,
               feedback: Material(
@@ -719,10 +719,11 @@ class ListBuilderState extends State<ListBuilder> {
               ),
             );
           },
+          onAccept: (data) {
+            print("接收方" + widget.dataList[index].runtimeType.toString());
+            print("发送方" + data.runtimeType.toString());
+          },
         );
-      },
-      onAccept: (data) {
-        print(data);
       },
     );
   }
@@ -840,22 +841,22 @@ class GridBuilderState extends State<GridBuilder> {
 
   @override
   Widget build(BuildContext context) {
-    return DragTarget(
-      builder: (
-        BuildContext context,
-        List<dynamic> accepted,
-        List<dynamic> rejected,
-      ) {
-        return GridView.builder(
-          shrinkWrap: true,
-          itemCount: widget.selectedList.length,
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            mainAxisSpacing: 5.0, // 纵轴间距
-            crossAxisSpacing: 5.0, // 横轴间距
-            childAspectRatio: 1 / 1, // 宽高比
-            crossAxisCount: int.parse((screenSize(context).width / 150).toStringAsFixed(0)), // 横轴元素个数
-          ),
-          itemBuilder: (context, int index) {
+    return GridView.builder(
+      shrinkWrap: true,
+      itemCount: widget.selectedList.length,
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        mainAxisSpacing: 5.0, // 纵轴间距
+        crossAxisSpacing: 5.0, // 横轴间距
+        childAspectRatio: 1 / 1, // 宽高比
+        crossAxisCount: int.parse((screenSize(context).width / 150).toStringAsFixed(0)), // 横轴元素个数
+      ),
+      itemBuilder: (context, int index) {
+        return DragTarget(
+          builder: (
+            BuildContext context,
+            List<dynamic> accepted,
+            List<dynamic> rejected,
+          ) {
             return Draggable(
               feedback: Material(
                 color: Colors.transparent,
@@ -892,10 +893,11 @@ class GridBuilderState extends State<GridBuilder> {
               ),
             );
           },
+          onAccept: (data) {
+            print("接收方" + widget.dataList[index].runtimeType.toString());
+            print("发送方" + data.runtimeType.toString());
+          },
         );
-      },
-      onAccept: (data) {
-        print(data);
       },
     );
   }
