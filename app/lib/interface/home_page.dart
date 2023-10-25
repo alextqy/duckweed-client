@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import "dart:convert";
 
 import "package:flutter/material.dart";
@@ -29,9 +31,8 @@ class HomePage extends StatefulWidget {
 class HomePageState extends State<HomePage> with TickerProviderStateMixin {
   List<String> content = [];
   List<dynamic> itemList = [];
-
-  bool isSelectionMode = false;
   List<bool> itemSelected = [];
+  bool isSelectionMode = false;
   bool selectAll = false;
   bool isGridMode = false;
 
@@ -57,8 +58,12 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
   }
 
   void fetchData() {
+    content.clear();
     itemList.clear();
     itemSelected.clear();
+    isSelectionMode = false;
+    selectAll = false;
+    isGridMode = false;
 
     dirNotifier.dirs(url: appUrl, order: order, parentID: parentID, dirName: searchDirName).then((value) {
       setState(() {
@@ -590,13 +595,13 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
 }
 
 class ListBuilder extends StatefulWidget {
-  final HomePageState parentWidget;
-  final List<dynamic> dataList;
-  final List<bool> selectedList;
-  final bool isSelectionMode;
-  final Function(bool)? onSelectionChange;
+  late HomePageState parentWidget;
+  late List<dynamic> dataList;
+  late List<bool> selectedList;
+  late bool isSelectionMode;
+  late Function(bool)? onSelectionChange;
 
-  const ListBuilder({
+  ListBuilder({
     super.key,
     required this.parentWidget,
     required this.dataList,
@@ -610,6 +615,9 @@ class ListBuilder extends StatefulWidget {
 }
 
 class ListBuilderState extends State<ListBuilder> {
+  FileNotifier fileNotifier = FileNotifier();
+  DirNotifier dirNotifier = DirNotifier();
+
   void toggle(int index) {
     if (widget.isSelectionMode) {
       setState(() {
@@ -618,13 +626,13 @@ class ListBuilderState extends State<ListBuilder> {
     }
   }
 
-  Widget checkItem(int index) {
+  Widget checkItem(dynamic dataList, int index) {
     return SizedBox(
       height: 50,
       child: Row(
         children: [
           const SizedBox(width: 15),
-          widget.dataList[index] is DirModel
+          dataList[index] is DirModel
               ? Icon(
                   Icons.folder,
                   size: iconSize,
@@ -636,7 +644,7 @@ class ListBuilderState extends State<ListBuilder> {
                   color: Colors.grey,
                 ),
           const SizedBox(width: 10),
-          SizedBox(width: screenSize(context).width * 0.6, child: checkFileType(widget.dataList[index])),
+          SizedBox(width: screenSize(context).width * 0.6, child: checkFileType(dataList[index])),
           const Expanded(child: SizedBox.shrink()),
           widget.isSelectionMode
               ? Checkbox(
@@ -648,15 +656,15 @@ class ListBuilderState extends State<ListBuilder> {
               ? IconButton(
                   icon: Icon(Icons.more_vert, size: iconSize, color: iconColor),
                   onPressed: () async {
-                    if (widget.dataList[index] is DirModel) {
-                      Navigator.of(context).push(RouteHelper().generate(context, "/dir/details", data: widget.dataList[index])).then((value) {
+                    if (dataList[index] is DirModel) {
+                      Navigator.of(context).push(RouteHelper().generate(context, "/dir/details", data: dataList[index])).then((value) {
                         setState(() {
                           widget.parentWidget.fetchData();
                         });
                       });
                     }
-                    if (widget.dataList[index] is FileModel) {
-                      Navigator.of(context).push(RouteHelper().generate(context, "/file/details", data: widget.dataList[index])).then((value) {
+                    if (dataList[index] is FileModel) {
+                      Navigator.of(context).push(RouteHelper().generate(context, "/file/details", data: dataList[index])).then((value) {
                         setState(() {
                           widget.parentWidget.fetchData();
                         });
@@ -673,6 +681,7 @@ class ListBuilderState extends State<ListBuilder> {
 
   @override
   Widget build(BuildContext context) {
+    var dataList = widget.dataList;
     return ListView.builder(
       itemCount: widget.selectedList.length,
       itemBuilder: (context, int index) {
@@ -689,15 +698,15 @@ class ListBuilderState extends State<ListBuilder> {
                 child: SizedBox(
                   height: 50,
                   width: screenSize(context).width,
-                  child: checkItem(index),
+                  child: checkItem(dataList, index),
                 ),
               ),
-              data: widget.parentWidget.checkItemSelected().isEmpty ? widget.dataList[index] : widget.parentWidget.checkItemSelected(),
+              data: widget.parentWidget.checkItemSelected().isEmpty ? dataList[index] : widget.parentWidget.checkItemSelected(),
               child: InkWell(
                 // onTap: () async => toggle(index),
                 onTap: () async {
-                  if (widget.dataList[index] is DirModel) {
-                    DirModel obj = widget.dataList[index];
+                  if (dataList[index] is DirModel) {
+                    DirModel obj = dataList[index];
                     widget.parentWidget.setParentID(obj.id);
                   }
                 },
@@ -715,13 +724,54 @@ class ListBuilderState extends State<ListBuilder> {
                   }
                   widget.parentWidget.initializeSelection();
                 },
-                child: checkItem(index),
+                child: checkItem(dataList, index),
               ),
             );
           },
-          onAccept: (data) {
-            print("接收方" + widget.dataList[index].runtimeType.toString());
-            print("发送方" + data.runtimeType.toString());
+          onAccept: (data) async {
+            if (dataList[index] is FileModel) {
+              return;
+            }
+            DirModel destObj = dataList[index];
+            if (data is FileModel) {
+              FileModel fileObj = data;
+              fileNotifier.fileMove(url: appUrl, dirID: destObj.id, ids: fileObj.id).then((value) {
+                if (value.state) {
+                  setState(() {
+                    dataList.clear();
+                    widget.parentWidget.fetchData();
+                  });
+                }
+              });
+            }
+            if (data is DirModel) {
+              DirModel dirObj = data;
+              if (dirObj.id != destObj.id) {
+                dirNotifier.dirMove(url: appUrl, id: destObj.id, ids: dirObj.id).then((value) {
+                  if (value.state) {
+                    setState(() {
+                      dataList.clear();
+                      widget.parentWidget.fetchData();
+                    });
+                  }
+                });
+              }
+            }
+            if (data is List<dynamic>) {
+              if (data.contains(dataList[index]) && dataList[index] is DirModel) {
+                data.remove(dataList[index]);
+              }
+              for (int i = 0; i < data.length; i++) {
+                if (data[i] is DirModel) {
+                  DirModel obj = data[i];
+                  print(obj.dirName);
+                }
+                if (data[i] is FileModel) {
+                  FileModel obj = data[i];
+                  print(obj.fileName);
+                }
+              }
+            }
           },
         );
       },

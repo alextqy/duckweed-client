@@ -33,4 +33,12 @@ class DirNotifier extends BaseNotifier {
   }) async {
     return await dirApi.dirDel(url, id);
   }
+
+  Future<ResultModel> dirMove({
+    required url,
+    required id,
+    required ids,
+  }) async {
+    return await dirApi.dirMove(url, id, ids);
+  }
 }

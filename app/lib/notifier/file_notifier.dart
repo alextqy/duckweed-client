@@ -63,4 +63,12 @@ class FileNotifier extends BaseNotifier {
   }) async {
     return await fileApi.fileDel(url, id);
   }
+
+  Future<ResultModel> fileMove({
+    required url,
+    required dirID,
+    required ids,
+  }) async {
+    return await fileApi.fileMove(url, dirID, ids);
+  }
 }

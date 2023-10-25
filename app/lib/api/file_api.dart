@@ -85,4 +85,22 @@ class FileApi extends ResponseHelper {
     ).timeout(Duration(seconds: timeout));
     return ResultModel.fromJson(jsonDecode(decoder.convert(response.bodyBytes)));
   }
+
+  Future<ResultModel> fileMove([
+    url,
+    dirID,
+    ids,
+  ]) async {
+    Response response = await post(
+      Uri.http(url, "/file/move"),
+      body: {
+        "userToken": FileHelper().readFile("token"),
+        "dirID": dirID.toString(),
+        "ids": ids.toString(),
+      },
+      headers: postHeaders,
+      encoding: postEncoding,
+    ).timeout(Duration(seconds: timeout));
+    return ResultModel.fromJson(jsonDecode(decoder.convert(response.bodyBytes)));
+  }
 }
