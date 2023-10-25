@@ -65,6 +65,8 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
     selectAll = false;
     isGridMode = false;
 
+    fetchAnnouncementData();
+
     dirNotifier.dirs(url: appUrl, order: order, parentID: parentID, dirName: searchDirName).then((value) {
       setState(() {
         itemList.addAll(DirModel().fromJsonList(jsonEncode(value.data)));
@@ -121,7 +123,6 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   @override
   void initState() {
-    fetchAnnouncementData();
     fetchData();
     dirNotifier.addListener(basicListenerDir);
     fileNotifier.addListener(basicListenerFile);
