@@ -57,13 +57,13 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
     });
   }
 
-  void fetchData() {
+  void fetchData({bool gridMode = false}) {
     content.clear();
     itemList.clear();
     itemSelected.clear();
     isSelectionMode = false;
     selectAll = false;
-    isGridMode = false;
+    isGridMode = gridMode;
 
     fetchAnnouncementData();
 
@@ -618,11 +618,11 @@ class ListBuilder extends StatefulWidget {
 class ListBuilderState extends State<ListBuilder> {
   FileNotifier fileNotifier = FileNotifier();
   DirNotifier dirNotifier = DirNotifier();
-  List<dynamic> dataList = [];
+  List<dynamic> dataArr = [];
 
   @override
   void initState() {
-    dataList = widget.dataList;
+    dataArr = widget.dataList;
     super.initState();
   }
 
@@ -701,7 +701,7 @@ class ListBuilderState extends State<ListBuilder> {
       String fileIDsStr = fileIDs.join(",");
       await fileNotifier.fileMove(url: appUrl, dirID: destDirID, ids: fileIDsStr);
     }
-    return Future.delayed(const Duration(seconds: 1), () => true);
+    return Future.delayed(const Duration(milliseconds: 500), () => true);
   }
 
   @override
@@ -722,15 +722,15 @@ class ListBuilderState extends State<ListBuilder> {
                 child: SizedBox(
                   height: 50,
                   width: screenSize(context).width,
-                  child: checkItem(dataList, index),
+                  child: checkItem(dataArr, index),
                 ),
               ),
-              data: widget.parentWidget.checkItemSelected().isEmpty ? dataList[index] : widget.parentWidget.checkItemSelected(),
+              data: widget.parentWidget.checkItemSelected().isEmpty ? dataArr[index] : widget.parentWidget.checkItemSelected(),
               child: InkWell(
                 // onTap: () async => toggle(index),
                 onTap: () async {
-                  if (dataList[index] is DirModel) {
-                    DirModel obj = dataList[index];
+                  if (dataArr[index] is DirModel) {
+                    DirModel obj = dataArr[index];
                     widget.parentWidget.setParentID(obj.id);
                   }
                 },
@@ -748,22 +748,22 @@ class ListBuilderState extends State<ListBuilder> {
                   }
                   widget.parentWidget.initializeSelection();
                 },
-                child: checkItem(dataList, index),
+                child: checkItem(dataArr, index),
               ),
             );
           },
           onAccept: (data) async {
-            if (dataList[index] is FileModel) {
+            if (dataArr[index] is FileModel) {
               return;
             }
-            DirModel destObj = dataList[index];
+            DirModel destObj = dataArr[index];
 
             if (data is FileModel) {
               FileModel fileObj = data;
               fileNotifier.fileMove(url: appUrl, dirID: destObj.id, ids: fileObj.id).then((value) {
                 if (value.state) {
                   setState(() {
-                    dataList.clear();
+                    dataArr.clear();
                     widget.parentWidget.fetchData();
                   });
                 }
@@ -775,7 +775,7 @@ class ListBuilderState extends State<ListBuilder> {
                 dirNotifier.dirMove(url: appUrl, id: destObj.id, ids: dirObj.id).then((value) {
                   if (value.state) {
                     setState(() {
-                      dataList.clear();
+                      dataArr.clear();
                       widget.parentWidget.fetchData();
                     });
                   }
@@ -783,8 +783,8 @@ class ListBuilderState extends State<ListBuilder> {
               }
             }
             if (data is List<dynamic>) {
-              if (data.contains(dataList[index]) && dataList[index] is DirModel) {
-                data.remove(dataList[index]);
+              if (data.contains(dataArr[index]) && dataArr[index] is DirModel) {
+                data.remove(dataArr[index]);
               }
               List<int> dirIDs = [];
               List<int> fileIDs = [];
@@ -799,7 +799,7 @@ class ListBuilderState extends State<ListBuilder> {
                 }
               }
               move(destObj.id, dirIDs, fileIDs).then((value) {
-                dataList.clear();
+                dataArr.clear();
                 widget.parentWidget.fetchData();
               });
             }
@@ -811,13 +811,13 @@ class ListBuilderState extends State<ListBuilder> {
 }
 
 class GridBuilder extends StatefulWidget {
-  final HomePageState parentWidget;
-  final List<dynamic> dataList;
-  final List<bool> selectedList;
-  final bool isSelectionMode;
-  final Function(bool)? onSelectionChange;
+  late HomePageState parentWidget;
+  late List<dynamic> dataList;
+  late List<bool> selectedList;
+  late bool isSelectionMode;
+  late Function(bool)? onSelectionChange;
 
-  const GridBuilder({
+  GridBuilder({
     super.key,
     required this.parentWidget,
     required this.dataList,
@@ -831,12 +831,27 @@ class GridBuilder extends StatefulWidget {
 }
 
 class GridBuilderState extends State<GridBuilder> {
+  FileNotifier fileNotifier = FileNotifier();
+  DirNotifier dirNotifier = DirNotifier();
+  List<dynamic> dataArr = [];
+
   void toggle(int index) {
     if (widget.isSelectionMode) {
       setState(() {
         widget.selectedList[index] = !widget.selectedList[index];
       });
     }
+  }
+
+  @override
+  void initState() {
+    dataArr = widget.dataList;
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   Widget checkItem(int index) {
@@ -920,6 +935,18 @@ class GridBuilderState extends State<GridBuilder> {
     );
   }
 
+  Future<bool> move(int destDirID, List<int> dirIDs, List<int> fileIDs) async {
+    if (dirIDs.isNotEmpty) {
+      String dirIDsStr = dirIDs.join(",");
+      await dirNotifier.dirMove(url: appUrl, id: destDirID, ids: dirIDsStr);
+    }
+    if (fileIDs.isNotEmpty) {
+      String fileIDsStr = fileIDs.join(",");
+      await fileNotifier.fileMove(url: appUrl, dirID: destDirID, ids: fileIDsStr);
+    }
+    return Future.delayed(const Duration(milliseconds: 500), () => true);
+  }
+
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
@@ -974,9 +1001,57 @@ class GridBuilderState extends State<GridBuilder> {
               ),
             );
           },
-          onAccept: (data) {
-            print("接收方" + widget.dataList[index].runtimeType.toString());
-            print("发送方" + data.runtimeType.toString());
+          onAccept: (data) async {
+            if (dataArr[index] is FileModel) {
+              return;
+            }
+            DirModel destObj = dataArr[index];
+
+            if (data is FileModel) {
+              FileModel fileObj = data;
+              fileNotifier.fileMove(url: appUrl, dirID: destObj.id, ids: fileObj.id).then((value) {
+                if (value.state) {
+                  setState(() {
+                    dataArr.clear();
+                    widget.parentWidget.fetchData(gridMode: true);
+                  });
+                }
+              });
+            }
+            if (data is DirModel) {
+              DirModel dirObj = data;
+              if (dirObj.id != destObj.id) {
+                dirNotifier.dirMove(url: appUrl, id: destObj.id, ids: dirObj.id).then((value) {
+                  if (value.state) {
+                    setState(() {
+                      dataArr.clear();
+                      widget.parentWidget.fetchData(gridMode: true);
+                    });
+                  }
+                });
+              }
+            }
+            if (data is List<dynamic>) {
+              if (data.contains(dataArr[index]) && dataArr[index] is DirModel) {
+                data.remove(dataArr[index]);
+              }
+              List<int> dirIDs = [];
+              List<int> fileIDs = [];
+              for (int i = 0; i < data.length; i++) {
+                if (data[i] is DirModel) {
+                  DirModel obj = data[i];
+                  dirIDs.add(obj.id);
+                }
+                if (data[i] is FileModel) {
+                  FileModel obj = data[i];
+                  fileIDs.add(obj.id);
+                }
+              }
+              move(destObj.id, dirIDs, fileIDs).then((value) {
+                dataArr.clear();
+                widget.parentWidget.fetchData(gridMode: true);
+              });
+            }
           },
         );
       },
