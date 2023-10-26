@@ -82,7 +82,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   void setParentID(int setParentID) {
     parentID = setParentID;
-    fetchData();
+    fetchData(gridMode: isGridMode);
   }
 
   basicListenerDir() async {
@@ -878,14 +878,14 @@ class GridBuilderState extends State<GridBuilder> {
                             if (widget.dataList[index] is DirModel) {
                               Navigator.of(context).push(RouteHelper().generate(context, "/dir/details", data: widget.dataList[index])).then((value) {
                                 setState(() {
-                                  widget.parentWidget.fetchData();
+                                  widget.parentWidget.fetchData(gridMode: true);
                                 });
                               });
                             }
                             if (widget.dataList[index] is FileModel) {
                               Navigator.of(context).push(RouteHelper().generate(context, "/file/details", data: widget.dataList[index])).then((value) {
                                 setState(() {
-                                  widget.parentWidget.fetchData();
+                                  widget.parentWidget.fetchData(gridMode: true);
                                 });
                               });
                             }
