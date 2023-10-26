@@ -372,23 +372,16 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                           if (element) {
                                             if (itemList[i] is DirModel) {
                                               DirModel obj = itemList[i];
-                                              dirNotifier.dirDel(url: appUrl, id: obj.id).then((value) {
-                                                if (value.state) {
-                                                  fetchData();
-                                                }
-                                              });
+                                              await dirNotifier.dirDel(url: appUrl, id: obj.id);
                                             }
                                             if (itemList[i] is FileModel) {
                                               FileModel obj = itemList[i];
-                                              fileNotifier.fileDel(url: appUrl, id: obj.id).then((value) {
-                                                if (value.state) {
-                                                  fetchData();
-                                                }
-                                              });
+                                              await fileNotifier.fileDel(url: appUrl, id: obj.id);
                                             }
                                           }
                                           i++;
                                         }
+                                        fetchData(gridMode: isGridMode);
                                       },
                                       child: Text("OK", style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
                                     ),
