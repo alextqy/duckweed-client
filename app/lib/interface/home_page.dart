@@ -40,7 +40,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
   DirNotifier dirNotifier = DirNotifier();
   FileNotifier fileNotifier = FileNotifier();
 
-  bool showMarquee = true;
+  bool showMarquee = false;
   int order = -1;
   int parentID = 0;
   String searchDirName = "";
@@ -52,6 +52,9 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
         announcementNotifier.announcementListModel = AnnouncementModel().fromJsonList(jsonEncode(value.data));
         for (AnnouncementModel a in announcementNotifier.announcementListModel) {
           content.add(a.content);
+          if (content.isNotEmpty) {
+            showMarquee = true;
+          }
         }
       });
     });
