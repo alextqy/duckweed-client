@@ -618,6 +618,18 @@ class ListBuilder extends StatefulWidget {
 class ListBuilderState extends State<ListBuilder> {
   FileNotifier fileNotifier = FileNotifier();
   DirNotifier dirNotifier = DirNotifier();
+  List<dynamic> dataList = [];
+
+  @override
+  void initState() {
+    dataList = widget.dataList;
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   void toggle(int index) {
     if (widget.isSelectionMode) {
@@ -680,9 +692,20 @@ class ListBuilderState extends State<ListBuilder> {
     );
   }
 
+  Future<bool> move(int destDirID, List<int> dirIDs, List<int> fileIDs) async {
+    if (dirIDs.isNotEmpty) {
+      String dirIDsStr = dirIDs.join(",");
+      await dirNotifier.dirMove(url: appUrl, id: destDirID, ids: dirIDsStr);
+    }
+    if (fileIDs.isNotEmpty) {
+      String fileIDsStr = fileIDs.join(",");
+      await fileNotifier.fileMove(url: appUrl, dirID: destDirID, ids: fileIDsStr);
+    }
+    return Future.delayed(const Duration(seconds: 1), () => true);
+  }
+
   @override
   Widget build(BuildContext context) {
-    var dataList = widget.dataList;
     return ListView.builder(
       itemCount: widget.selectedList.length,
       itemBuilder: (context, int index) {
@@ -734,6 +757,7 @@ class ListBuilderState extends State<ListBuilder> {
               return;
             }
             DirModel destObj = dataList[index];
+
             if (data is FileModel) {
               FileModel fileObj = data;
               fileNotifier.fileMove(url: appUrl, dirID: destObj.id, ids: fileObj.id).then((value) {
@@ -762,16 +786,22 @@ class ListBuilderState extends State<ListBuilder> {
               if (data.contains(dataList[index]) && dataList[index] is DirModel) {
                 data.remove(dataList[index]);
               }
+              List<int> dirIDs = [];
+              List<int> fileIDs = [];
               for (int i = 0; i < data.length; i++) {
                 if (data[i] is DirModel) {
                   DirModel obj = data[i];
-                  print(obj.dirName);
+                  dirIDs.add(obj.id);
                 }
                 if (data[i] is FileModel) {
                   FileModel obj = data[i];
-                  print(obj.fileName);
+                  fileIDs.add(obj.id);
                 }
               }
+              move(destObj.id, dirIDs, fileIDs).then((value) {
+                dataList.clear();
+                widget.parentWidget.fetchData();
+              });
             }
           },
         );
