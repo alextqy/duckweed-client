@@ -58,6 +58,8 @@ class Lang {
   String downloadFiles = "";
   String fileType = "";
   String fileSize = "";
+  String move = "";
+  String moveHere = "";
 
   Lang() {
     this.type = FileHelper().jsonRead(key: "lang");
@@ -115,6 +117,8 @@ class Lang {
       this.downloadFiles = "下载文件";
       this.fileType = "文件类型";
       this.fileSize = "文件体积";
+      this.move = "移动";
+      this.moveHere = "移动到此处";
     } else {
       this.theServerAddressIsIncorrect = "The server address is incorrect";
       this.testConnection = "Test connection";
@@ -167,6 +171,8 @@ class Lang {
       this.downloadFiles = "Download files";
       this.fileType = "File type";
       this.fileSize = "File size";
+      this.move = "Move";
+      this.moveHere = "Move here";
     }
   }
 }

@@ -149,8 +149,10 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
       backgroundColor: Colors.black54,
       context: context,
       builder: (BuildContext context) {
+        late AnimationController newDirAnimationController;
+        late Animation<double> newDirAnimation;
         return SizedBox(
-          height: 230,
+          height: 275,
           child: Column(
             children: <Widget>[
               Container(
@@ -327,6 +329,156 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                           }
                           i++;
                         }
+                      },
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: InkWell(
+                      child: Container(
+                        margin: const EdgeInsets.all(0),
+                        padding: const EdgeInsets.all(0),
+                        alignment: Alignment.center,
+                        height: 45,
+                        child: Row(
+                          children: [
+                            const Expanded(child: SizedBox.shrink()),
+                            Icon(Icons.drive_file_move, color: iconColor, size: iconSize),
+                            const SizedBox(width: 10),
+                            Text(Lang().move, style: textStyle(fontSize: 18), maxLines: 1, overflow: TextOverflow.ellipsis),
+                            const Expanded(child: SizedBox.shrink()),
+                          ],
+                        ),
+                      ),
+                      onTap: () async {
+                        Navigator.pop(context);
+                        newDirAnimationController = AnimationController(duration: Duration(milliseconds: showSpeed), vsync: this);
+                        newDirAnimation = Tween(begin: 0.0, end: 45.0).animate(newDirAnimationController);
+                        dirNotifier.dirs(url: appUrl, order: -1, parentID: 0, dirName: "").then((value) {
+                          if (!value.state) {
+                            showSnackBar(context, content: value.message, backgroundColor: bgColor(context), duration: 1);
+                          } else {
+                            bool showCheck = false;
+                            int currentParentID = 0;
+                            List<DirModel> dirList = DirModel().fromJsonList(jsonEncode(value.data));
+                            showDialog(
+                              context: context,
+                              barrierDismissible: true,
+                              builder: (BuildContext context) {
+                                return UnconstrainedBox(
+                                  constrainedAxis: Axis.vertical, // 取消原有宽高限制
+                                  child: StatefulBuilder(
+                                    builder: (BuildContext context, Function state) {
+                                      TextEditingController newFolderController = TextEditingController();
+                                      return AnimatedBuilder(
+                                        animation: newDirAnimation,
+                                        builder: (context, child) {
+                                          return Dialog(
+                                            child: Container(
+                                              margin: const EdgeInsets.all(0),
+                                              padding: const EdgeInsets.all(20),
+                                              height: screenSize(context).height * 0.6,
+                                              width: screenSize(context).width * 0.6,
+                                              child: Column(
+                                                children: [
+                                                  Expanded(
+                                                    child: ListView.builder(
+                                                      itemCount: dirList.length,
+                                                      itemBuilder: (context, int index) {
+                                                        return InkWell(
+                                                          child: Container(
+                                                            margin: const EdgeInsets.all(10),
+                                                            child: Row(
+                                                              children: [
+                                                                Icon(
+                                                                  Icons.folder,
+                                                                  size: iconSize,
+                                                                  color: Colors.yellow,
+                                                                ),
+                                                                const SizedBox(width: 10),
+                                                                Text(dirList[index].dirName, style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
+                                                                const Expanded(child: SizedBox.shrink()),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                          onTap: () async {
+                                                            print(dirList[index].dirName);
+                                                          },
+                                                        );
+                                                      },
+                                                    ),
+                                                  ),
+                                                  const Expanded(child: SizedBox.shrink()),
+                                                  Container(
+                                                    height: newDirAnimation.value,
+                                                    margin: const EdgeInsets.all(0),
+                                                    padding: const EdgeInsets.all(0),
+                                                    child: TextField(
+                                                      controller: newFolderController,
+                                                      // cursorHeight: 18,
+                                                      // cursorWidth: 2,
+                                                      maxLines: 1,
+                                                      style: textStyle(),
+                                                      decoration: InputDecoration(
+                                                        // contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                                                        // isCollapsed: true,
+                                                        border: InputBorder.none,
+                                                        filled: true,
+                                                        suffixIcon: Visibility(
+                                                          visible: showCheck,
+                                                          child: IconButton(
+                                                            hoverColor: Colors.transparent,
+                                                            highlightColor: Colors.transparent,
+                                                            icon: Icon(Icons.check, size: iconSize, color: iconColor),
+                                                            onPressed: () async {},
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  const SizedBox(height: 10),
+                                                  Row(
+                                                    children: [
+                                                      Expanded(
+                                                        child: TextButton(
+                                                          child: Text(Lang().newFolder, style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
+                                                          onPressed: () async {
+                                                            if (newDirAnimation.value == 0) {
+                                                              await newDirAnimationController.forward().orCancel.then((value) => showCheck = true);
+                                                            } else if (newDirAnimation.value == 45) {
+                                                              showCheck = false;
+                                                              await newDirAnimationController.reverse().orCancel;
+                                                            } else {
+                                                              return;
+                                                            }
+                                                            state(() {});
+                                                          },
+                                                        ),
+                                                      ),
+                                                      Expanded(
+                                                        child: TextButton(
+                                                          child: Text(Lang().moveHere, style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
+                                                          onPressed: () async {},
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      );
+                                    },
+                                  ),
+                                );
+                              },
+                            );
+                          }
+                        });
                       },
                     ),
                   ),

@@ -55,6 +55,16 @@ class FileHelper {
     }
   }
 
+  // 文件二进制读取
+  List<int> readFileB(String filePath, int start, int end) {
+    File file = File(filePath);
+    List<int> content = [];
+    file.openRead(start, end).listen((data) {
+      content.addAll(data);
+    });
+    return content;
+  }
+
   // 文件删除
   bool delFile(String filePath) {
     File file = File(filePath);
