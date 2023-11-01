@@ -9,6 +9,7 @@ import "package:app/notifier/file_notifier.dart";
 
 import "package:app/common/lang.dart";
 import "package:app/interface/common/pub_lib.dart";
+import "package:app/interface/common/show_alert_dialog.dart";
 
 class FileMoveOperations extends StatefulWidget {
   List<dynamic> data = [];
@@ -151,7 +152,20 @@ class FileMoveOperationsState extends State<FileMoveOperations> with TickerProvi
                           hoverColor: Colors.transparent,
                           highlightColor: Colors.transparent,
                           icon: Icon(Icons.check, size: iconSize, color: iconColor),
-                          onPressed: () async {},
+                          onPressed: () async {
+                            if (newFolderController.text.isNotEmpty) {
+                              dirNotifier.dirAction(url: appUrl, dirName: newFolderController.text, parentID: currentParentID, id: 0).then((value) {
+                                if (!value.state) {
+                                  showSnackBar(context, content: Lang().operationFailed, backgroundColor: bgColor(context), duration: 1);
+                                } else {
+                                  newFolderController.clear();
+                                  showCheck = false;
+                                  newDirAnimationController.reverse().orCancel;
+                                  fetchData(parentID: currentParentID);
+                                }
+                              });
+                            }
+                          },
                         ),
                       ),
                     ),
@@ -171,8 +185,10 @@ class FileMoveOperationsState extends State<FileMoveOperations> with TickerProvi
                       child: Text(Lang().newFolder, style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
                       onPressed: () async {
                         if (newDirAnimation.value == 0) {
+                          newFolderController.clear();
                           newDirAnimationController.forward().orCancel.then((value) => showCheck = true);
                         } else if (newDirAnimation.value == 45) {
+                          newFolderController.clear();
                           showCheck = false;
                           newDirAnimationController.reverse().orCancel;
                         } else {
