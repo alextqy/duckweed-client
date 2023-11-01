@@ -207,6 +207,7 @@ class FileMoveOperationsState extends State<FileMoveOperations> with TickerProvi
                       child: Text(Lang().moveHere, style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
                       onPressed: () async {
                         print(currentParentID);
+                        print(widget.data);
                       },
                     ),
                   ),

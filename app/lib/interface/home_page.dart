@@ -737,7 +737,8 @@ class ListBuilderState extends State<ListBuilder> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
+    return ListView.separated(
+      separatorBuilder: (BuildContext context, int index) => const Divider(height: 5.0, color: Colors.transparent),
       itemCount: widget.selectedList.length,
       itemBuilder: (context, int index) {
         return DragTarget(
@@ -758,11 +759,12 @@ class ListBuilderState extends State<ListBuilder> {
               ),
               data: widget.parentWidget.checkItemSelected().isEmpty ? dataArr[index] : widget.parentWidget.checkItemSelected(),
               child: InkWell(
-                // onTap: () async => toggle(index),
                 onTap: () async {
                   if (dataArr[index] is DirModel) {
                     DirModel obj = dataArr[index];
                     widget.parentWidget.setParentID(obj.id);
+                  } else {
+                    toggle(index);
                   }
                 },
                 onLongPress: () async {
@@ -1009,11 +1011,12 @@ class GridBuilderState extends State<GridBuilder> {
               ),
               data: widget.parentWidget.checkItemSelected().isEmpty ? widget.dataList[index] : widget.parentWidget.checkItemSelected(),
               child: InkWell(
-                // onTap: () async => toggle(index),
                 onTap: () async {
-                  if (widget.dataList[index] is DirModel) {
-                    DirModel obj = widget.dataList[index];
+                  if (dataArr[index] is DirModel) {
+                    DirModel obj = dataArr[index];
                     widget.parentWidget.setParentID(obj.id);
+                  } else {
+                    toggle(index);
                   }
                 },
                 onLongPress: () async {
