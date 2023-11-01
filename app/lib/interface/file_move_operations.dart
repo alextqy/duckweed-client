@@ -229,7 +229,7 @@ class FileMoveOperationsState extends State<FileMoveOperations> with TickerProvi
                         if (mounted) {
                           if (dirsID.isNotEmpty || filesID.isNotEmpty) {
                             // Navigator.of(context).pop();
-                            showSnackBar(context, content: Lang().operationFailed, backgroundColor: bgColor(context), duration: 1);
+                            showSnackBar(context, content: Lang().complete, backgroundColor: bgColor(context), duration: 1);
                           }
                         }
                       },
