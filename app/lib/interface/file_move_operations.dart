@@ -72,7 +72,7 @@ class FileMoveOperationsState extends State<FileMoveOperations> with TickerProvi
             visible: showReply,
             child: IconButton(
               icon: const Icon(Icons.reply),
-              tooltip: Lang().moveUp,
+              tooltip: "", // Lang().moveUp,
               onPressed: () {
                 if (currentParentID > 0) {
                   dirNotifier.dirInfo(url: appUrl, id: currentParentID).then((value) {
@@ -207,12 +207,8 @@ class FileMoveOperationsState extends State<FileMoveOperations> with TickerProvi
                     child: TextButton(
                       child: Text(Lang().moveHere, style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
                       onPressed: () async {
-                        // print(currentParentID);
-                        // print(widget.data);
-
                         List<int> dirsID = [];
                         List<int> filesID = [];
-
                         for (var element in widget.data) {
                           if (element is DirModel) {
                             DirModel e = element;
@@ -227,9 +223,15 @@ class FileMoveOperationsState extends State<FileMoveOperations> with TickerProvi
                             }
                           }
                         }
-
-                        print(dirsID);
-                        print(filesID);
+                        await dirNotifier.dirMove(url: appUrl, id: currentParentID, ids: dirsID.join(","));
+                        await fileNotifier.fileMove(url: appUrl, dirID: currentParentID, ids: filesID.join(","));
+                        await Future.delayed(const Duration(milliseconds: 100));
+                        if (mounted) {
+                          if (dirsID.isNotEmpty || filesID.isNotEmpty) {
+                            // Navigator.of(context).pop();
+                            showSnackBar(context, content: Lang().operationFailed, backgroundColor: bgColor(context), duration: 1);
+                          }
+                        }
                       },
                     ),
                   ),
