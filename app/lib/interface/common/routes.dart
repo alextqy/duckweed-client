@@ -14,6 +14,7 @@ import "package:app/interface/Announcement_get.dart";
 
 import "package:app/interface/dir_details.dart";
 import "package:app/interface/file_details.dart";
+import "package:app/interface/file_move_operations.dart";
 
 class RouteHelper {
   dynamic generate(BuildContext context, String routeName, {dynamic data}) {
@@ -37,6 +38,8 @@ class RouteHelper {
         return MaterialPageRoute(builder: (context) => DirDetails(data: data));
       case "/file/details":
         return MaterialPageRoute(builder: (context) => FileDetails(data: data));
+      case "/file/move":
+        return MaterialPageRoute(builder: (context) => FileMoveOperations(data: data));
       default:
         return MaterialPageRoute(
           builder: (context) => Scaffold(

@@ -60,11 +60,11 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
     });
   }
 
-  void fetchData({bool gridMode = false}) {
+  void fetchData({bool gridMode = false, bool selectionMode = false}) {
     content.clear();
     itemList.clear();
     itemSelected.clear();
-    isSelectionMode = false;
+    isSelectionMode = selectionMode;
     selectAll = false;
     isGridMode = gridMode;
 
@@ -149,8 +149,6 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
       backgroundColor: Colors.black54,
       context: context,
       builder: (BuildContext context) {
-        late AnimationController newDirAnimationController;
-        late Animation<double> newDirAnimation;
         return SizedBox(
           height: 275,
           child: Column(
@@ -355,130 +353,15 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                       ),
                       onTap: () async {
                         Navigator.pop(context);
-                        newDirAnimationController = AnimationController(duration: Duration(milliseconds: showSpeed), vsync: this);
-                        newDirAnimation = Tween(begin: 0.0, end: 45.0).animate(newDirAnimationController);
-                        dirNotifier.dirs(url: appUrl, order: -1, parentID: 0, dirName: "").then((value) {
-                          if (!value.state) {
-                            showSnackBar(context, content: value.message, backgroundColor: bgColor(context), duration: 1);
-                          } else {
-                            bool showCheck = false;
-                            int currentParentID = 0;
-                            List<DirModel> dirList = DirModel().fromJsonList(jsonEncode(value.data));
-                            showDialog(
-                              context: context,
-                              barrierDismissible: true,
-                              builder: (BuildContext context) {
-                                return UnconstrainedBox(
-                                  constrainedAxis: Axis.vertical, // 取消原有宽高限制
-                                  child: StatefulBuilder(
-                                    builder: (BuildContext context, Function state) {
-                                      TextEditingController newFolderController = TextEditingController();
-                                      return AnimatedBuilder(
-                                        animation: newDirAnimation,
-                                        builder: (context, child) {
-                                          return Dialog(
-                                            child: Container(
-                                              margin: const EdgeInsets.all(0),
-                                              padding: const EdgeInsets.all(20),
-                                              height: screenSize(context).height * 0.6,
-                                              width: screenSize(context).width * 0.6,
-                                              child: Column(
-                                                children: [
-                                                  Expanded(
-                                                    child: ListView.builder(
-                                                      itemCount: dirList.length,
-                                                      itemBuilder: (context, int index) {
-                                                        return InkWell(
-                                                          child: Container(
-                                                            margin: const EdgeInsets.all(10),
-                                                            child: Row(
-                                                              children: [
-                                                                Icon(
-                                                                  Icons.folder,
-                                                                  size: iconSize,
-                                                                  color: Colors.yellow,
-                                                                ),
-                                                                const SizedBox(width: 10),
-                                                                Text(dirList[index].dirName, style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
-                                                                const Expanded(child: SizedBox.shrink()),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                          onTap: () async {
-                                                            print(dirList[index].dirName);
-                                                          },
-                                                        );
-                                                      },
-                                                    ),
-                                                  ),
-                                                  const Expanded(child: SizedBox.shrink()),
-                                                  Container(
-                                                    height: newDirAnimation.value,
-                                                    margin: const EdgeInsets.all(0),
-                                                    padding: const EdgeInsets.all(0),
-                                                    child: TextField(
-                                                      controller: newFolderController,
-                                                      // cursorHeight: 18,
-                                                      // cursorWidth: 2,
-                                                      maxLines: 1,
-                                                      style: textStyle(),
-                                                      decoration: InputDecoration(
-                                                        // contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                                                        // isCollapsed: true,
-                                                        border: InputBorder.none,
-                                                        filled: true,
-                                                        suffixIcon: Visibility(
-                                                          visible: showCheck,
-                                                          child: IconButton(
-                                                            hoverColor: Colors.transparent,
-                                                            highlightColor: Colors.transparent,
-                                                            icon: Icon(Icons.check, size: iconSize, color: iconColor),
-                                                            onPressed: () async {},
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  const SizedBox(height: 10),
-                                                  Row(
-                                                    children: [
-                                                      Expanded(
-                                                        child: TextButton(
-                                                          child: Text(Lang().newFolder, style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
-                                                          onPressed: () async {
-                                                            if (newDirAnimation.value == 0) {
-                                                              await newDirAnimationController.forward().orCancel.then((value) => showCheck = true);
-                                                            } else if (newDirAnimation.value == 45) {
-                                                              showCheck = false;
-                                                              await newDirAnimationController.reverse().orCancel;
-                                                            } else {
-                                                              return;
-                                                            }
-                                                            state(() {});
-                                                          },
-                                                        ),
-                                                      ),
-                                                      Expanded(
-                                                        child: TextButton(
-                                                          child: Text(Lang().moveHere, style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
-                                                          onPressed: () async {},
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          );
-                                        },
-                                      );
-                                    },
-                                  ),
-                                );
-                              },
-                            );
-                          }
-                        });
+
+                        List<dynamic> selectedItems = checkItemSelected();
+                        if (selectedItems.isNotEmpty) {
+                          Navigator.of(context).push(RouteHelper().generate(context, "/file/move", data: selectedItems)).then((value) {
+                            setState(() {
+                              fetchData(gridMode: isGridMode, selectionMode: true);
+                            });
+                          });
+                        }
                       },
                     ),
                   ),
@@ -713,8 +596,8 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                           icon: Icon(Icons.reply, size: 25, color: iconColor),
                           onPressed: () async {
                             dirNotifier.dirInfo(url: appUrl, id: parentID).then((value) {
-                              dirNotifier.dirModel = DirModel.fromJson(value.data);
-                              setParentID(dirNotifier.dirModel.parentID);
+                              DirModel dirInfo = DirModel.fromJson(value.data);
+                              setParentID(dirInfo.parentID);
                             });
                           },
                         )
@@ -1014,35 +897,6 @@ class GridBuilderState extends State<GridBuilder> {
         child: Column(
           children: [
             const Expanded(child: SizedBox.shrink()),
-            Visibility(
-              visible: widget.isSelectionMode,
-              child: widget.isSelectionMode
-                  ? Row(
-                      children: [
-                        const Expanded(child: SizedBox.shrink()),
-                        IconButton(
-                          icon: Icon(Icons.more_horiz, size: iconSize, color: iconColor),
-                          onPressed: () async {
-                            if (widget.dataList[index] is DirModel) {
-                              Navigator.of(context).push(RouteHelper().generate(context, "/dir/details", data: widget.dataList[index])).then((value) {
-                                setState(() {
-                                  widget.parentWidget.fetchData(gridMode: true);
-                                });
-                              });
-                            }
-                            if (widget.dataList[index] is FileModel) {
-                              Navigator.of(context).push(RouteHelper().generate(context, "/file/details", data: widget.dataList[index])).then((value) {
-                                setState(() {
-                                  widget.parentWidget.fetchData(gridMode: true);
-                                });
-                              });
-                            }
-                          },
-                        ),
-                      ],
-                    )
-                  : const Row(children: []),
-            ),
             widget.dataList[index] is DirModel
                 ? const Icon(
                     Icons.folder,
@@ -1057,18 +911,6 @@ class GridBuilderState extends State<GridBuilder> {
             Row(
               children: [
                 const Expanded(child: SizedBox.shrink()),
-                Visibility(
-                  visible: widget.isSelectionMode,
-                  child: Expanded(
-                    child: widget.isSelectionMode
-                        ? SizedBox(
-                            height: 18,
-                            width: 18,
-                            child: Checkbox(onChanged: (bool? x) => toggle(index), value: widget.selectedList[index]),
-                          )
-                        : const Icon(null),
-                  ),
-                ),
                 Expanded(
                   child: Container(
                     margin: const EdgeInsets.all(0),
@@ -1078,6 +920,46 @@ class GridBuilderState extends State<GridBuilder> {
                 ),
                 const Expanded(child: SizedBox.shrink()),
               ],
+            ),
+            Visibility(
+              visible: widget.isSelectionMode,
+              child: widget.isSelectionMode
+                  ? Row(
+                      children: [
+                        Expanded(
+                          child: widget.isSelectionMode
+                              ? SizedBox(
+                                  height: 18,
+                                  width: 18,
+                                  child: Checkbox(onChanged: (bool? x) => toggle(index), value: widget.selectedList[index]),
+                                )
+                              : const Icon(null),
+                        ),
+                        const Expanded(child: SizedBox.shrink()),
+                        Expanded(
+                          child: IconButton(
+                            icon: Icon(Icons.more_horiz, size: iconSize, color: iconColor),
+                            onPressed: () async {
+                              if (widget.dataList[index] is DirModel) {
+                                Navigator.of(context).push(RouteHelper().generate(context, "/dir/details", data: widget.dataList[index])).then((value) {
+                                  setState(() {
+                                    widget.parentWidget.fetchData(gridMode: true);
+                                  });
+                                });
+                              }
+                              if (widget.dataList[index] is FileModel) {
+                                Navigator.of(context).push(RouteHelper().generate(context, "/file/details", data: widget.dataList[index])).then((value) {
+                                  setState(() {
+                                    widget.parentWidget.fetchData(gridMode: true);
+                                  });
+                                });
+                              }
+                            },
+                          ),
+                        ),
+                      ],
+                    )
+                  : const Row(children: []),
             ),
             const Expanded(child: SizedBox.shrink()),
           ],

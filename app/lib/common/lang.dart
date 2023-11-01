@@ -60,6 +60,7 @@ class Lang {
   String fileSize = "";
   String move = "";
   String moveHere = "";
+  String moveUp = "";
 
   Lang() {
     this.type = FileHelper().jsonRead(key: "lang");
@@ -119,6 +120,7 @@ class Lang {
       this.fileSize = "文件体积";
       this.move = "移动";
       this.moveHere = "移动到此处";
+      this.moveUp = "向上";
     } else {
       this.theServerAddressIsIncorrect = "The server address is incorrect";
       this.testConnection = "Test connection";
@@ -173,6 +175,7 @@ class Lang {
       this.fileSize = "File size";
       this.move = "Move";
       this.moveHere = "Move here";
+      this.moveUp = "Move up";
     }
   }
 }
