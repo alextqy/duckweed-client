@@ -4,6 +4,7 @@ import "dart:convert";
 
 import "package:flutter/material.dart";
 import "package:app/model/dir_model.dart";
+import "package:app/model/file_model.dart";
 import "package:app/notifier/dir_notifier.dart";
 import "package:app/notifier/file_notifier.dart";
 
@@ -206,8 +207,29 @@ class FileMoveOperationsState extends State<FileMoveOperations> with TickerProvi
                     child: TextButton(
                       child: Text(Lang().moveHere, style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
                       onPressed: () async {
-                        print(currentParentID);
-                        print(widget.data);
+                        // print(currentParentID);
+                        // print(widget.data);
+
+                        List<int> dirsID = [];
+                        List<int> filesID = [];
+
+                        for (var element in widget.data) {
+                          if (element is DirModel) {
+                            DirModel e = element;
+                            if (e.parentID != currentParentID) {
+                              dirsID.add(e.id);
+                            }
+                          }
+                          if (element is FileModel) {
+                            FileModel e = element;
+                            if (e.dirID != currentParentID) {
+                              filesID.add(e.id);
+                            }
+                          }
+                        }
+
+                        print(dirsID);
+                        print(filesID);
                       },
                     ),
                   ),

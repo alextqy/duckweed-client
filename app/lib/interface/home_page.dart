@@ -761,10 +761,16 @@ class ListBuilderState extends State<ListBuilder> {
               child: InkWell(
                 onTap: () async {
                   if (dataArr[index] is DirModel) {
-                    DirModel obj = dataArr[index];
-                    widget.parentWidget.setParentID(obj.id);
+                    if (!widget.isSelectionMode) {
+                      DirModel obj = dataArr[index];
+                      widget.parentWidget.setParentID(obj.id);
+                    } else {
+                      toggle(index);
+                    }
                   } else {
-                    toggle(index);
+                    if (widget.isSelectionMode) {
+                      toggle(index);
+                    }
                   }
                 },
                 onLongPress: () async {
@@ -1013,10 +1019,16 @@ class GridBuilderState extends State<GridBuilder> {
               child: InkWell(
                 onTap: () async {
                   if (dataArr[index] is DirModel) {
-                    DirModel obj = dataArr[index];
-                    widget.parentWidget.setParentID(obj.id);
+                    if (!widget.isSelectionMode) {
+                      DirModel obj = dataArr[index];
+                      widget.parentWidget.setParentID(obj.id);
+                    } else {
+                      toggle(index);
+                    }
                   } else {
-                    toggle(index);
+                    if (widget.isSelectionMode) {
+                      toggle(index);
+                    }
                   }
                 },
                 onLongPress: () async {
