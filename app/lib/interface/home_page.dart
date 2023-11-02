@@ -821,59 +821,81 @@ class ListBuilderState extends State<ListBuilder> {
             );
           },
           onAccept: (data) async {
-            if (dataArr[index] is FileModel) {
+            if (dataArr[index] is! DirModel) {
               return;
             }
-            DirModel destObj = dataArr[index];
 
-            if (data is FileModel) {
-              FileModel fileObj = data;
-              fileNotifier.fileMove(url: appUrl, dirID: destObj.id, ids: fileObj.id).then((value) {
-                if (value.state) {
-                  setState(() {
-                    dataArr.clear();
-                    widget.parentWidget.fetchData();
-                    showSnackBar(context, content: Lang().complete, backgroundColor: bgColor(context), duration: 1);
-                  });
-                }
-              });
-            }
-            if (data is DirModel) {
-              DirModel dirObj = data;
-              if (dirObj.id != destObj.id) {
-                dirNotifier.dirMove(url: appUrl, id: destObj.id, ids: dirObj.id).then((value) {
-                  if (value.state) {
-                    setState(() {
-                      dataArr.clear();
-                      widget.parentWidget.fetchData();
-                      showSnackBar(context, content: Lang().complete, backgroundColor: bgColor(context), duration: 1);
-                    });
-                  }
-                });
-              }
-            }
-            if (data is List<dynamic>) {
-              if (data.contains(dataArr[index]) && dataArr[index] is DirModel) {
-                data.remove(dataArr[index]);
-              }
-              List<int> dirIDs = [];
-              List<int> fileIDs = [];
-              for (int i = 0; i < data.length; i++) {
-                if (data[i] is DirModel) {
-                  DirModel obj = data[i];
-                  dirIDs.add(obj.id);
-                }
-                if (data[i] is FileModel) {
-                  FileModel obj = data[i];
-                  fileIDs.add(obj.id);
-                }
-              }
-              move(destObj.id, dirIDs, fileIDs).then((value) {
-                dataArr.clear();
-                widget.parentWidget.fetchData();
-                showSnackBar(context, content: Lang().complete, backgroundColor: bgColor(context), duration: 1);
-              });
-            }
+            showDialog(
+              context: context,
+              barrierDismissible: true,
+              builder: (BuildContext context) {
+                return StatefulBuilder(
+                  builder: (BuildContext context, Function state) {
+                    return AlertDialog(
+                      content: Text("${Lang().move}?", style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
+                      actions: [
+                        TextButton(
+                          onPressed: () async {
+                            DirModel destObj = dataArr[index];
+
+                            if (data is FileModel) {
+                              FileModel fileObj = data;
+                              fileNotifier.fileMove(url: appUrl, dirID: destObj.id, ids: fileObj.id).then((value) {
+                                if (value.state) {
+                                  setState(() {
+                                    dataArr.clear();
+                                    widget.parentWidget.fetchData();
+                                    showSnackBar(context, content: Lang().complete, backgroundColor: bgColor(context), duration: 1);
+                                  });
+                                }
+                              });
+                            }
+                            if (data is DirModel) {
+                              DirModel dirObj = data;
+                              if (dirObj.id != destObj.id) {
+                                dirNotifier.dirMove(url: appUrl, id: destObj.id, ids: dirObj.id).then((value) {
+                                  if (value.state) {
+                                    setState(() {
+                                      dataArr.clear();
+                                      widget.parentWidget.fetchData();
+                                      showSnackBar(context, content: Lang().complete, backgroundColor: bgColor(context), duration: 1);
+                                    });
+                                  }
+                                });
+                              }
+                            }
+                            if (data is List<dynamic>) {
+                              if (data.contains(dataArr[index]) && dataArr[index] is DirModel) {
+                                data.remove(dataArr[index]);
+                              }
+                              List<int> dirIDs = [];
+                              List<int> fileIDs = [];
+                              for (int i = 0; i < data.length; i++) {
+                                if (data[i] is DirModel) {
+                                  DirModel obj = data[i];
+                                  dirIDs.add(obj.id);
+                                }
+                                if (data[i] is FileModel) {
+                                  FileModel obj = data[i];
+                                  fileIDs.add(obj.id);
+                                }
+                              }
+                              move(destObj.id, dirIDs, fileIDs).then((value) {
+                                dataArr.clear();
+                                widget.parentWidget.fetchData();
+                                showSnackBar(context, content: Lang().complete, backgroundColor: bgColor(context), duration: 1);
+                              });
+                            }
+                            Navigator.pop(context);
+                          },
+                          child: Text("OK", style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+            );
           },
         );
       },
@@ -1079,59 +1101,81 @@ class GridBuilderState extends State<GridBuilder> {
             );
           },
           onAccept: (data) async {
-            if (dataArr[index] is FileModel) {
+            if (dataArr[index] is! DirModel) {
               return;
             }
-            DirModel destObj = dataArr[index];
 
-            if (data is FileModel) {
-              FileModel fileObj = data;
-              fileNotifier.fileMove(url: appUrl, dirID: destObj.id, ids: fileObj.id).then((value) {
-                if (value.state) {
-                  setState(() {
-                    dataArr.clear();
-                    widget.parentWidget.fetchData(gridMode: true);
-                    showSnackBar(context, content: Lang().complete, backgroundColor: bgColor(context), duration: 1);
-                  });
-                }
-              });
-            }
-            if (data is DirModel) {
-              DirModel dirObj = data;
-              if (dirObj.id != destObj.id) {
-                dirNotifier.dirMove(url: appUrl, id: destObj.id, ids: dirObj.id).then((value) {
-                  if (value.state) {
-                    setState(() {
-                      dataArr.clear();
-                      widget.parentWidget.fetchData(gridMode: true);
-                      showSnackBar(context, content: Lang().complete, backgroundColor: bgColor(context), duration: 1);
-                    });
-                  }
-                });
-              }
-            }
-            if (data is List<dynamic>) {
-              if (data.contains(dataArr[index]) && dataArr[index] is DirModel) {
-                data.remove(dataArr[index]);
-              }
-              List<int> dirIDs = [];
-              List<int> fileIDs = [];
-              for (int i = 0; i < data.length; i++) {
-                if (data[i] is DirModel) {
-                  DirModel obj = data[i];
-                  dirIDs.add(obj.id);
-                }
-                if (data[i] is FileModel) {
-                  FileModel obj = data[i];
-                  fileIDs.add(obj.id);
-                }
-              }
-              move(destObj.id, dirIDs, fileIDs).then((value) {
-                dataArr.clear();
-                widget.parentWidget.fetchData(gridMode: true);
-                showSnackBar(context, content: Lang().complete, backgroundColor: bgColor(context), duration: 1);
-              });
-            }
+            showDialog(
+              context: context,
+              barrierDismissible: true,
+              builder: (BuildContext context) {
+                return StatefulBuilder(
+                  builder: (BuildContext context, Function state) {
+                    return AlertDialog(
+                      content: Text("${Lang().move}?", style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
+                      actions: [
+                        TextButton(
+                          onPressed: () async {
+                            DirModel destObj = dataArr[index];
+
+                            if (data is FileModel) {
+                              FileModel fileObj = data;
+                              fileNotifier.fileMove(url: appUrl, dirID: destObj.id, ids: fileObj.id).then((value) {
+                                if (value.state) {
+                                  setState(() {
+                                    dataArr.clear();
+                                    widget.parentWidget.fetchData(gridMode: true);
+                                    showSnackBar(context, content: Lang().complete, backgroundColor: bgColor(context), duration: 1);
+                                  });
+                                }
+                              });
+                            }
+                            if (data is DirModel) {
+                              DirModel dirObj = data;
+                              if (dirObj.id != destObj.id) {
+                                dirNotifier.dirMove(url: appUrl, id: destObj.id, ids: dirObj.id).then((value) {
+                                  if (value.state) {
+                                    setState(() {
+                                      dataArr.clear();
+                                      widget.parentWidget.fetchData(gridMode: true);
+                                      showSnackBar(context, content: Lang().complete, backgroundColor: bgColor(context), duration: 1);
+                                    });
+                                  }
+                                });
+                              }
+                            }
+                            if (data is List<dynamic>) {
+                              if (data.contains(dataArr[index]) && dataArr[index] is DirModel) {
+                                data.remove(dataArr[index]);
+                              }
+                              List<int> dirIDs = [];
+                              List<int> fileIDs = [];
+                              for (int i = 0; i < data.length; i++) {
+                                if (data[i] is DirModel) {
+                                  DirModel obj = data[i];
+                                  dirIDs.add(obj.id);
+                                }
+                                if (data[i] is FileModel) {
+                                  FileModel obj = data[i];
+                                  fileIDs.add(obj.id);
+                                }
+                              }
+                              move(destObj.id, dirIDs, fileIDs).then((value) {
+                                dataArr.clear();
+                                widget.parentWidget.fetchData(gridMode: true);
+                                showSnackBar(context, content: Lang().complete, backgroundColor: bgColor(context), duration: 1);
+                              });
+                            }
+                            Navigator.pop(context);
+                          },
+                          child: Text("OK", style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+            );
           },
         );
       },
