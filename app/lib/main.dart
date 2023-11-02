@@ -16,11 +16,7 @@ import "package:app/interface/forgot_password.dart";
 import "package:app/interface/home_page.dart";
 
 void main() {
-  // runZonedGuarded(() {
   runApp(const RootApp());
-  // }, (error, stackTrace) {
-  //   print("Uncaught error: $error");
-  // });
 }
 
 enum LangList { en, cn }
