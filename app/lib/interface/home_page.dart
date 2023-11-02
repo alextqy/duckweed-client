@@ -552,7 +552,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 margin: const EdgeInsets.all(0),
                 padding: const EdgeInsets.all(5),
                 width: double.infinity,
-                child: Text(parentDirName, style: textStyle(color: Colors.black87, fontSize: 20), maxLines: 1, overflow: TextOverflow.ellipsis),
+                child: Text(parentDirName, style: textStyle(color: Colors.black87, fontSize: 15), maxLines: 1, overflow: TextOverflow.ellipsis),
               ),
             ),
             Expanded(
