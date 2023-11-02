@@ -845,7 +845,7 @@ class ListBuilderState extends State<ListBuilder> {
                                   setState(() {
                                     dataArr.clear();
                                     widget.parentWidget.fetchData();
-                                    showSnackBar(context, content: Lang().complete, backgroundColor: bgColor(context), duration: 1);
+                                    // showSnackBar(context, content: Lang().complete, backgroundColor: bgColor(context), duration: 1);
                                   });
                                 }
                               });
@@ -858,7 +858,7 @@ class ListBuilderState extends State<ListBuilder> {
                                     setState(() {
                                       dataArr.clear();
                                       widget.parentWidget.fetchData();
-                                      showSnackBar(context, content: Lang().complete, backgroundColor: bgColor(context), duration: 1);
+                                      // showSnackBar(context, content: Lang().complete, backgroundColor: bgColor(context), duration: 1);
                                     });
                                   }
                                 });
@@ -883,7 +883,7 @@ class ListBuilderState extends State<ListBuilder> {
                               move(destObj.id, dirIDs, fileIDs).then((value) {
                                 dataArr.clear();
                                 widget.parentWidget.fetchData();
-                                showSnackBar(context, content: Lang().complete, backgroundColor: bgColor(context), duration: 1);
+                                // showSnackBar(context, content: Lang().complete, backgroundColor: bgColor(context), duration: 1);
                               });
                             }
                             Navigator.pop(context);
@@ -1125,7 +1125,7 @@ class GridBuilderState extends State<GridBuilder> {
                                   setState(() {
                                     dataArr.clear();
                                     widget.parentWidget.fetchData(gridMode: true);
-                                    showSnackBar(context, content: Lang().complete, backgroundColor: bgColor(context), duration: 1);
+                                    // showSnackBar(context, content: Lang().complete, backgroundColor: bgColor(context), duration: 1);
                                   });
                                 }
                               });
@@ -1138,7 +1138,7 @@ class GridBuilderState extends State<GridBuilder> {
                                     setState(() {
                                       dataArr.clear();
                                       widget.parentWidget.fetchData(gridMode: true);
-                                      showSnackBar(context, content: Lang().complete, backgroundColor: bgColor(context), duration: 1);
+                                      // showSnackBar(context, content: Lang().complete, backgroundColor: bgColor(context), duration: 1);
                                     });
                                   }
                                 });
@@ -1163,7 +1163,7 @@ class GridBuilderState extends State<GridBuilder> {
                               move(destObj.id, dirIDs, fileIDs).then((value) {
                                 dataArr.clear();
                                 widget.parentWidget.fetchData(gridMode: true);
-                                showSnackBar(context, content: Lang().complete, backgroundColor: bgColor(context), duration: 1);
+                                // showSnackBar(context, content: Lang().complete, backgroundColor: bgColor(context), duration: 1);
                               });
                             }
                             Navigator.pop(context);
