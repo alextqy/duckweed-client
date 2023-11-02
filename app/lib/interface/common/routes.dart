@@ -4,13 +4,14 @@ import "package:app/common/file.dart";
 
 import "package:app/interface/common/pub_lib.dart";
 import "package:app/interface/home_page.dart";
+import "package:app/interface/upload_page.dart";
 import "package:app/interface/personal_settings.dart";
 import "package:app/interface/users.dart";
 import "package:app/interface/announcements.dart";
 import "package:app/interface/system_log.dart";
 
 import "package:app/interface/announcement_add.dart";
-import "package:app/interface/Announcement_get.dart";
+import "package:app/interface/announcement_get.dart";
 
 import "package:app/interface/dir_details.dart";
 import "package:app/interface/file_details.dart";
@@ -22,6 +23,10 @@ class RouteHelper {
     switch (routeName) {
       case "/":
         return MaterialPageRoute(builder: (context) => const HomePage());
+      case "/uploading":
+        return MaterialPageRoute(builder: (context) => const UploadPage());
+      // case "/downloading":
+      //   return MaterialPageRoute(builder: (context) => const ());
       case "/personal/settings":
         return MaterialPageRoute(builder: (context) => const PersonalSettings());
       case "/users":

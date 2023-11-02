@@ -129,6 +129,22 @@ Drawer actionMenu(BuildContext context) {
                   Navigator.of(context).push(RouteHelper().generate(context, "/"));
                 },
               ),
+              ListTile(
+                horizontalTitleGap: 20,
+                leading: Icon(Icons.cloud_upload, size: iconSize, color: iconColor),
+                title: Text(Lang().upload, style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
+                onTap: () async {
+                  Navigator.of(context).push(RouteHelper().generate(context, "/uploading"));
+                },
+              ),
+              ListTile(
+                horizontalTitleGap: 20,
+                leading: Icon(Icons.cloud_download, size: iconSize, color: iconColor),
+                title: Text(Lang().download, style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
+                onTap: () async {
+                  Navigator.of(context).push(RouteHelper().generate(context, "/downloading"));
+                },
+              ),
               Visibility(
                 visible: master ? true : false,
                 child: ListTile(

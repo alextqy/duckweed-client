@@ -3,8 +3,9 @@
 import "dart:convert";
 
 import "package:flutter/material.dart";
-import "package:app/common/lang.dart";
 import "package:file_selector/file_selector.dart";
+
+import "package:app/common/lang.dart";
 
 import "package:app/notifier/base_notifier.dart";
 import "package:app/notifier/announcement_notifier.dart";
@@ -45,6 +46,8 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
   int parentID = 0;
   String searchDirName = "";
   String searchFileName = "";
+  bool showParentDir = false;
+  String parentDirName = "";
 
   void fetchAnnouncementData() {
     announcementNotifier.announcements(url: appUrl).then((value) {
@@ -72,6 +75,11 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
     dirNotifier.dirs(url: appUrl, order: order, parentID: parentID, dirName: searchDirName).then((value) {
       setState(() {
+        if (parentID > 0) {
+          showParentDir = true;
+        } else {
+          showParentDir = false;
+        }
         itemList.addAll(DirModel().fromJsonList(jsonEncode(value.data)));
         fileNotifier.files(url: appUrl, order: order, dirID: parentID, fileName: searchFileName).then((value) {
           setState(() {
@@ -83,8 +91,18 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
     });
   }
 
-  void setParentID(int setParentID) {
+  void setParentID(int setParentID) async {
     parentID = setParentID;
+    if (setParentID > 0) {
+      dirNotifier.dirInfo(url: appUrl, id: parentID).then((value) {
+        if (value.state) {
+          DirModel dirInfo = DirModel.fromJson(value.data);
+          parentDirName = dirInfo.dirName;
+        }
+      });
+    } else {
+      parentDirName = "";
+    }
     fetchData(gridMode: isGridMode);
   }
 
@@ -524,6 +542,17 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 padding: const EdgeInsets.all(0),
                 color: Colors.white70,
                 height: 1,
+              ),
+            ),
+            Visibility(
+              visible: showParentDir,
+              child: Container(
+                color: Colors.white60,
+                alignment: Alignment.center,
+                margin: const EdgeInsets.all(0),
+                padding: const EdgeInsets.all(5),
+                width: double.infinity,
+                child: Text(parentDirName, style: textStyle(color: Colors.black87, fontSize: 20), maxLines: 1, overflow: TextOverflow.ellipsis),
               ),
             ),
             Expanded(

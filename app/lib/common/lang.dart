@@ -61,6 +61,10 @@ class Lang {
   String move = "";
   String moveHere = "";
   String moveUp = "";
+  String upload = "";
+  String download = "";
+  String uploading = "";
+  String downloading = "";
 
   Lang() {
     this.type = FileHelper().jsonRead(key: "lang");
@@ -121,6 +125,10 @@ class Lang {
       this.move = "移动";
       this.moveHere = "移动到此处";
       this.moveUp = "向上";
+      this.upload = "上传列表";
+      this.download = "下载列表";
+      this.uploading = "上传中";
+      this.downloading = "下载中";
     } else {
       this.theServerAddressIsIncorrect = "The server address is incorrect";
       this.testConnection = "Test connection";
@@ -176,6 +184,10 @@ class Lang {
       this.move = "Move";
       this.moveHere = "Move here";
       this.moveUp = "Move up";
+      this.upload = "Upload";
+      this.download = "Download";
+      this.uploading = "Uploading";
+      this.downloading = "Downloading";
     }
   }
 }
