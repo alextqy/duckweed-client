@@ -7,14 +7,14 @@ import "package:app/common/lang.dart";
 import "package:app/interface/common/menu.dart";
 import "package:app/interface/common/pub_lib.dart";
 
-class UploadPage extends StatefulWidget {
-  const UploadPage({super.key});
+class DownloadPage extends StatefulWidget {
+  const DownloadPage({super.key});
 
   @override
-  State<UploadPage> createState() => UploadPageState();
+  State<DownloadPage> createState() => DownloadPageState();
 }
 
-class UploadPageState extends State<UploadPage> with TickerProviderStateMixin {
+class DownloadPageState extends State<DownloadPage> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
@@ -33,7 +33,7 @@ class UploadPageState extends State<UploadPage> with TickerProviderStateMixin {
         automaticallyImplyLeading: false,
         toolbarHeight: toolbarHeight,
         backgroundColor: bgColor(context),
-        title: Text(Lang().uploading, style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
+        title: Text(Lang().downloading, style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
       ),
       body: Container(
         margin: const EdgeInsets.all(0),
