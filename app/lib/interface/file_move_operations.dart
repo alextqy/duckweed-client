@@ -73,9 +73,9 @@ class FileMoveOperationsState extends State<FileMoveOperations> with TickerProvi
             child: IconButton(
               icon: const Icon(Icons.reply),
               tooltip: "", // Lang().moveUp,
-              onPressed: () {
+              onPressed: () async {
                 if (currentParentID > 0) {
-                  dirNotifier.dirInfo(url: appUrl, id: currentParentID).then((value) {
+                  await dirNotifier.dirInfo(url: appUrl, id: currentParentID).then((value) {
                     DirModel dirInfo = DirModel.fromJson(value.data);
                     currentParentID = dirInfo.parentID;
                     fetchData(parentID: dirInfo.parentID);
@@ -185,11 +185,10 @@ class FileMoveOperationsState extends State<FileMoveOperations> with TickerProvi
                     child: TextButton(
                       child: Text(Lang().newFolder, style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
                       onPressed: () async {
+                        newFolderController.clear();
                         if (newDirAnimation.value == 0) {
-                          newFolderController.clear();
                           newDirAnimationController.forward().orCancel.then((value) => showCheck = true);
                         } else if (newDirAnimation.value == 45) {
-                          newFolderController.clear();
                           showCheck = false;
                           newDirAnimationController.reverse().orCancel;
                         } else {

@@ -53,8 +53,9 @@ class FileNotifier extends BaseNotifier {
     required order,
     required fileName,
     required dirID,
+    required status,
   }) async {
-    return await fileApi.files(url, order, fileName, dirID);
+    return await fileApi.files(url, order, fileName, dirID, status);
   }
 
   Future<ResultModel> fileDel({

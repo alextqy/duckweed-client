@@ -36,18 +36,22 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
   bool isSelectionMode = false;
   bool selectAll = false;
   bool isGridMode = false;
+  bool showMarquee = false;
+  int order = -1;
+  int parentID = 0;
+  String searchName = "";
+  int status = 0;
+  bool showParentDir = false;
+  String parentDirName = "";
 
   AnnouncementNotifier announcementNotifier = AnnouncementNotifier();
   DirNotifier dirNotifier = DirNotifier();
   FileNotifier fileNotifier = FileNotifier();
 
-  bool showMarquee = false;
-  int order = -1;
-  int parentID = 0;
-  String searchDirName = "";
-  String searchFileName = "";
-  bool showParentDir = false;
-  String parentDirName = "";
+  TextEditingController searchController = TextEditingController();
+
+  late AnimationController searchAnimationController;
+  late Animation<double> searchAnimation;
 
   void fetchAnnouncementData() {
     announcementNotifier.announcements(url: appUrl).then((value) {
@@ -63,7 +67,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
     });
   }
 
-  void fetchData({bool gridMode = false, bool selectionMode = false}) {
+  void fetchData({bool gridMode = false, bool selectionMode = false}) async {
     content.clear();
     itemList.clear();
     itemSelected.clear();
@@ -73,7 +77,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
     fetchAnnouncementData();
 
-    dirNotifier.dirs(url: appUrl, order: order, parentID: parentID, dirName: searchDirName).then((value) {
+    await dirNotifier.dirs(url: appUrl, order: order, parentID: parentID, dirName: searchName).then((value) {
       setState(() {
         if (parentID > 0) {
           showParentDir = true;
@@ -81,12 +85,13 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
           showParentDir = false;
         }
         itemList.addAll(DirModel().fromJsonList(jsonEncode(value.data)));
-        fileNotifier.files(url: appUrl, order: order, dirID: parentID, fileName: searchFileName).then((value) {
-          setState(() {
-            itemList.addAll(FileModel().fromJsonList(jsonEncode(value.data)));
-            initializeSelection();
-          });
-        });
+      });
+    });
+
+    await fileNotifier.files(url: appUrl, order: order, dirID: parentID, fileName: searchName, status: status).then((value) {
+      setState(() {
+        itemList.addAll(FileModel().fromJsonList(jsonEncode(value.data)));
+        initializeSelection();
       });
     });
   }
@@ -147,6 +152,10 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
     fetchData();
     dirNotifier.addListener(basicListenerDir);
     fileNotifier.addListener(basicListenerFile);
+
+    searchAnimationController = AnimationController(duration: Duration(milliseconds: showSpeed), vsync: this);
+    searchAnimation = Tween(begin: 0.0, end: 80.0).animate(searchAnimationController);
+
     super.initState();
   }
 
@@ -206,7 +215,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                         child: Row(
                           children: [
                             const Expanded(child: SizedBox.shrink()),
-                            Icon(Icons.folder, color: iconColor, size: iconSize),
+                            Icon(Icons.create_new_folder, color: iconColor, size: 25),
                             const SizedBox(width: 10),
                             Text(Lang().newFolder, style: textStyle(fontSize: 18), maxLines: 1, overflow: TextOverflow.ellipsis),
                             const Expanded(child: SizedBox.shrink()),
@@ -287,7 +296,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                         child: Row(
                           children: [
                             const Expanded(child: SizedBox.shrink()),
-                            Icon(Icons.upload, color: iconColor, size: iconSize),
+                            Icon(Icons.upload, color: iconColor, size: 25),
                             const SizedBox(width: 10),
                             Text(Lang().uploadFiles, style: textStyle(fontSize: 18), maxLines: 1, overflow: TextOverflow.ellipsis),
                             const Expanded(child: SizedBox.shrink()),
@@ -322,7 +331,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                         child: Row(
                           children: [
                             const Expanded(child: SizedBox.shrink()),
-                            Icon(Icons.download, color: iconColor, size: iconSize),
+                            Icon(Icons.download, color: iconColor, size: 25),
                             const SizedBox(width: 10),
                             Text(Lang().downloadFiles, style: textStyle(fontSize: 18), maxLines: 1, overflow: TextOverflow.ellipsis),
                             const Expanded(child: SizedBox.shrink()),
@@ -362,7 +371,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                         child: Row(
                           children: [
                             const Expanded(child: SizedBox.shrink()),
-                            Icon(Icons.drive_file_move, color: iconColor, size: iconSize),
+                            Icon(Icons.drive_file_move, color: iconColor, size: 25),
                             const SizedBox(width: 10),
                             Text(Lang().move, style: textStyle(fontSize: 18), maxLines: 1, overflow: TextOverflow.ellipsis),
                             const Expanded(child: SizedBox.shrink()),
@@ -399,7 +408,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                         child: Row(
                           children: [
                             const Expanded(child: SizedBox.shrink()),
-                            Icon(Icons.delete, color: Colors.red, size: iconSize),
+                            const Icon(Icons.delete, color: Colors.red, size: 25),
                             const SizedBox(width: 10),
                             Text(Lang().delete, style: textStyle(fontSize: 18, color: Colors.red), maxLines: 1, overflow: TextOverflow.ellipsis),
                             const Expanded(child: SizedBox.shrink()),
@@ -587,6 +596,99 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                       ),
               ),
             ),
+            AnimatedBuilder(
+              animation: searchAnimation,
+              builder: (context, child) {
+                return Container(
+                  color: Colors.black,
+                  margin: const EdgeInsets.all(0),
+                  padding: const EdgeInsets.all(0),
+                  height: searchAnimation.value,
+                  width: double.infinity,
+                  alignment: Alignment.center,
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          color: Colors.black,
+                          margin: const EdgeInsets.all(0),
+                          padding: const EdgeInsets.all(0),
+                          width: double.infinity,
+                          alignment: Alignment.center,
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: TextField(
+                                  controller: searchController,
+                                  maxLines: 1,
+                                  textAlign: TextAlign.center,
+                                  style: textStyle(),
+                                  decoration: InputDecoration(
+                                    suffixIcon: IconButton(
+                                      icon: Icon(Icons.search, size: iconSize, color: iconColor),
+                                      onPressed: () async {
+                                        status = 0;
+                                        searchName = searchController.text;
+                                        fetchData();
+                                      },
+                                    ),
+                                    border: InputBorder.none,
+                                    hintText: Lang().search,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Container(
+                          color: Colors.black,
+                          margin: const EdgeInsets.all(0),
+                          padding: const EdgeInsets.all(0),
+                          height: 40,
+                          width: double.infinity,
+                          alignment: Alignment.center,
+                          child: Row(
+                            children: [
+                              const Expanded(child: SizedBox.shrink()),
+                              Expanded(
+                                child: TextButton(
+                                  child: Text(Lang().undone, style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
+                                  onPressed: () async {
+                                    status = 1;
+                                    fetchData();
+                                  },
+                                ),
+                              ),
+                              Expanded(
+                                child: TextButton(
+                                  child: Text(Lang().normal, style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
+                                  onPressed: () async {
+                                    status = 2;
+                                    fetchData();
+                                  },
+                                ),
+                              ),
+                              Expanded(
+                                child: TextButton(
+                                  child: Text(Lang().error, style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
+                                  onPressed: () async {
+                                    status = 3;
+                                    fetchData();
+                                  },
+                                ),
+                              ),
+                              const Expanded(child: SizedBox.shrink()),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
             Container(
               color: Colors.black,
               margin: const EdgeInsets.all(0),
@@ -600,7 +702,12 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   IconButton(
                     padding: const EdgeInsets.all(0),
                     icon: Icon(Icons.menu_open, size: 30, color: iconColor),
-                    onPressed: () async => showActionSheet(context),
+                    onPressed: () async {
+                      if (searchAnimation.value == 80) {
+                        searchAnimationController.reverse().orCancel;
+                      }
+                      showActionSheet(context);
+                    },
                   ),
                   if (isGridMode)
                     IconButton(
@@ -644,6 +751,23 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                           },
                         )
                       : const SizedBox.shrink(),
+                  IconButton(
+                    icon: Icon(Icons.filter_center_focus, size: 25, color: iconColor),
+                    onPressed: () async {
+                      setState(() {
+                        searchName = "";
+                        status = 0;
+                        searchController.clear();
+                        if (searchAnimation.value == 0) {
+                          searchAnimationController.forward().orCancel;
+                        } else if (searchAnimation.value == 80) {
+                          searchAnimationController.reverse().orCancel;
+                        } else {
+                          return;
+                        }
+                      });
+                    },
+                  ),
                   const Expanded(child: SizedBox.shrink()),
                 ],
               ),

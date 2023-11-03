@@ -55,6 +55,7 @@ class FileApi extends ResponseHelper {
     order,
     fileName,
     dirID,
+    status,
   ]) async {
     Response response = await post(
       Uri.http(url, "/files"),
@@ -63,6 +64,7 @@ class FileApi extends ResponseHelper {
         "order": order.toString(),
         "fileName": fileName.toString(),
         "dirID": dirID.toString(),
+        "status": status.toString(),
       },
       headers: postHeaders,
       encoding: postEncoding,

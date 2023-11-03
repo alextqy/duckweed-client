@@ -65,6 +65,10 @@ class Lang {
   String download = "";
   String uploading = "";
   String downloading = "";
+  String search = "";
+  String undone = "";
+  String normal = "";
+  String error = "";
 
   Lang() {
     this.type = FileHelper().jsonRead(key: "lang");
@@ -129,6 +133,10 @@ class Lang {
       this.download = "下载列表";
       this.uploading = "上传中";
       this.downloading = "下载中";
+      this.search = "查询";
+      this.undone = "未完成";
+      this.normal = "正常";
+      this.error = "错误";
     } else {
       this.theServerAddressIsIncorrect = "The server address is incorrect";
       this.testConnection = "Test connection";
@@ -188,6 +196,10 @@ class Lang {
       this.download = "Download";
       this.uploading = "Uploading";
       this.downloading = "Downloading";
+      this.search = "Search";
+      this.undone = "Undone";
+      this.normal = "Normal";
+      this.error = "Error";
     }
   }
 }
