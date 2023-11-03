@@ -544,15 +544,15 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 ),
               ),
             ),
-            Visibility(
-              visible: showMarquee,
-              child: Container(
-                margin: const EdgeInsets.all(0),
-                padding: const EdgeInsets.all(0),
-                color: Colors.white70,
-                height: 1,
-              ),
-            ),
+            // Visibility(
+            //   visible: showMarquee,
+            //   child: Container(
+            //     margin: const EdgeInsets.all(0),
+            //     padding: const EdgeInsets.all(0),
+            //     color: Colors.white70,
+            //     height: 1,
+            //   ),
+            // ),
             Visibility(
               visible: showParentDir,
               child: Container(
