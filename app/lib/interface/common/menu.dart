@@ -40,7 +40,7 @@ Drawer actionMenu(BuildContext context) {
                     width: 53,
                     child: CircleAvatar(
                       backgroundColor: bgColor(context),
-                      child: Text(appAccount.substring(0, 2), style: textStyle(fontSize: 24), maxLines: 1, overflow: TextOverflow.ellipsis),
+                      child: Text(FileHelper().jsonRead(key: "account").substring(0, 2), style: textStyle(fontSize: 24), maxLines: 1, overflow: TextOverflow.ellipsis),
                     ),
                   ),
                 ),

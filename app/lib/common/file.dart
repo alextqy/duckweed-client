@@ -119,7 +119,9 @@ class FileHelper {
   bool createDir(String dirPath) {
     Directory dir = Directory(dirPath);
     try {
-      dir.createSync(recursive: true);
+      if (!Directory(dirPath).existsSync()) {
+        dir.createSync(recursive: true);
+      }
     } catch (e) {
       return false;
     }

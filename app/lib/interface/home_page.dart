@@ -629,7 +629,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                       onPressed: () async {
                                         status = 0;
                                         searchName = searchController.text;
-                                        fetchData();
+                                        fetchData(gridMode: isGridMode);
                                       },
                                     ),
                                     border: InputBorder.none,

@@ -13,6 +13,7 @@ class FileApi extends ResponseHelper {
     fileSize,
     md5,
     dirID,
+    sourceAddress,
   ]) async {
     Response response = await post(
       Uri.http(url, "/file/add"),
@@ -23,6 +24,7 @@ class FileApi extends ResponseHelper {
         "fileSize": fileSize.toString(),
         "md5": md5.toString(),
         "dirID": dirID.toString(),
+        "sourceAddress": sourceAddress.toString(),
       },
       headers: postHeaders,
       encoding: postEncoding,
@@ -35,6 +37,7 @@ class FileApi extends ResponseHelper {
     id,
     fileName,
     dirID,
+    sourceAddress,
   ]) async {
     Response response = await post(
       Uri.http(url, "/file/modify"),
@@ -43,6 +46,7 @@ class FileApi extends ResponseHelper {
         "id": id.toString(),
         "fileName": fileName.toString(),
         "dirID": dirID.toString(),
+        "sourceAddress": sourceAddress.toString(),
       },
       headers: postHeaders,
       encoding: postEncoding,

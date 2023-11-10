@@ -6,7 +6,6 @@ import "package:file_selector/file_selector.dart";
 String appUrl = FileHelper().setUrl();
 double toolbarHeight = 37;
 String appTitle = FileHelper().jsonRead(key: "title");
-String appAccount = FileHelper().jsonRead(key: "account");
 
 int showSpeed = 450;
 double iconSize = 20;
@@ -39,4 +38,27 @@ Future<ClipboardData?> paste() {
 Future<List<XFile>> fileSelector(List<String> xFType) async {
   XTypeGroup xType = XTypeGroup(label: "", extensions: xFType);
   return await openFiles(acceptedTypeGroups: [xType]);
+}
+
+String hostDir() {
+  String appAccount = FileHelper().jsonRead(key: "account");
+  return "temp/$appAccount/";
+}
+
+String uploadQueue() {
+  String queue = "${hostDir()}upload_queue";
+
+  if (!FileHelper().fileExists(queue)) {
+    FileHelper().createFile(queue);
+  }
+  return "${hostDir()}upload_queue";
+}
+
+String downloadQueue() {
+  String queue = "${hostDir()}download_queue";
+
+  if (!FileHelper().fileExists(queue)) {
+    FileHelper().createFile(queue);
+  }
+  return "${hostDir()}download_queue";
 }

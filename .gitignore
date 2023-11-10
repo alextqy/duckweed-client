@@ -1,3 +1,5 @@
 desktop.ini
 /app/token
 /app/config.json
+/app/lib/test.dart
+/app/temp/*

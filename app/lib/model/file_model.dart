@@ -12,6 +12,7 @@ class FileModel {
   int createtime;
   int status;
   String outreachID;
+  String sourceAddress;
 
   FileModel({
     this.id = 0,
@@ -25,6 +26,7 @@ class FileModel {
     this.createtime = 0,
     this.status = 0,
     this.outreachID = "",
+    this.sourceAddress = "",
   });
 
   factory FileModel.fromJson(Map<String, dynamic> json) {
@@ -40,6 +42,7 @@ class FileModel {
       createtime: json["Createtime"],
       status: json["Status"],
       outreachID: json["OutreachID"],
+      sourceAddress: json["SourceAddress"],
     );
   }
 

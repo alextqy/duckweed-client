@@ -103,6 +103,7 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
   @override
   void initState() {
     setConf();
+    FileHelper().createDir("temp");
     FileHelper().jsonWrite(key: "current_page", value: "");
 
     animationController0 = AnimationController(duration: Duration(milliseconds: showSpeed), vsync: this);
@@ -494,6 +495,9 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                                       }
                                       FileHelper().jsonWrite(key: "account", value: accountController.text);
                                       FileHelper().writeFile("token", value.data);
+                                      FileHelper().createDir("temp/${accountController.text}");
+                                      uploadQueue();
+                                      downloadQueue();
                                       Navigator.pushAndRemoveUntil(
                                         context,
                                         MaterialPageRoute(builder: (context) => const HomePage()),
