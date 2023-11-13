@@ -1,5 +1,6 @@
 import "dart:convert";
 import "dart:io";
+import "dart:typed_data";
 import "package:file_selector/file_selector.dart";
 import "package:mime/mime.dart";
 
@@ -34,10 +35,21 @@ class FileHelper {
     return true;
   }
 
-  bool writeFileB(String fileName, List<int> content) {
+  bool writeBytes(String fileName, List<int> content) {
     File file = File(fileName);
     try {
       file.writeAsBytes(content);
+    } catch (e) {
+      return false;
+    }
+    return true;
+  }
+
+  Future<bool> writeBytesAppend(File file, int position, Uint8List content) async {
+    RandomAccessFile raf = await file.open(mode: FileMode.append);
+    RandomAccessFile rafp = await raf.setPosition(position);
+    try {
+      rafp.writeFrom(content);
     } catch (e) {
       return false;
     }
@@ -55,14 +67,23 @@ class FileHelper {
     }
   }
 
-  // 文件二进制读取
-  List<int> readFileB(String filePath, int start, int end) {
+  // 文件随机读取
+  List<int> randomReads(String filePath, int start, int end) {
     File file = File(filePath);
     List<int> content = [];
     file.openRead(start, end).listen((data) {
       content.addAll(data);
     });
     return content;
+  }
+
+  // 读取二进制
+  Future<Uint8List> readBytes(File file, int position, int length) async {
+    RandomAccessFile raf = await file.open(mode: FileMode.read);
+    RandomAccessFile content = await raf.setPosition(position);
+    var c = content.readSync(length);
+    await raf.close();
+    return c;
   }
 
   // 文件删除
