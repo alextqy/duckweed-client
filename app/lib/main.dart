@@ -15,7 +15,7 @@ import "package:app/interface/common/show_alert_dialog.dart";
 import "package:app/interface/forgot_password.dart";
 import "package:app/interface/home_page.dart";
 
-void main() {
+main() async {
   runApp(const RootApp());
 }
 
