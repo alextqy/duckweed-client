@@ -1,3 +1,7 @@
+import 'dart:io';
+import 'dart:isolate';
+import 'dart:typed_data';
+
 /*
 import 'dart:async';
 import 'dart:io';
@@ -148,3 +152,68 @@ void backgroundTask(SendPort sendPort) {
 }
 */
 
+class FileHandler {
+  Future<Uint8List> readBytes(File file, int position, int length) async {
+    RandomAccessFile raf = await file.open(mode: FileMode.read);
+    RandomAccessFile content = await raf.setPosition(position);
+    var c = content.readSync(length);
+    await raf.close();
+    return c;
+  }
+
+  Future<bool> writeBytesAppend(File file, int position, Uint8List content) async {
+    RandomAccessFile raf = await file.open(mode: FileMode.append);
+    RandomAccessFile rafp = await raf.setPosition(position);
+    try {
+      rafp.writeFrom(content);
+    } catch (e) {
+      return false;
+    }
+    return true;
+  }
+}
+
+class Worker {
+  FileHandler fileHelper = FileHandler();
+  late String filePath;
+  late File file;
+
+  Worker({required this.filePath}) {
+    file = File(filePath);
+  }
+
+  Future<dynamic> run() async {
+    ReceivePort receivePort = ReceivePort();
+    await Isolate.spawn(task, receivePort.sendPort);
+    receivePort.listen((data) {
+      print("接收: " + data);
+    });
+  }
+
+  void task(SendPort sendPort) async {
+    int i = 0;
+    while (true) {
+      sendPort.send(i.toString());
+      sleep(const Duration(milliseconds: 500));
+      i++;
+    }
+
+    // int i = 0;
+    // int limit = 1024 * 512;
+    // FileHelper fileHelper = FileHelper();
+    // bool out = false;
+    // while (true) {
+    //   await fileHelper.readBytes(file, i, limit).then((value) {
+    //     if (value.isNotEmpty) {
+    //       print(value.length);
+    //     } else {
+    //       out = true;
+    //     }
+    //     i += limit;
+    //     sleep(const Duration(milliseconds: 100));
+    //   });
+    //   if (out) break;
+    // }
+    // exit(0);
+  }
+}
