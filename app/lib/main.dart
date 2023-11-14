@@ -15,10 +15,11 @@ import "package:app/interface/common/show_alert_dialog.dart";
 import "package:app/interface/forgot_password.dart";
 import "package:app/interface/home_page.dart";
 
-import "package:app/common/worker.dart";
+// import "package:app/common/worker.dart";
+
+// Worker w = Worker(filePath: "");
 
 main() async {
-  // Worker w = Worker(filePath: "");
   // w.run();
   runApp(const RootApp());
 }

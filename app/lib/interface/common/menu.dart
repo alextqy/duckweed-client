@@ -112,7 +112,7 @@ Drawer actionMenu(BuildContext context) {
   }
 
   return Drawer(
-    width: screenSize(context).width * 0.4,
+    width: screenSize(context).width > 800 ? screenSize(context).width * 0.25 : screenSize(context).width * 0.4,
     backgroundColor: Colors.black54,
     child: Column(
       children: [

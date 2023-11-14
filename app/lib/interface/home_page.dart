@@ -844,7 +844,7 @@ class ListBuilderState extends State<ListBuilder> {
           SizedBox(width: screenSize(context).width * 0.6, child: checkFileType(dataList[index])),
           const Expanded(child: SizedBox.shrink()),
           checkFileStatusList(dataList[index]),
-          const Expanded(child: SizedBox.shrink()),
+          const SizedBox(width: 10),
           widget.isSelectionMode
               ? Checkbox(
                   value: widget.selectedList[index],
