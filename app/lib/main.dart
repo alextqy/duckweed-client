@@ -245,7 +245,7 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
       sendMail = false;
       await animationControllerEmail.forward().orCancel;
       await animationControllerEmail.reverse().orCancel;
-      Future.delayed(const Duration(milliseconds: 1000)).then((value) async {
+      await Future.delayed(const Duration(milliseconds: 1000)).then((value) async {
         userNotifier.sendEmail(url: appUrl, email: newEmailController.text, sendType: 1);
         sendMail = true;
       });
@@ -282,7 +282,7 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                           onChanged: (text) async {
                             if (text.isNotEmpty) {
                               testStatus = true;
-                              animationControllerTest.forward();
+                              await animationControllerTest.forward();
                             } else {
                               animationControllerTest.reverse().whenCompleteOrCancel(() => testStatus = false);
                             }
@@ -355,7 +355,7 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                           onTap: () async {
                             if (netController.text.isNotEmpty && netBtn == true) {
                               netBtn = false;
-                              Future.delayed(const Duration(milliseconds: 1000)).then((context) async {
+                              await Future.delayed(const Duration(milliseconds: 1000)).then((context) async {
                                 if (FileHelper().jsonWrite(key: "server_address", value: netController.text)) {
                                   setState(() {
                                     appUrl = netController.text;
@@ -456,7 +456,7 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                             overflow: TextOverflow.ellipsis,
                           ),
                           onPressed: () async {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) {
+                            await Navigator.push(context, MaterialPageRoute(builder: (context) {
                               return const ForgotPassword();
                             }));
                           },
@@ -483,7 +483,7 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                             } else {
                               if (accountController.text != "" && passwordController.text != "" && loginBtn == true) {
                                 loginBtn = false;
-                                Future.delayed(const Duration(milliseconds: 1500)).then((value) async {
+                                await Future.delayed(const Duration(milliseconds: 1500)).then((value) async {
                                   userNotifier
                                       .signIn(
                                     url: appUrl,
@@ -502,11 +502,13 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                                       FileHelper().createDir("temp/${accountController.text}");
                                       uploadQueue();
                                       downloadQueue();
-                                      Navigator.pushAndRemoveUntil(
-                                        context,
-                                        MaterialPageRoute(builder: (context) => const HomePage()),
-                                        (route) => false,
-                                      );
+                                      animationController1.reverse().orCancel.then((value) async {
+                                        await Navigator.pushAndRemoveUntil(
+                                          context,
+                                          MaterialPageRoute(builder: (context) => const HomePage()),
+                                          (route) => false,
+                                        );
+                                      });
                                     } else {
                                       showSnackBar(context, content: value.message, backgroundColor: bgColor(context));
                                     }
@@ -684,7 +686,7 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                           onTap: () async {
                             if (newEmailController.text != "" && newCaptchaController.text != "" && newAccountController.text != "" && newNameController.text != "" && newPasswordController.text != "" && regBtn == true) {
                               regBtn = false;
-                              Future.delayed(const Duration(milliseconds: 1500)).then((value) async {
+                              await Future.delayed(const Duration(milliseconds: 1500)).then((value) async {
                                 userNotifier.signUp(
                                   url: appUrl,
                                   account: newAccountController.text,
