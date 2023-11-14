@@ -843,7 +843,7 @@ class ListBuilderState extends State<ListBuilder> {
           const SizedBox(width: 10),
           SizedBox(width: screenSize(context).width * 0.6, child: checkFileType(dataList[index])),
           const Expanded(child: SizedBox.shrink()),
-          checkFileStatus(dataList[index]),
+          checkFileStatusList(dataList[index]),
           const Expanded(child: SizedBox.shrink()),
           widget.isSelectionMode
               ? Checkbox(
@@ -1222,7 +1222,13 @@ class GridBuilderState extends State<GridBuilder> {
                   }
                   widget.parentWidget.initializeSelection();
                 },
-                child: checkItem(index),
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(width: 1.5, color: checkFileStatusGrid(dataArr[index])),
+                    borderRadius: const BorderRadius.all(Radius.circular(15.0)),
+                  ),
+                  child: checkItem(index),
+                ),
               ),
             );
           },
@@ -1309,11 +1315,26 @@ class GridBuilderState extends State<GridBuilder> {
   }
 }
 
-Widget checkFileStatus(dynamic data) {
-  if (data is DirModel) {
-    // DirModel dirObj = data;
-    return const SizedBox.shrink();
-  } else if (data is FileModel) {
+Color checkFileStatusGrid(dynamic data) {
+  if (data is FileModel) {
+    FileModel fileObj = data;
+    switch (fileObj.status) {
+      case 1:
+        return Colors.lightGreenAccent;
+      case 2:
+        return Colors.transparent;
+      case 3:
+        return Colors.redAccent;
+      default:
+        return Colors.transparent;
+    }
+  } else {
+    return Colors.transparent;
+  }
+}
+
+Widget checkFileStatusList(dynamic data) {
+  if (data is FileModel) {
     FileModel fileObj = data;
     switch (fileObj.status) {
       case 1:
