@@ -958,6 +958,12 @@ class ListBuilderState extends State<ListBuilder> {
               }
             }
 
+            if (dataArr[index] is DirModel && data is List<dynamic>) {
+              if (data.contains(dataArr[index])) {
+                return;
+              }
+            }
+
             showDialog(
               context: context,
               barrierDismissible: true,
@@ -1248,6 +1254,12 @@ class GridBuilderState extends State<GridBuilder> {
               DirModel destObj = dataArr[index];
               DirModel dirObj = data;
               if (destObj.id == dirObj.id) {
+                return;
+              }
+            }
+
+            if (dataArr[index] is DirModel && data is List<dynamic>) {
+              if (data.contains(dataArr[index])) {
                 return;
               }
             }
