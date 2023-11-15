@@ -624,16 +624,30 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                   textAlign: TextAlign.center,
                                   style: textStyle(),
                                   decoration: InputDecoration(
-                                    suffixIcon: IconButton(
+                                    prefixIcon: IconButton(
                                       icon: Icon(Icons.search, size: iconSize, color: iconColor),
                                       onPressed: () async {
-                                        status = 0;
-                                        searchName = searchController.text;
-                                        fetchData(gridMode: isGridMode);
+                                        if (searchController.text.isNotEmpty) {
+                                          status = 0;
+                                          searchName = searchController.text;
+                                          fetchData(gridMode: isGridMode);
+                                        }
+                                      },
+                                    ),
+                                    suffixIcon: IconButton(
+                                      icon: Icon(Icons.clear, size: iconSize, color: iconColor),
+                                      onPressed: () async {
+                                        if (searchController.text.isNotEmpty) {
+                                          searchController.clear();
+                                          status = 0;
+                                          searchName = "";
+                                          fetchData(gridMode: isGridMode);
+                                        }
                                       },
                                     ),
                                     border: InputBorder.none,
                                     hintText: Lang().search,
+                                    hintStyle: textStyle(),
                                   ),
                                 ),
                               ),

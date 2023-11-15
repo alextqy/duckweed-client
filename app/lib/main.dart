@@ -289,6 +289,23 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                             }
                           },
                           decoration: InputDecoration(
+                            prefixIcon: Visibility(
+                              visible: testStatus,
+                              child: Tooltip(
+                                preferBelow: false,
+                                message: Lang().testConnection,
+                                textStyle: textStyle(),
+                                decoration: tooltipStyle(),
+                                child: IconButton(
+                                  icon: Icon(Icons.ads_click, size: animationTest.value, color: iconColor),
+                                  onPressed: () async {
+                                    if (netController.text.isNotEmpty) {
+                                      userNotifier.test(url: netController.text);
+                                    }
+                                  },
+                                ),
+                              ),
+                            ),
                             suffixIcon: Tooltip(
                               preferBelow: false,
                               message: Lang().automaticDetection,
@@ -309,23 +326,6 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                                     }
                                   });
                                 },
-                              ),
-                            ),
-                            icon: Visibility(
-                              visible: testStatus,
-                              child: Tooltip(
-                                preferBelow: false,
-                                message: Lang().testConnection,
-                                textStyle: textStyle(),
-                                decoration: tooltipStyle(),
-                                child: IconButton(
-                                  icon: Icon(Icons.ads_click, size: animationTest.value, color: iconColor),
-                                  onPressed: () async {
-                                    if (netController.text.isNotEmpty) {
-                                      userNotifier.test(url: netController.text);
-                                    }
-                                  },
-                                ),
                               ),
                             ),
                             labelText: Lang().serverAddress,
