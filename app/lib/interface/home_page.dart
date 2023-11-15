@@ -154,7 +154,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
     fileNotifier.addListener(basicListenerFile);
 
     searchAnimationController = AnimationController(duration: Duration(milliseconds: showSpeed), vsync: this);
-    searchAnimation = Tween(begin: 0.0, end: 80.0).animate(searchAnimationController);
+    searchAnimation = Tween(begin: 0.0, end: 40.0).animate(searchAnimationController);
 
     super.initState();
   }
@@ -655,6 +655,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                           ),
                         ),
                       ),
+                      /*
                       Expanded(
                         child: Container(
                           color: Colors.black,
@@ -698,6 +699,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                           ),
                         ),
                       ),
+                      */
                     ],
                   ),
                 );
@@ -722,7 +724,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                         searchController.clear();
                         if (searchAnimation.value == 0) {
                           searchAnimationController.forward().orCancel;
-                        } else if (searchAnimation.value == 80) {
+                        } else if (searchAnimation.value == 40) {
                           searchAnimationController.reverse().orCancel;
                         } else {
                           return;
@@ -734,7 +736,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     padding: const EdgeInsets.all(0),
                     icon: Icon(Icons.menu_open, size: 30, color: iconColor),
                     onPressed: () async {
-                      if (searchAnimation.value == 80) {
+                      if (searchAnimation.value == 40) {
                         searchAnimationController.reverse().orCancel;
                       }
                       showActionSheet(context);
