@@ -700,6 +700,23 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 children: [
                   const Expanded(child: SizedBox.shrink()),
                   IconButton(
+                    icon: Icon(Icons.filter_center_focus, size: 25, color: iconColor),
+                    onPressed: () async {
+                      setState(() {
+                        searchName = "";
+                        status = 0;
+                        searchController.clear();
+                        if (searchAnimation.value == 0) {
+                          searchAnimationController.forward().orCancel;
+                        } else if (searchAnimation.value == 80) {
+                          searchAnimationController.reverse().orCancel;
+                        } else {
+                          return;
+                        }
+                      });
+                    },
+                  ),
+                  IconButton(
                     padding: const EdgeInsets.all(0),
                     icon: Icon(Icons.menu_open, size: 30, color: iconColor),
                     onPressed: () async {
@@ -751,23 +768,6 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                           },
                         )
                       : const SizedBox.shrink(),
-                  IconButton(
-                    icon: Icon(Icons.filter_center_focus, size: 25, color: iconColor),
-                    onPressed: () async {
-                      setState(() {
-                        searchName = "";
-                        status = 0;
-                        searchController.clear();
-                        if (searchAnimation.value == 0) {
-                          searchAnimationController.forward().orCancel;
-                        } else if (searchAnimation.value == 80) {
-                          searchAnimationController.reverse().orCancel;
-                        } else {
-                          return;
-                        }
-                      });
-                    },
-                  ),
                   const Expanded(child: SizedBox.shrink()),
                 ],
               ),
