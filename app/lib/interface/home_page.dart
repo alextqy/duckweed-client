@@ -950,6 +950,14 @@ class ListBuilderState extends State<ListBuilder> {
               return;
             }
 
+            if (dataArr[index] is DirModel && data is DirModel) {
+              DirModel destObj = dataArr[index];
+              DirModel dirObj = data;
+              if (destObj.id == dirObj.id) {
+                return;
+              }
+            }
+
             showDialog(
               context: context,
               barrierDismissible: true,
@@ -1234,6 +1242,14 @@ class GridBuilderState extends State<GridBuilder> {
           onAccept: (data) async {
             if (dataArr[index] is! DirModel) {
               return;
+            }
+
+            if (dataArr[index] is DirModel && data is DirModel) {
+              DirModel destObj = dataArr[index];
+              DirModel dirObj = data;
+              if (destObj.id == dirObj.id) {
+                return;
+              }
             }
 
             showDialog(
