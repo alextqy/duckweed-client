@@ -200,10 +200,10 @@ class Worker {
 
     // int i = 0;
     // int limit = 1024 * 512;
-    // FileHelper fileHelper = FileHelper();
+    // FileHandler fileHandler = FileHandler;
     // bool out = false;
     // while (true) {
-    //   await fileHelper.readBytes(file, i, limit).then((value) {
+    //   await fileHandler.readBytes(file, i, limit).then((value) {
     //     if (value.isNotEmpty) {
     //       print(value.length);
     //     } else {

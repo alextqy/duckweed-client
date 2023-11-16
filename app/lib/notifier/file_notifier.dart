@@ -2,7 +2,7 @@ import "package:app/model/result_model.dart";
 import "package:app/notifier/base_notifier.dart";
 
 class FileNotifier extends BaseNotifier {
-  void fileAdd({
+  Future<ResultModel> fileAdd({
     required url,
     required fileName,
     required fileType,
@@ -10,20 +10,7 @@ class FileNotifier extends BaseNotifier {
     required md5,
     required dirID,
   }) async {
-    operationStatus.value = OperationStatus.failure;
-    try {
-      await fileApi.fileAdd(url, fileName, fileType, fileSize, md5, dirID).then((value) {
-        if (value.state == true) {
-          operationStatus.value = OperationStatus.success;
-        } else {
-          operationMemo = value.message;
-        }
-      });
-    } catch (e) {
-      operationMemo = e.toString();
-    } finally {
-      notifyListeners();
-    }
+    return await fileApi.fileAdd(url, fileName, fileType, fileSize, md5, dirID);
   }
 
   void fileModify({

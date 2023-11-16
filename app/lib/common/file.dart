@@ -1,8 +1,9 @@
-import "dart:convert";
 import "dart:io";
 import "dart:typed_data";
+import "package:crypto/crypto.dart";
 import "package:file_selector/file_selector.dart";
 import "package:mime/mime.dart";
+import "dart:convert";
 
 class FileHelper {
   bool createFile(String filePath) {
@@ -208,6 +209,16 @@ class FileHelper {
 
   Directory appRoot() {
     return Directory.current;
+  }
+
+  /// crypto md5
+  static String cryptoMD5(File file) {
+    return md5.convert(file.readAsBytesSync()).toString();
+  }
+
+  /// crypto md5 async
+  static Future<String> cryptoAsyncMD5(File file) async {
+    return (await md5.bind(file.openRead()).first).toString();
   }
 
   // 写入json文件

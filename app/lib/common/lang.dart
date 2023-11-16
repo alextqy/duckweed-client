@@ -69,6 +69,8 @@ class Lang {
   String undone = "";
   String normal = "";
   String error = "";
+  String parsingDoNotClose = "";
+  String theFilesHaveBeenAddedToTheUploadList = "";
 
   Lang() {
     this.type = FileHelper().jsonRead(key: "lang");
@@ -137,6 +139,8 @@ class Lang {
       this.undone = "未完成";
       this.normal = "正常";
       this.error = "错误";
+      this.parsingDoNotClose = "解析中 请勿关闭";
+      this.theFilesHaveBeenAddedToTheUploadList = "文件已添加到上传列表";
     } else {
       this.theServerAddressIsIncorrect = "The server address is incorrect";
       this.testConnection = "Test connection";
@@ -200,6 +204,8 @@ class Lang {
       this.undone = "Undone";
       this.normal = "Normal";
       this.error = "Error";
+      this.parsingDoNotClose = "Parsing do not close";
+      this.theFilesHaveBeenAddedToTheUploadList = "The files have been added to the upload list";
     }
   }
 }

@@ -1,11 +1,13 @@
 // ignore_for_file: must_be_immutable
 
 import "dart:convert";
+import "dart:io";
 
 import "package:flutter/material.dart";
 import "package:file_selector/file_selector.dart";
 
 import "package:app/common/lang.dart";
+import "package:app/common/file.dart";
 
 import "package:app/notifier/base_notifier.dart";
 import "package:app/notifier/announcement_notifier.dart";
@@ -147,6 +149,10 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
     return dynamicList;
   }
 
+  void snackBar(String content, int duration) {
+    showSnackBar(context, content: content, backgroundColor: bgColor(context), duration: duration);
+  }
+
   @override
   void initState() {
     fetchData();
@@ -180,6 +186,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
           height: 275,
           child: Column(
             children: <Widget>[
+              /// 顶部占位条
               Container(
                 color: bgColor(context),
                 margin: const EdgeInsets.all(0),
@@ -201,6 +208,8 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   },
                 ),
               ),
+
+              /// 添加文件夹
               Row(
                 children: [
                   Expanded(
@@ -282,6 +291,8 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   ),
                 ],
               ),
+
+              /// 上传
               Row(
                 children: [
                   Expanded(
@@ -305,11 +316,36 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                       ),
                       onTap: () async {
                         Navigator.pop(context);
-                        fileSelector(["*"]).then((value) {
+                        fileSelector(["*"]).then((value) async {
                           if (value.isNotEmpty) {
+                            snackBar(Lang().parsingDoNotClose, 2);
                             for (XFile f in value) {
-                              print(f.path);
+                              await FileHelper.cryptoAsyncMD5(File(f.path)).then((value) {
+                                List<String> fileNameArr = f.name.split(".");
+                                String fileType = fileNameArr.last;
+                                fileNameArr.remove(fileType);
+                                String fileName = fileNameArr.join(".");
+                                File file = File(f.path);
+                                int fileSize = file.lengthSync();
+                                String md5 = value;
+
+                                print(fileName);
+                                print(fileType);
+                                print(fileSize);
+                                print(md5);
+                                print(parentID);
+
+                                // fileNotifier.fileAdd(
+                                //   url: appUrl,
+                                //   fileName: fileName,
+                                //   fileType: fileType,
+                                //   fileSize: fileSize,
+                                //   md5: md5,
+                                //   dirID: parentID,
+                                // );
+                              });
                             }
+                            snackBar(Lang().theFilesHaveBeenAddedToTheUploadList, 3);
                           }
                         });
                       },
@@ -317,6 +353,8 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   ),
                 ],
               ),
+
+              /// 下载
               Row(
                 children: [
                   Expanded(
@@ -359,6 +397,8 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   ),
                 ],
               ),
+
+              /// 移动
               Row(
                 children: [
                   Expanded(
@@ -394,6 +434,8 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   ),
                 ],
               ),
+
+              /// 删除
               Row(
                 children: [
                   Expanded(
@@ -461,6 +503,8 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   ),
                 ],
               ),
+
+              /// 关闭
               Row(
                 children: [
                   Expanded(
@@ -1253,8 +1297,15 @@ class GridBuilderState extends State<GridBuilder> {
                 },
                 child: Container(
                   decoration: BoxDecoration(
-                    border: Border.all(width: 1.5, color: checkFileStatusGrid(dataArr[index])),
-                    borderRadius: const BorderRadius.all(Radius.circular(15.0)),
+                    border: Border(
+                      // left: BorderSide(color: Colors.red, width: 1),
+                      // top: BorderSide(color: Colors.blue, width: 1),
+                      // right: BorderSide(color: Colors.orange, width: 1),
+                      // bottom: BorderSide(color: Colors.green, width: 1),
+                      bottom: BorderSide(color: checkFileStatusGrid(dataArr[index]), width: 3),
+                    ),
+                    // border: Border.all(width: 1.5, color: checkFileStatusGrid(dataArr[index])),
+                    // borderRadius: const BorderRadius.all(Radius.circular(0.0)),
                   ),
                   child: checkItem(index),
                 ),
