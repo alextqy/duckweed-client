@@ -329,22 +329,23 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                 int fileSize = file.lengthSync();
                                 String md5 = value;
 
-                                print(fileName);
-                                print(fileType);
-                                print(fileSize);
-                                print(md5);
-                                print(parentID);
+                                // print(fileName);
+                                // print(fileType);
+                                // print(fileSize);
+                                // print(md5);
+                                // print(parentID);
 
-                                // fileNotifier.fileAdd(
-                                //   url: appUrl,
-                                //   fileName: fileName,
-                                //   fileType: fileType,
-                                //   fileSize: fileSize,
-                                //   md5: md5,
-                                //   dirID: parentID,
-                                // );
+                                fileNotifier.fileAdd(
+                                  url: appUrl,
+                                  fileName: fileName,
+                                  fileType: fileType,
+                                  fileSize: fileSize,
+                                  md5: md5,
+                                  dirID: parentID,
+                                );
                               });
                             }
+                            fetchData(gridMode: isGridMode);
                             snackBar(Lang().theFilesHaveBeenAddedToTheUploadList, 3);
                           }
                         });
@@ -483,7 +484,9 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                             }
                                             if (itemList[i] is FileModel) {
                                               FileModel obj = itemList[i];
-                                              await fileNotifier.fileDel(url: appUrl, id: obj.id);
+                                              await fileNotifier.fileDel(url: appUrl, id: obj.id).then((value) {
+                                                print(value.message);
+                                              });
                                             }
                                           }
                                           i++;
