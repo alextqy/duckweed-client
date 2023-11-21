@@ -15,12 +15,13 @@ import "package:app/interface/common/show_alert_dialog.dart";
 import "package:app/interface/forgot_password.dart";
 import "package:app/interface/home_page.dart";
 
-// import "package:app/common/worker.dart";
+import "package:app/common/worker.dart";
 
-// Worker w = Worker(filePath: "");
+Worker w = Worker(filePath: "");
 
 main() async {
-  // w.run();
+  FileHelper().jsonWrite(key: "account", value: "");
+  w.run();
   runApp(const RootApp());
 }
 
