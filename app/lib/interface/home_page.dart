@@ -23,6 +23,7 @@ import "package:app/interface/common/marquee.dart";
 import "package:app/model/announcement_model.dart";
 import "package:app/model/dir_model.dart";
 import "package:app/model/file_model.dart";
+import "package:app/model/original_file_model.dart";
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -319,6 +320,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                         fileSelector(["*"]).then((value) async {
                           if (value.isNotEmpty) {
                             snackBar(Lang().parsingDoNotClose, 2);
+                            // List<Map<String, dynamic>> fileUploadQueue = [];
                             for (XFile f in value) {
                               await FileHelper.cryptoAsyncMD5(File(f.path)).then((value) {
                                 List<String> fileNameArr = f.name.split(".");
@@ -326,7 +328,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                 fileNameArr.remove(fileType);
                                 String fileName = fileNameArr.join(".");
                                 File file = File(f.path);
-                                int fileSize = file.lengthSync();
+                                String fileSize = file.lengthSync().toString();
                                 String md5 = value;
 
                                 // print(fileName);
@@ -334,6 +336,14 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                 // print(fileSize);
                                 // print(md5);
                                 // print(parentID);
+                                // Map<String, dynamic> jsonData = {
+                                //   "fileName": fileName,
+                                //   "fileType": fileType,
+                                //   "fileSize": fileSize,
+                                //   "md5": md5,
+                                //   "parentID": parentID,
+                                // };
+                                // fileUploadQueue.add(jsonData);
 
                                 fileNotifier.fileAdd(
                                   url: appUrl,
@@ -345,8 +355,29 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                 );
                               });
                             }
+
                             fetchData(gridMode: isGridMode);
                             snackBar(Lang().theFilesHaveBeenAddedToTheUploadList, 3);
+
+                            // for (Map<String, dynamic> element in fileUploadQueue) {
+                            //   OriginalFileModel originalFileModel = OriginalFileModel.fromJson(element);
+                            //   print(originalFileModel.fileName);
+                            // }
+
+                            // if (fileUploadQueue.isNotEmpty) {
+                            //   String fileContent = FileHelper().readFile(appRoot() + uploadQueue());
+                            //   if (fileContent.isEmpty) {
+                            //     print(fileUploadQueue.length);
+                            //     FileHelper().writeFileAsync(appRoot() + uploadQueue(), jsonEncode(fileUploadQueue)).then((value) => print(value));
+                            //   } else {
+                            //     List<dynamic> queueContent = jsonDecode(fileContent);
+                            //     queueContent.addAll(fileUploadQueue);
+                            //     await FileHelper().writeFileAsync(appRoot() + uploadQueue(), jsonEncode(queueContent)).then((value) => print(value));
+                            //   }
+
+                            //   fetchData(gridMode: isGridMode);
+                            //   snackBar(Lang().theFilesHaveBeenAddedToTheUploadList, 3);
+                            // }
                           }
                         });
                       },

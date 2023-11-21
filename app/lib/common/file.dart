@@ -32,7 +32,19 @@ class FileHelper {
 
   Future<bool> writeFileAsync(String fileName, String content) async {
     File file = File(fileName);
-    file.writeAsStringSync(content);
+    file.writeAsString(content);
+    return true;
+  }
+
+  Future<bool> writeFileAppend(String filePath, String content) async {
+    try {
+      File file = File(filePath);
+      IOSink isk = file.openWrite(mode: FileMode.writeOnlyAppend);
+      isk.write(content);
+      await isk.close();
+    } catch (e) {
+      return false;
+    }
     return true;
   }
 
@@ -82,7 +94,7 @@ class FileHelper {
   Future<Uint8List> readBytes(File file, int position, int length) async {
     RandomAccessFile raf = await file.open(mode: FileMode.read);
     RandomAccessFile content = await raf.setPosition(position);
-    var c = content.readSync(length);
+    Uint8List c = content.readSync(length);
     await raf.close();
     return c;
   }

@@ -156,7 +156,7 @@ class FileHandler {
   Future<Uint8List> readBytes(File file, int position, int length) async {
     RandomAccessFile raf = await file.open(mode: FileMode.read);
     RandomAccessFile content = await raf.setPosition(position);
-    var c = content.readSync(length);
+    Uint8List c = content.readSync(length);
     await raf.close();
     return c;
   }

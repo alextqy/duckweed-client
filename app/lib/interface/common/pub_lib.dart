@@ -46,19 +46,23 @@ String hostDir() {
 }
 
 String uploadQueue() {
-  String queue = "${hostDir()}upload_queue";
+  String queue = "${hostDir()}upload_queue.json";
 
   if (!FileHelper().fileExists(queue)) {
     FileHelper().createFile(queue);
   }
-  return "${hostDir()}upload_queue";
+  return "${hostDir()}upload_queue.json";
 }
 
 String downloadQueue() {
-  String queue = "${hostDir()}download_queue";
+  String queue = "${hostDir()}download_queue.json";
 
   if (!FileHelper().fileExists(queue)) {
     FileHelper().createFile(queue);
   }
-  return "${hostDir()}download_queue";
+  return "${hostDir()}download_queue.json";
+}
+
+String appRoot() {
+  return "${FileHelper().appRoot().path.replaceAll("\\", "/")}/";
 }
