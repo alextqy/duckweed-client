@@ -21,7 +21,7 @@ Worker w = Worker(filePath: "");
 
 main() async {
   FileHelper().jsonWrite(key: "account", value: "");
-  w.run();
+  // w.run();
   runApp(const RootApp());
 }
 

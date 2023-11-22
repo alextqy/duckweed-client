@@ -4,6 +4,7 @@ import 'dart:typed_data';
 
 import 'package:app/common/file.dart';
 import 'package:app/interface/common/pub_lib.dart';
+import 'package:app/notifier/file_notifier.dart';
 
 /*
 import 'dart:async';
@@ -194,14 +195,13 @@ class Worker {
   }
 
   void task(SendPort sendPort) async {
-    int i = 0;
     while (true) {
-      // sendPort.send(i.toString());
       if (FileHelper().jsonRead(key: "account").isNotEmpty) {
-        sendPort.send(appRoot() + downloadQueue());
+        // var UpagingItems = FileNotifier().
+        String fileContent = FileHelper().readFile(appRoot() + uploadQueue());
+        sendPort.send(fileContent);
       }
-      sleep(const Duration(milliseconds: 500));
-      i++;
+      sleep(const Duration(milliseconds: 1500));
     }
 
     // int i = 0;

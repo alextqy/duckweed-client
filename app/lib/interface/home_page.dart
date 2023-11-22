@@ -315,14 +315,14 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                           ],
                         ),
                       ),
-                      onTap: () async {
+                      onTap: () {
                         Navigator.pop(context);
                         fileSelector(["*"]).then((value) async {
                           if (value.isNotEmpty) {
                             snackBar(Lang().parsingDoNotClose, 2);
-                            // List<Map<String, dynamic>> fileUploadQueue = [];
+                            List<Map<String, dynamic>> fileUploadQueue = [];
                             for (XFile f in value) {
-                              await FileHelper.cryptoAsyncMD5(File(f.path)).then((value) {
+                              await FileHelper.cryptoAsyncMD5(File(f.path)).then((value) async {
                                 List<String> fileNameArr = f.name.split(".");
                                 String fileType = fileNameArr.last;
                                 fileNameArr.remove(fileType);
@@ -331,53 +331,46 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                 String fileSize = file.lengthSync().toString();
                                 String md5 = value;
 
-                                // print(fileName);
-                                // print(fileType);
-                                // print(fileSize);
-                                // print(md5);
-                                // print(parentID);
-                                // Map<String, dynamic> jsonData = {
-                                //   "fileName": fileName,
-                                //   "fileType": fileType,
-                                //   "fileSize": fileSize,
-                                //   "md5": md5,
-                                //   "parentID": parentID,
-                                // };
-                                // fileUploadQueue.add(jsonData);
-
-                                fileNotifier.fileAdd(
+                                await fileNotifier
+                                    .fileAdd(
                                   url: appUrl,
                                   fileName: fileName,
                                   fileType: fileType,
                                   fileSize: fileSize,
                                   md5: md5,
                                   dirID: parentID,
-                                );
+                                )
+                                    .then((value) async {
+                                  if (value.state) {
+                                    fileUploadQueue.add({
+                                      "fileName": fileName,
+                                      "fileType": fileType,
+                                      "fileSize": fileSize,
+                                      "md5": md5,
+                                      "parentID": parentID,
+                                    });
+                                  }
+                                });
                               });
                             }
-
-                            fetchData(gridMode: isGridMode);
-                            snackBar(Lang().theFilesHaveBeenAddedToTheUploadList, 3);
 
                             // for (Map<String, dynamic> element in fileUploadQueue) {
                             //   OriginalFileModel originalFileModel = OriginalFileModel.fromJson(element);
                             //   print(originalFileModel.fileName);
                             // }
 
-                            // if (fileUploadQueue.isNotEmpty) {
-                            //   String fileContent = FileHelper().readFile(appRoot() + uploadQueue());
-                            //   if (fileContent.isEmpty) {
-                            //     print(fileUploadQueue.length);
-                            //     FileHelper().writeFileAsync(appRoot() + uploadQueue(), jsonEncode(fileUploadQueue)).then((value) => print(value));
-                            //   } else {
-                            //     List<dynamic> queueContent = jsonDecode(fileContent);
-                            //     queueContent.addAll(fileUploadQueue);
-                            //     await FileHelper().writeFileAsync(appRoot() + uploadQueue(), jsonEncode(queueContent)).then((value) => print(value));
-                            //   }
-
-                            //   fetchData(gridMode: isGridMode);
-                            //   snackBar(Lang().theFilesHaveBeenAddedToTheUploadList, 3);
-                            // }
+                            if (fileUploadQueue.isNotEmpty) {
+                              String fileContent = FileHelper().readFile(appRoot() + uploadQueue());
+                              if (fileContent.isEmpty) {
+                                await FileHelper().writeFileAsync(appRoot() + uploadQueue(), jsonEncode(fileUploadQueue)).then((value) => print(value));
+                              } else {
+                                List<dynamic> queueContent = jsonDecode(fileContent);
+                                queueContent.addAll(fileUploadQueue);
+                                await FileHelper().writeFileAsync(appRoot() + uploadQueue(), jsonEncode(queueContent)).then((value) => print(value));
+                              }
+                              fetchData(gridMode: isGridMode);
+                              snackBar(Lang().theFilesHaveBeenAddedToTheUploadList, 3);
+                            }
                           }
                         });
                       },
