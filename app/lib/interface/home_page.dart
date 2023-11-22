@@ -23,7 +23,6 @@ import "package:app/interface/common/marquee.dart";
 import "package:app/model/announcement_model.dart";
 import "package:app/model/dir_model.dart";
 import "package:app/model/file_model.dart";
-// import "package:app/model/original_file_model.dart";
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -353,11 +352,6 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                 });
                               });
                             }
-
-                            // for (Map<String, dynamic> element in fileUploadQueue) {
-                            //   OriginalFileModel originalFileModel = OriginalFileModel.fromJson(element);
-                            //   print(originalFileModel.fileName);
-                            // }
 
                             if (fileUploadQueue.isNotEmpty) {
                               String fileContent = FileHelper().readFile(appRoot() + uploadQueue());

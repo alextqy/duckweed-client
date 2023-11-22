@@ -5,6 +5,7 @@ import 'dart:typed_data';
 import 'package:app/common/file.dart';
 import 'package:app/interface/common/pub_lib.dart';
 import 'package:app/notifier/file_notifier.dart';
+import "package:app/model/original_file_model.dart";
 
 /*
 import 'dart:async';
@@ -203,6 +204,11 @@ class Worker {
       }
       sleep(const Duration(milliseconds: 1500));
     }
+
+    // for (Map<String, dynamic> element in fileUploadQueue) {
+    //   OriginalFileModel originalFileModel = OriginalFileModel.fromJson(element);
+    //   print(originalFileModel.fileName);
+    // }
 
     // int i = 0;
     // int limit = 1024 * 512;
