@@ -23,6 +23,7 @@ import "package:app/interface/common/marquee.dart";
 import "package:app/model/announcement_model.dart";
 import "package:app/model/dir_model.dart";
 import "package:app/model/file_model.dart";
+import "package:app/model/original_file_model.dart";
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -153,6 +154,38 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
     showSnackBar(context, content: content, backgroundColor: bgColor(context), duration: duration);
   }
 
+  /// 同步上传信息
+  void syncUploadInfo() async {
+    if (FileHelper().jsonRead(key: "account").isNotEmpty) {
+      await fileNotifier.files(url: appUrl, order: -1, fileName: "", dirID: -1, status: 1).then((value) {
+        if (value.state) {
+          List<FileModel> uploadFiles = [];
+          uploadFiles.addAll(FileModel().fromJsonList(jsonEncode(value.data)));
+          if (uploadFiles.isNotEmpty) {
+            List<OriginalFileModel> originalFileList = [];
+            for (FileModel element in uploadFiles) {
+              OriginalFileModel originalFile = OriginalFileModel();
+              originalFile.fileName = element.fileName;
+              originalFile.fileType = element.fileType;
+              originalFile.fileSize = element.fileSize;
+              originalFile.md5 = element.md5;
+              originalFile.dirID = element.dirID;
+              originalFileList.add(originalFile);
+            }
+            FileHelper().writeFileAsync(appRoot() + uploadQueue(), jsonEncode(originalFileList)).then((value) {
+              if (!value) {
+                showSnackBar(context, content: Lang().failedToSynchronizeTheUploadedData, backgroundColor: bgColor(context), duration: 1);
+              }
+            });
+          }
+        }
+      });
+    }
+  }
+
+  /// 同步下载信息
+  void syncDownloadInfo() {}
+
   @override
   void initState() {
     fetchData();
@@ -161,6 +194,9 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
     searchAnimationController = AnimationController(duration: Duration(milliseconds: showSpeed), vsync: this);
     searchAnimation = Tween(begin: 0.0, end: 40.0).animate(searchAnimationController);
+
+    syncUploadInfo();
+    syncDownloadInfo();
 
     super.initState();
   }
@@ -356,11 +392,11 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                             if (fileUploadQueue.isNotEmpty) {
                               String fileContent = FileHelper().readFile(appRoot() + uploadQueue());
                               if (fileContent.isEmpty) {
-                                await FileHelper().writeFileAsync(appRoot() + uploadQueue(), jsonEncode(fileUploadQueue)).then((value) => print(value));
+                                await FileHelper().writeFileAsync(appRoot() + uploadQueue(), jsonEncode(fileUploadQueue));
                               } else {
                                 List<dynamic> queueContent = jsonDecode(fileContent);
                                 queueContent.addAll(fileUploadQueue);
-                                await FileHelper().writeFileAsync(appRoot() + uploadQueue(), jsonEncode(queueContent)).then((value) => print(value));
+                                await FileHelper().writeFileAsync(appRoot() + uploadQueue(), jsonEncode(queueContent));
                               }
                               fetchData(gridMode: isGridMode);
                               snackBar(Lang().theFilesHaveBeenAddedToTheUploadList, 3);

@@ -1,16 +1,19 @@
-import 'dart:io';
-import 'dart:isolate';
-import 'dart:typed_data';
+import "dart:convert";
+import "dart:io";
+import "dart:isolate";
+import "dart:typed_data";
 
-import 'package:app/common/file.dart';
-import 'package:app/interface/common/pub_lib.dart';
-import 'package:app/notifier/file_notifier.dart';
+import "package:app/common/file.dart";
+import "package:app/interface/common/pub_lib.dart";
+import "package:app/notifier/file_notifier.dart";
+import "package:app/model/result_model.dart";
+import "package:app/model/file_model.dart";
 import "package:app/model/original_file_model.dart";
 
 /*
-import 'dart:async';
-import 'dart:io';
-import 'dart:isolate';
+import "dart:async";
+import "dart:io";
+import "dart:isolate";
 
 class Worker {
   late Isolate isolate;
@@ -53,7 +56,7 @@ class Worker {
     int count = 0;
     while (true) {
       count++;
-      String msg = 'notification $count';
+      String msg = "notification $count";
       print(msg);
       sendPort.send(Request(requestId, msg));
       sleep(const Duration(seconds: 1));
@@ -91,7 +94,7 @@ class Worker {
 
     receivePort.listen((dynamic message) async {
       if (message is Request) {
-        sendPort.send(Response.ok(message.requestId, '处理后的消息'));
+        sendPort.send(Response.ok(message.requestId, "处理后的消息"));
         return;
       }
     });
@@ -104,7 +107,7 @@ class Worker {
   }
 
   void stop() {
-    sendPort.send('stop');
+    sendPort.send("stop");
     isolate.kill();
   }
 }
@@ -182,50 +185,73 @@ class Worker {
   FileHandler fileHelper = FileHandler();
   late String filePath;
   late File file;
+  FileNotifier fileNotifier = FileNotifier();
+  List<FileModel> files = [];
+  List<OriginalFileModel> originalFileModel = [];
 
   Worker({required this.filePath}) {
     file = File(filePath);
   }
 
+  /// 1 从服务器同步上传中的文件数据到本地
   Future<dynamic> run() async {
     ReceivePort receivePort = ReceivePort();
     await Isolate.spawn(task, receivePort.sendPort);
     receivePort.listen((data) {
-      print("接收: " + data);
+      fileNotifier.files(url: appUrl, order: -1, fileName: "", dirID: -1, status: 1).then((value) {
+        if (value.state) {
+          files.addAll(FileModel().fromJsonList(jsonEncode(value.data)));
+        }
+      });
+
+      for (FileModel element in files) {
+        print(element);
+      }
+      print("====================");
+
+      // data as String;
+      // if (data.isEmpty) {}
+
+      // print("接收: " + data);
+      // List<dynamic> files = jsonDecode(data);
+      // for (var element in files) {
+      //   print(element);
+      // }
+      // print("===================================");
+
+      // for (Map<String, dynamic> element in fileUploadQueue) {
+      //   OriginalFileModel originalFileModel = OriginalFileModel.fromJson(element);
+      //   print(originalFileModel.fileName);
+      // }
+
+      // int i = 0;
+      // int limit = 1024 * 512;
+      // FileHandler fileHandler = FileHandler;
+      // bool out = false;
+      // while (true) {
+      //   await fileHandler.readBytes(file, i, limit).then((value) {
+      //     if (value.isNotEmpty) {
+      //       print(value.length);
+      //     } else {
+      //       out = true;
+      //     }
+      //     i += limit;
+      //     sleep(const Duration(milliseconds: 100));
+      //   });
+      //   if (out) break;
+      // }
+      // exit(0);
+      files.clear();
     });
   }
 
   void task(SendPort sendPort) async {
     while (true) {
       if (FileHelper().jsonRead(key: "account").isNotEmpty) {
-        // var UpagingItems = FileNotifier().
         String fileContent = FileHelper().readFile(appRoot() + uploadQueue());
         sendPort.send(fileContent);
       }
       sleep(const Duration(milliseconds: 1500));
     }
-
-    // for (Map<String, dynamic> element in fileUploadQueue) {
-    //   OriginalFileModel originalFileModel = OriginalFileModel.fromJson(element);
-    //   print(originalFileModel.fileName);
-    // }
-
-    // int i = 0;
-    // int limit = 1024 * 512;
-    // FileHandler fileHandler = FileHandler;
-    // bool out = false;
-    // while (true) {
-    //   await fileHandler.readBytes(file, i, limit).then((value) {
-    //     if (value.isNotEmpty) {
-    //       print(value.length);
-    //     } else {
-    //       out = true;
-    //     }
-    //     i += limit;
-    //     sleep(const Duration(milliseconds: 100));
-    //   });
-    //   if (out) break;
-    // }
-    // exit(0);
   }
 }

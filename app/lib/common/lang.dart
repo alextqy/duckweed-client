@@ -71,6 +71,8 @@ class Lang {
   String error = "";
   String parsingDoNotClose = "";
   String theFilesHaveBeenAddedToTheUploadList = "";
+  String failedToSynchronizeTheUploadedData = "";
+  String failedToSynchronizeTheDownloadData = "";
 
   Lang() {
     this.type = FileHelper().jsonRead(key: "lang");
@@ -141,6 +143,8 @@ class Lang {
       this.error = "错误";
       this.parsingDoNotClose = "解析中 请勿关闭";
       this.theFilesHaveBeenAddedToTheUploadList = "文件已添加到上传列表";
+      this.failedToSynchronizeTheUploadedData = "上传数据同步失败";
+      this.failedToSynchronizeTheDownloadData = "下载数据同步失败";
     } else {
       this.theServerAddressIsIncorrect = "The server address is incorrect";
       this.testConnection = "Test connection";
@@ -206,6 +210,8 @@ class Lang {
       this.error = "Error";
       this.parsingDoNotClose = "Parsing do not close";
       this.theFilesHaveBeenAddedToTheUploadList = "The files have been added to the upload list";
+      this.failedToSynchronizeTheUploadedData = "Failed to synchronize the uploaded data";
+      this.failedToSynchronizeTheDownloadData = "Failed to synchronize the download data";
     }
   }
 }
