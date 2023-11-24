@@ -502,6 +502,7 @@ class IndexPageState extends State<IndexPage> with TickerProviderStateMixin {
                                       FileHelper().jsonWrite(key: "account", value: accountController.text);
                                       FileHelper().writeFile("token", value.data);
                                       FileHelper().createDir("temp/${accountController.text}");
+                                      FileHelper().createDir("temp/${accountController.text}/upaging");
                                       uploadQueue();
                                       downloadQueue();
                                       animationController1.reverse().orCancel.then((value) async {
