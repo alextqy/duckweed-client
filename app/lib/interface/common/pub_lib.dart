@@ -51,7 +51,7 @@ String uploadQueue() {
   if (!FileHelper().fileExists(queue)) {
     FileHelper().createFile(queue);
   }
-  return "${hostDir()}upload_queue.json";
+  return queue;
 }
 
 String downloadQueue() {
@@ -60,7 +60,15 @@ String downloadQueue() {
   if (!FileHelper().fileExists(queue)) {
     FileHelper().createFile(queue);
   }
-  return "${hostDir()}download_queue.json";
+  return queue;
+}
+
+String upagingDir() {
+  String upaging = "${hostDir()}upaging";
+  if (!FileHelper().dirExists(upaging)) {
+    FileHelper().createDir(upaging);
+  }
+  return upaging;
 }
 
 String appRoot() {
