@@ -161,25 +161,23 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
         if (value.state) {
           List<FileModel> uploadFiles = [];
           uploadFiles.addAll(FileModel().fromJsonList(jsonEncode(value.data)));
-          if (uploadFiles.isNotEmpty) {
-            List<OriginalFileModel> originalFileList = [];
-            for (FileModel element in uploadFiles) {
-              OriginalFileModel originalFile = OriginalFileModel();
-              originalFile.id = element.id;
-              originalFile.fileName = element.fileName;
-              originalFile.fileType = element.fileType;
-              originalFile.fileSize = element.fileSize;
-              originalFile.md5 = element.md5;
-              originalFile.dirID = element.dirID;
-              originalFile.sourceAddress = element.sourceAddress;
-              originalFileList.add(originalFile);
-            }
-            FileHelper().writeFileAsync(appRoot() + uploadQueue(), jsonEncode(originalFileList)).then((value) {
-              if (!value) {
-                showSnackBar(context, content: Lang().failedToSynchronizeTheUploadedData, backgroundColor: bgColor(context), duration: 1);
-              }
-            });
+          List<OriginalFileModel> originalFileList = [];
+          for (FileModel element in uploadFiles) {
+            OriginalFileModel originalFile = OriginalFileModel();
+            originalFile.id = element.id;
+            originalFile.fileName = element.fileName;
+            originalFile.fileType = element.fileType;
+            originalFile.fileSize = element.fileSize;
+            originalFile.md5 = element.md5;
+            originalFile.dirID = element.dirID;
+            originalFile.sourceAddress = element.sourceAddress;
+            originalFileList.add(originalFile);
           }
+          FileHelper().writeFileAsync(appRoot() + uploadQueue(), jsonEncode(originalFileList)).then((value) {
+            if (!value) {
+              showSnackBar(context, content: Lang().failedToSynchronizeTheUploadedData, backgroundColor: bgColor(context), duration: 1);
+            }
+          });
         }
       });
     }
