@@ -1,4 +1,3 @@
-import "dart:convert";
 import "dart:io";
 import "dart:isolate";
 import "dart:typed_data";
@@ -6,7 +5,6 @@ import "dart:typed_data";
 import "package:app/common/file.dart";
 import "package:app/interface/common/pub_lib.dart";
 import "package:app/notifier/file_notifier.dart";
-import "package:app/model/result_model.dart";
 import "package:app/model/file_model.dart";
 import "package:app/model/original_file_model.dart";
 
@@ -198,26 +196,8 @@ class Worker {
     ReceivePort receivePort = ReceivePort();
     await Isolate.spawn(task, receivePort.sendPort);
     receivePort.listen((data) {
-      fileNotifier.files(url: appUrl, order: -1, fileName: "", dirID: -1, status: 1).then((value) {
-        if (value.state) {
-          files.addAll(FileModel().fromJsonList(jsonEncode(value.data)));
-        }
-      });
-
-      for (FileModel element in files) {
-        print(element);
-      }
-      print("====================");
-
-      // data as String;
-      // if (data.isEmpty) {}
-
-      // print("接收: " + data);
-      // List<dynamic> files = jsonDecode(data);
-      // for (var element in files) {
-      //   print(element);
-      // }
-      // print("===================================");
+      data as String;
+      print("接收: " + data);
 
       // for (Map<String, dynamic> element in fileUploadQueue) {
       //   OriginalFileModel originalFileModel = OriginalFileModel.fromJson(element);
@@ -241,6 +221,7 @@ class Worker {
       //   if (out) break;
       // }
       // exit(0);
+
       files.clear();
     });
   }

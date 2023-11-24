@@ -165,11 +165,13 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
             List<OriginalFileModel> originalFileList = [];
             for (FileModel element in uploadFiles) {
               OriginalFileModel originalFile = OriginalFileModel();
+              originalFile.id = element.id;
               originalFile.fileName = element.fileName;
               originalFile.fileType = element.fileType;
               originalFile.fileSize = element.fileSize;
               originalFile.md5 = element.md5;
               originalFile.dirID = element.dirID;
+              originalFile.sourceAddress = element.sourceAddress;
               originalFileList.add(originalFile);
             }
             FileHelper().writeFileAsync(appRoot() + uploadQueue(), jsonEncode(originalFileList)).then((value) {
@@ -355,7 +357,6 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                         fileSelector(["*"]).then((value) async {
                           if (value.isNotEmpty) {
                             snackBar(Lang().parsingDoNotClose, 2);
-                            List<Map<String, dynamic>> fileUploadQueue = [];
                             for (XFile f in value) {
                               await FileHelper.cryptoAsyncMD5(File(f.path)).then((value) async {
                                 List<String> fileNameArr = f.name.split(".");
@@ -366,41 +367,21 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                 String fileSize = file.lengthSync().toString();
                                 String md5 = value;
 
-                                await fileNotifier
-                                    .fileAdd(
+                                await fileNotifier.fileAdd(
                                   url: appUrl,
                                   fileName: fileName,
                                   fileType: fileType,
                                   fileSize: fileSize,
                                   md5: md5,
                                   dirID: parentID,
-                                )
-                                    .then((value) async {
-                                  if (value.state) {
-                                    fileUploadQueue.add({
-                                      "fileName": fileName,
-                                      "fileType": fileType,
-                                      "fileSize": fileSize,
-                                      "md5": md5,
-                                      "parentID": parentID,
-                                    });
-                                  }
-                                });
+                                  sourceAddress: f.path,
+                                );
                               });
                             }
 
-                            if (fileUploadQueue.isNotEmpty) {
-                              String fileContent = FileHelper().readFile(appRoot() + uploadQueue());
-                              if (fileContent.isEmpty) {
-                                await FileHelper().writeFileAsync(appRoot() + uploadQueue(), jsonEncode(fileUploadQueue));
-                              } else {
-                                List<dynamic> queueContent = jsonDecode(fileContent);
-                                queueContent.addAll(fileUploadQueue);
-                                await FileHelper().writeFileAsync(appRoot() + uploadQueue(), jsonEncode(queueContent));
-                              }
-                              fetchData(gridMode: isGridMode);
-                              snackBar(Lang().theFilesHaveBeenAddedToTheUploadList, 3);
-                            }
+                            syncUploadInfo();
+                            fetchData(gridMode: isGridMode);
+                            snackBar(Lang().theFilesHaveBeenAddedToTheUploadList, 3);
                           }
                         });
                       },

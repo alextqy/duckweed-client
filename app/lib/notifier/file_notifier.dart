@@ -9,8 +9,9 @@ class FileNotifier extends BaseNotifier {
     required fileSize,
     required md5,
     required dirID,
+    required sourceAddress,
   }) async {
-    return await fileApi.fileAdd(url, fileName, fileType, fileSize, md5, dirID);
+    return await fileApi.fileAdd(url, fileName, fileType, fileSize, md5, dirID, sourceAddress);
   }
 
   void fileModify({
