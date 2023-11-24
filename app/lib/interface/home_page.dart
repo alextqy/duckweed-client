@@ -526,6 +526,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                           }
                                           i++;
                                         }
+                                        syncUploadInfo();
                                         fetchData(gridMode: isGridMode);
                                       },
                                       child: Text("OK", style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
