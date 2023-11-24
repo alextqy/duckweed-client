@@ -17,11 +17,11 @@ import "package:app/interface/home_page.dart";
 
 import "package:app/common/worker.dart";
 
-Worker w = Worker(filePath: "");
+UploadMainThread uploadMainThread = UploadMainThread();
 
 main() async {
   FileHelper().jsonWrite(key: "account", value: "");
-  // w.run();
+  // uploadMainThread.runThread();
   runApp(const RootApp());
 }
 

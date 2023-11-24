@@ -2,12 +2,6 @@ import "dart:io";
 import "dart:isolate";
 import "dart:typed_data";
 
-import "package:app/common/file.dart";
-import "package:app/interface/common/pub_lib.dart";
-import "package:app/notifier/file_notifier.dart";
-import "package:app/model/file_model.dart";
-import "package:app/model/original_file_model.dart";
-
 /*
 import "dart:async";
 import "dart:io";
@@ -179,25 +173,21 @@ class FileHandler {
   }
 }
 
-class Worker {
-  FileHandler fileHelper = FileHandler();
-  late String filePath;
-  late File file;
-  FileNotifier fileNotifier = FileNotifier();
-  List<FileModel> files = [];
-  List<OriginalFileModel> originalFileModel = [];
-
-  Worker({required this.filePath}) {
-    file = File(filePath);
+class UploadMainThread {
+  Worker w = Worker();
+  runThread() {
+    // w.run();
   }
+}
 
-  /// 1 从服务器同步上传中的文件数据到本地
+class DownloadTheMainThread {}
+
+class Worker {
   Future<dynamic> run() async {
     ReceivePort receivePort = ReceivePort();
     await Isolate.spawn(task, receivePort.sendPort);
     receivePort.listen((data) {
-      data as String;
-      print("接收: " + data);
+      print("接收: $data");
 
       // for (Map<String, dynamic> element in fileUploadQueue) {
       //   OriginalFileModel originalFileModel = OriginalFileModel.fromJson(element);
@@ -221,17 +211,14 @@ class Worker {
       //   if (out) break;
       // }
       // exit(0);
-
-      files.clear();
     });
   }
 
   void task(SendPort sendPort) async {
+    int i = 0;
     while (true) {
-      if (FileHelper().jsonRead(key: "account").isNotEmpty) {
-        String fileContent = FileHelper().readFile(appRoot() + uploadQueue());
-        sendPort.send(fileContent);
-      }
+      sendPort.send(i);
+      i++;
       sleep(const Duration(milliseconds: 1500));
     }
   }
