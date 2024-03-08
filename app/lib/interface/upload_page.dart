@@ -7,6 +7,8 @@ import "package:app/common/lang.dart";
 import "package:app/interface/common/menu.dart";
 import "package:app/interface/common/pub_lib.dart";
 
+import "package:app/interface/upload_item.dart";
+
 class UploadPage extends StatefulWidget {
   const UploadPage({super.key});
 
@@ -15,14 +17,27 @@ class UploadPage extends StatefulWidget {
 }
 
 class UploadPageState extends State<UploadPage> with TickerProviderStateMixin {
+  List<UploadItem> uploadItemList = [];
+
   @override
   void initState() {
+    fetchData();
     super.initState();
   }
 
   @override
   void dispose() {
     super.dispose();
+  }
+
+  List<UploadItem> fetchData() {
+    UploadItem uploadItem1 = const UploadItem();
+    UploadItem uploadItem2 = const UploadItem();
+    UploadItem uploadItem3 = const UploadItem();
+    uploadItemList.add(uploadItem1);
+    uploadItemList.add(uploadItem2);
+    uploadItemList.add(uploadItem3);
+    return uploadItemList;
   }
 
   @override
@@ -36,15 +51,10 @@ class UploadPageState extends State<UploadPage> with TickerProviderStateMixin {
         title: Text(Lang().uploading, style: textStyle(), maxLines: 1, overflow: TextOverflow.ellipsis),
       ),
       body: Container(
-        margin: const EdgeInsets.all(0),
+        margin: const EdgeInsets.all(10),
         padding: const EdgeInsets.all(0),
         alignment: Alignment.center,
-        child: const Column(
-          children: [
-            Expanded(child: SizedBox.shrink()),
-            Expanded(child: SizedBox.shrink()),
-          ],
-        ),
+        child: Column(children: uploadItemList),
       ),
     );
   }
